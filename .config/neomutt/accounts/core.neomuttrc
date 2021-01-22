@@ -37,7 +37,7 @@ set spoolfile = "+INBOX"
 set record = "+Sent"
 set postponed = "+Drafts"
 set trash = "+Trash"
-mailboxes "=INBOX" "=Drafts" "=Sent" "=Spam" "=Trash" "=Mlist" "=Sysadmin" "=Archive" "=Archive.2021"
+mailboxes "=INBOX" "=Drafts" "=Sent" "=Spam" "=Trash" "=Mlist" "=Sysadmin" "=DMARC" "=Archive" "=Archive.2021"
 
 # Mailbox bindings
 bind index,pager gg noop
@@ -75,6 +75,10 @@ macro index,pager Cm ";<copy-message>=Mlist<enter>" "copy mail to Mlist"
 macro index,pager gy "<change-folder>=Sysadmin<enter>" "go to Sysadmin"
 macro index,pager My ";<save-message>=Sysadmin<enter>" "move mail to Sysadmin"
 macro index,pager Cy ";<copy-message>=Sysadmin<enter>" "copy mail to Sysadmin"
+
+macro index,pager gd "<change-folder>=DMARC<enter>" "go to DMARC"
+macro index,pager Md ";<save-message>=DMARC<enter>" "move mail to DMARC"
+macro index,pager Cd ";<copy-message>=DMARC<enter>" "copy mail to DMARC"
 
 macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
 macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to Archive"
