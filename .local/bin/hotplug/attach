@@ -1,0 +1,48 @@
+#!/bin/sh
+# Program:
+# 	* This script is used by hotplugd
+# 	* Send notify when device is attached
+# Dependency:
+# 	* notify-send(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly notify_user='cckuan'
+
+readonly devclass="$1"
+readonly devname="$2"
+
+notify() {
+	# shellcheck source=/dev/null
+	. /home/${notify_user}/.dbus/session-bus/*
+	doas -u "${notify_user}" env \
+	    DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+	    notify-send "$@"
+}
+
+# Process event
+case "${devclass}" in
+'0') # Generic
+	;;
+'1') # CPU
+	;;
+'2') # Disk drive
+	diskinfo="$(
+		disklabel -h "${devname}" \
+		    | grep -E '(^label: )|(^total sectors: )|(^  [abd-p]:)' \
+		    | tr -s '[:blank:]'
+	)"
+	notify --urgency=normal --icon=drive-harddisk-usb \
+	    --hint='string:synchronous:hotplugd_disk_drive' \
+	    'Hotplugd' "Disk drive: ${devname} attached\\n${diskinfo}"
+	;;
+'3') # Network interface
+	notify --urgency=normal --hint='string:synchronous:hotplugd_nic' \
+	    'Hotplugd' "NIC: ${devname} attached"
+	;;
+'4') # Tape device
+	;;
+'5') # Serial line interface
+	;;
+esac
+

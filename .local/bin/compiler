@@ -1,0 +1,38 @@
+#!/bin/sh
+# Program:
+#	* This script will compile or run another finishing operation on a
+# 	  document. I have this script run via vim.
+#	* Compiles .tex.
+#	* Note that .tex files which you wish to compile with XeLaTeX should
+#	  have the string "xelatex" somewhere in a comment/command in the first
+#	  5 lines.
+# Dependency:
+#	* pdflatex(1), xelatex(1), bibtex(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+textype() {
+	command='pdflatex'
+	{ head -n 5 "${file}" | grep -i -q 'xelatex'; } && command='xelatex'
+	"${command}" "${base_wo_ext}" \
+	    && { head -n 20 | grep -i addbibresource "${file}" >/dev/null; } \
+	    && bibtex "${base_wo_ext}" \
+	    && "${command}" "${base_wo_ext}" \
+	    && "${command}" "${base_wo_ext}"
+}
+
+readonly file="$(readlink -f "$1")"
+readonly dir="$(dirname "${file}")"
+readonly base="$(basename "${file}")"
+
+readonly base_wo_ext="${base%.*}"
+readonly ext="${file##*.}"
+
+cd "${dir}" || exit 1
+
+case "${ext}" in
+'tex')
+	textype
+	;;
+esac
+

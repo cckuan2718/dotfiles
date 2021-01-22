@@ -1,0 +1,68 @@
+#!/bin/sh
+# Program:
+# 	* Pack specific target
+# Dependency:
+# 	* mktemp(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+readonly timestamp="$(date '+%Y%m%d_%H%M%S')"
+
+check_dest()
+{
+	if test ! -d "${dest}" && test ! -f "${dest}"; then
+		printf '%s: %s does not exist\n' "${progname}" "${dest}" 1>&2
+		exit 1
+	fi
+}
+
+check_src()
+{
+	if test ! -d "${src}" && test ! -f "${src}"; then
+		printf '%s: %s does not exist\n' "${progname}" "${src}" 1>&2
+		exit 1
+	fi
+}
+
+help_msg()
+{
+	cat << EOF
+Usage:
+  ${progname} [-s] - pack target according to options given
+
+Options:
+  -s                   Pack secure files
+
+EOF
+}
+
+msg()
+{
+	printf '%s: packing %s...\n' "${progname}" "${target}"
+}
+
+case "$1" in
+# pack secure files
+'-s')
+	target='secure'
+	dest="/mnt/backup0/$(id -un)_packs"
+	src=''
+	name="${target}_${timestamp}"
+	file="${dest}/${name}.tgz.gpg"
+
+	check_dest
+	msg
+
+	cd "${HOME}"          || exit 1
+	file_list="$(mktemp)" || exit 1
+	find '.gnupg' '.local/share/password-store' '.ssh' 'documents/secure' \
+	    -type f > "${file_list}"
+	tar -czpvf - -s "|^|${name}/|" -I "${file_list}" | gpg -c > "${file}"
+	rm -f "${file_list}"
+	;;
+*)
+	help_msg
+	;;
+esac
+

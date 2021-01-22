@@ -1,0 +1,15 @@
+#!/bin/sh
+# Program:
+#	* show clipboard content using notify-send
+# Dependency:
+#	* xclip
+#	* notify-send
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly clipboard="$(xclip -o -selection clipboard)"
+readonly primary="$(xclip -o -selection primary)"
+
+notify-send --urgency=normal --icon='edit-copy' -- 'Clipboard' "${clipboard:-nil}"
+notify-send --urgency=normal --icon='edit-copy' -- 'Primary' "${primary:-nil}"
+

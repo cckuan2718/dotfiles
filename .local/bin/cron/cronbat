@@ -1,0 +1,23 @@
+#!/bin/sh
+# Program:
+#	* Notify me with notify-send if my battery is below 25%.
+# 	* You can set this to run via cron.
+# Dependency:
+# 	* apm(1)
+# 	* notify-send(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# Query battery status.
+ac_status="$(apm -a)"
+# Query remaining capacity.
+capacity="$(apm -l)"
+
+if test "${ac_status}" != '1' && test "${capacity}" -lt '25'; then
+	# shellcheck source=/dev/null
+	. "${HOME}"/.dbus/session-bus/*
+	env DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+	    notify-send --urgency=critical --icon='battery-caution' \
+	        'Warning' 'Battery critically low.'
+fi
+

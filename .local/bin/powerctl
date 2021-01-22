@@ -1,0 +1,54 @@
+#!/bin/sh
+# Alias:
+# 	* A dmenu wrapper script for power management.
+# Dependency:
+# 	* dmenu(1)
+#	* prompt.sh
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# shellcheck source=/dev/null
+. prompt.sh
+
+readonly menu='lock
+leave window manager
+hibernate
+reboot
+shutdown'
+
+readonly chosen="$(
+	printf '%s' "${menu}" | \
+	    dmenu -l 5 -p 'Power management option?'
+)"
+
+case "${chosen}" in
+'lock')
+	lockscreen
+	;;
+'leave window manager')
+	pkill -qu "$(id -u)" '^dwm$'
+	;;
+'hibernate')
+	zzz
+	;;
+'reboot')
+	prompt "${chosen} now?" || exit 0
+	xsetroot -cursor_name watch
+	sync
+	sync
+	sync
+	doas shutdown -r now
+	;;
+'shutdown')
+	prompt "${chosen} now?" || exit 0
+	xsetroot -cursor_name watch
+	sync
+	sync
+	sync
+	doas shutdown -p now
+	;;
+*)
+	exit 1
+	;;
+esac
+

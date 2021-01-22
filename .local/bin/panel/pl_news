@@ -1,0 +1,22 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel.
+#	* News module.
+#	* Display unread news item.
+# Dependency:
+#	* newsboat(1)
+#	* ping(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+if ! ping -q -c 1 -w 5 example.org > /dev/null 2>&1; then
+	printf 'news; ?\n'
+	exit 1
+fi
+
+if newsboat -x print-unread >/dev/null; then
+	unread_cnt="$(newsboat -x print-unread | cut -d ' ' -f 1)"
+	printf 'news; %s\n' "${unread_cnt}"
+else
+	printf 'news; \n'
+fi

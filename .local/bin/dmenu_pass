@@ -1,0 +1,41 @@
+#!/bin/sh
+# Program:
+#	* quickly copy a password to the clipboard from pass
+# Dependency:
+# 	* pass(1)
+# 	* dmenu(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+readonly pass_dir="${PASSWORD_STORE_DIR:-${HOME}/.password-store}"
+
+readonly passwd_name="$(find "${pass_dir}" -type f \! -name '*.gpg-id' -print \
+    | sed "s|^${pass_dir}/\\(.*\\)\\.gpg|\\1|" \
+    | dmenu -i -l 10 -p 'Which password to show?'
+)"
+
+test -z "${passwd_name}" && exit 1
+
+case "${passwd_name}" in
+*otp*)
+	pass otp code -c "${passwd_name}" > /dev/null 2>&1
+	exit_stat="$?"
+	;;
+*)
+	pass show -c "${passwd_name}" > /dev/null 2>&1
+	exit_stat="$?"
+	;;
+esac
+
+case "${exit_stat}" in
+'0')
+	notify-send --urgency=normal "${progname}" --icon='dialog-password' \
+	    "Credential of '${passwd_name}' copied to clipboard."
+	;;
+*)
+	notify-send --urgency=normal "${progname}" --icon='dialog-error' \
+	    "Failed extracting credential of '${passwd_name}'"
+	;;
+esac
+

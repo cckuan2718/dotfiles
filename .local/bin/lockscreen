@@ -1,0 +1,50 @@
+#!/bin/sh
+# Program:
+# 	* lock screen using i3lock, using blured screen shot as background
+# 	* mute sound and pause mpd befor lock screen
+# Dependency:
+# 	* i3lock(1)
+# 	* jot(1)
+# 	* ffmpeg(1)
+# 	* xrandr(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly tmpbg='/tmp/lock_screen.png' # Modified screenshot
+readonly lock="${HOME}/.local/share/data/lock.png" # Lock image
+readonly res="$(xrandr \
+    | grep 'current' \
+    | sed -E 's/.*current ([0-9]+) x ([0-9]+).*/\1x\2/')"
+
+# Process screenshot
+ffmpeg -f x11grab -video_size "${res}" -y -i "${DISPLAY}" -i "${lock}" \
+    -filter_complex 'boxblur=5:1,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2' \
+    -vframes 1 "${tmpbg}" -loglevel quiet
+
+# Mute sound, pause mpd
+sndioctl -q output.mute=1
+mpc -q pause
+
+# lock screen
+case "$1" in
+# suspend
+'-s')
+	i3lock --show-failed-attempts --image="${tmpbg}"
+	;;
+*)
+	# Modify dpms to turn off monitor after idle more than 5 sec
+	xset +dpms dpms 5 5 5
+	# Temporary pause dunst
+	pkill -SIGUSR1 dunst
+	# Lock screen
+	i3lock --nofork --show-failed-attempts --image="${tmpbg}"
+	# Resume dunst
+	pkill -SIGUSR2 dunst
+	# Set dmps to normal
+	xset +dpms dpms 600 600 600
+	;;
+esac
+
+# remove image
+rm "${tmpbg}"
+

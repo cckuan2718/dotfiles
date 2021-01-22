@@ -1,0 +1,37 @@
+#!/bin/sh
+# Program:
+#	* use mpc to manipulate mpd
+#	* show current mpd status using notify-send
+# Dependency:
+#	* mpc(1)
+#	* notify-send(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+case "$(mpc "$@")" in
+*playing*)
+	status='Playing'
+	icon='media-playback-start'
+	description="$(mpc current)"
+	;;
+*paused*)
+	status='Paused'
+	icon='media-playback-pause'
+	description="$(mpc current)"
+	;;
+*)
+	status='Stopped'
+	icon='media-playback-stop'
+	description=''
+	;;
+esac
+
+case "$*" in
+*status*)
+	urgency='normal'
+	;;
+esac
+
+notify-send --icon="${icon}" --hint="string:synchronous:mpc" \
+    --urgency="${urgency:-low}" "MPD ${status}" "${description}"
+

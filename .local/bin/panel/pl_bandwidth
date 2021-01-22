@@ -1,0 +1,25 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel.
+#	* Shows how much data has been received (RX) or
+#	  transmitted (TX) per second
+# Dependency:
+#	* netstat(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly interval='3'
+
+rx_tx_rate_byte="$(netstat -w "${interval}" -c 2 -b \
+    | tail -n 1 \
+    | tr -s ' ' ';' \
+    | cut -d ';' -f '4,5')"
+
+rx_rate_byte="${rx_tx_rate_byte%;*}"
+tx_rate_byte="${rx_tx_rate_byte#*;}"
+
+rx_rate_kb="$((rx_rate_byte / interval / 1000))"
+tx_rate_kb="$((tx_rate_byte / interval / 1000))"
+
+printf 'bandwidth; %dKB  %dKB\n' "${rx_rate_kb}" "${tx_rate_kb}"
+

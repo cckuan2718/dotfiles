@@ -1,0 +1,173 @@
+#!/bin/sh
+# Program:
+# 	* Extract file
+# Dependency:
+#	* 7z(1)
+#	* bzip2(1)
+#	* compress(1)
+#	* gzip(1)
+#	* tar(1)
+#	* unrar(1)
+#	* unzip(1)
+#	* xz(1)
+# 	* cpio(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+
+extract_archive()
+{
+	file="$1"
+
+	printf '\n%s: extracting %s\n' "${progname}" "${file}"
+	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
+
+	case "${file}" in
+	*.7z)
+		7z x "${file}"
+		;;
+	*.lzma)
+		xz -dvF lzma "${file}"
+		;;
+	*.rar)
+		unrar x -ad "${file}"
+		;;
+	*.tar)
+		tar -xvf "${file}"
+		;;
+	*.tar.Z|*.taZ|*.tZ)
+		tar -xZvf "${file}"
+		;;
+	*.tar.bz2|*.tbz2|*.tb2|*.tz2)
+		tar -xjvf "${file}"
+		;;
+	*.tar.gz|*.tgz)
+		tar -xzvf "${file}"
+		;;
+	*.Z)
+		compress -dv "${file}"
+		;;
+	*.bz2)
+		bzip2 -dv "${file}"
+		;;
+	*.gz)
+		gzip -dv "${file}"
+		;;
+	*.xz)
+		xz -dv "${file}"
+		;;
+	*.zip)
+		unzip "${file}"
+		;;
+	*)
+		printf '%s: unknown archive type for %s\n' "${progname}" \
+		    "${file}" 2>&1
+		return 1
+		;;
+	esac
+}
+
+help_msg()
+{
+	cat << EOF
+Usage:
+  ${progname} [-ht] file... - extract files using correct program
+
+Options:
+  -h                   Show this message and exit.
+  -t                   List contents of archive.
+
+Supported file type:
+  7z
+  Z
+  bz2
+  cpio
+  gz
+  lzma
+  rar
+  tar
+  tar.Z   | taZ   | tZ
+  tar.bz2 | tbz2 | tb2 | tz2
+  tar.gz  | tgz
+  xz
+  zip
+
+EOF
+}
+
+list_archive()
+{
+	file="$1"
+
+	printf '\n%s: listing %s\n' "${progname}" "${file}"
+	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
+
+	case "${file}" in
+	*.7z)
+		7z l "${file}"
+		;;
+	*.rar)
+		unrar lb "${file}"
+		;;
+	*.tar)
+		tar -tf "${file}"
+		;;
+	*.tar.Z|*.taZ|*.tZ)
+		tar -tZf "${file}"
+		;;
+	*.tar.bz2|*.tbz2|*.tb2|*.tz2)
+		tar -tjf "${file}"
+		;;
+	*.tar.gz|*.tgz)
+		tar -tzf "${file}"
+		;;
+	*.zip)
+		unzip -l "${file}"
+		;;
+	*)
+		printf '%s: unknown archive type for %s\n' "${progname}" \
+		    "${file}" 2>&1
+		return 1
+		;;
+	esac
+}
+t_flag='0'
+
+while getopts 'ht' opt; do
+	case "${opt}" in
+	'h')
+		help_msg
+		exit 0
+		;;
+	't')
+		readonly t_flag='1'
+		;;
+	*)
+		printf '%s: invalid option\n' "${progname}" 1>&2
+		exit 1
+		;;
+	esac
+done
+
+shift "$((OPTIND - 1))"
+
+for arg; do
+	if test ! -f "${arg}"; then
+		printf '%s: %s does not exist\n' "${progname}" "${arg}" 2>&1
+		continue
+	fi
+
+	case "${t_flag}" in
+	'0')
+		extract_archive "${arg}"
+		;;
+	'1')
+		list_archive "${arg}"
+		;;
+	*)
+		exit 1
+		;;
+	esac
+done
+

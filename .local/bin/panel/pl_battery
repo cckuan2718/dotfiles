@@ -1,0 +1,49 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel.
+#	* Battery module.
+# Dependency:
+#	* apm(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# Query remaining capacity.
+capacity="$(apm -l)"
+# Query battery status.
+ac_status="$(apm -a)"
+
+# If it is discharging and capacity is lower than 25%, we will add a
+# '' as a warning.
+if test "${capacity}" -le '25' && test "${ac_status}" != '1'; then
+	warn=' '
+fi
+
+# Determine icon from capacity
+if test "${capacity}" -ge 99; then
+	icon=''
+elif test "${capacity}" -ge 75; then
+	icon=''
+elif test "${capacity}" -ge 50; then
+	icon=''
+elif test "${capacity}" -ge 25; then
+	icon=''
+else
+	icon=''
+fi
+
+# Modify ${ac_status} from integer to text
+case "${ac_status}" in
+'0')
+	ac_status='DIS'
+	;;
+'1')
+	ac_status='CHR'
+	;;
+*)
+	ac_status='???'
+	;;
+esac
+
+printf 'battery;%s %s %s%02d%%\n' "${icon}" "${ac_status}" "${warn}" \
+    "${capacity}"
+

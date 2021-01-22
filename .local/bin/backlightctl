@@ -1,0 +1,28 @@
+#!/bin/sh
+# Program:
+# 	* change screen backlight
+# 	* notify backlight with a progress bar
+# Dependency:
+# 	* notify-send(1)
+#	* progress_string.sh
+# 	* xbacklight(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# Setting: step for increment or decrement
+readonly step='10'
+
+case "$1" in
+'-d')
+	xbacklight -dec "${step}" -steps 1 -time 5
+	;;
+'-i')
+	xbacklight -inc "${step}" -steps 1 -time 5
+	;;
+*)
+	# Do nothing
+	;;
+esac
+
+update_panel -b
+

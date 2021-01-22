@@ -1,0 +1,42 @@
+#!/bin/sh
+# Program:
+#	* change volume
+#	* notify volume with a progress bar
+# Dependency:
+# 	* notify-send(1)
+#	* progress_string.sh
+# 	* sndioctl(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# Setting: step for increment or decrement
+readonly step='0.05'
+
+# Query sndioctl for the current volume and whether or not the speaker is muted
+case "$1" in
+# Decrease
+'-d')
+	volume="$(sndioctl -n output.level=-${step})"
+	;;
+# Increase
+'-i')
+	volume="$(sndioctl -n output.level=+${step})"
+	;;
+# Toggle
+'-t')
+	sndioctl -n output.mute=!
+	volume="$(sndioctl -n output.level)"
+	;;
+*)
+	volume="$(sndioctl -n output.level)"
+	;;
+esac
+
+# reset volume if there are two different volume status
+if test "${#volume}" != '5'; then
+	volume="$(printf '%s' "${volume}" | head -n 1)"
+	sndioctl -n output.level="${volume}"
+fi
+
+update_panel -v
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel.
+#	* music module.
+# Dependency:
+#	* mpc(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+printf 'music; %.20s\n' "$(mpc current)"

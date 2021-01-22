@@ -1,0 +1,110 @@
+#!/bin/sh
+# Program:
+# 	* Change audio file tag
+# Dependency:
+# 	* eyeD3(1)
+# 	* metaflac(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+
+usage() {
+	cat << EOF
+Usage:
+  ${progname} [-aAbcghnNt] file...
+Options:
+  -a: artist
+  -A: album title
+  -b: album artist
+  -c: comment
+  -g: genre
+  -h: help
+  -n: track number
+  -N: total number of tracks
+  -t: song title
+You will be prompted for title, artist, album and track if not given.
+
+EOF
+}
+
+while getopts 'a:A:b:c:g:hn:N:t:' opt; do
+	case "${opt}" in
+	'a')
+		artist="${OPTARG}"
+		;;
+	'A')
+		album="${OPTARG}"
+		;;
+	'b')
+		album_artist="${OPTARG}"
+		;;
+	'c')
+		comment="${OPTARG}"
+		;;
+	'g')
+		genre="${OPTARG}"
+		;;
+	'h')
+		usage
+		exit 0
+		;;
+	'n')
+		track="${OPTARG}"
+		;;
+	'N')
+		track_total="${OPTARG}"
+		;;
+	't')
+		title="${OPTARG}"
+		;;
+	*)
+		printf '%s: invalid option\n' "${progname}" 1>&2
+		exit 1
+		;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+for file; do
+	if ! test -f "${file}"; then
+		printf '%s: file %s not found\n' "${progname}" "${file}" 1>&2
+	fi
+
+	printf '%s: processing %s\n' "${progname}" "${file}"
+	test -z "${title}"        && printf '%s' 'Enter a title: '          && read -r title_tmp
+	test -z "${artist}"       && printf '%s' 'Enter an artist: '        && read -r artist_tmp
+	test -z "${album}"        && printf '%s' 'Enter an album: '         && read -r album_tmp
+	test -z "${album_artist}" && printf '%s' 'Enter an album artist : ' && read -r album_artist_tmp
+	test -z "${genre}"        && printf '%s' 'Enter an genre: '         && read -r genre_tmp
+
+	case "${file}" in
+	*'.mp3')
+		eyeD3 -Q --remove-all \
+		    -a "${artist:-${artist_tmp}}" \
+		    -A "${album:-${album_tmp}}" \
+		    -b "${album_artist:-${album_artist_tmp}}" \
+		    -t "${title:-${title_tmp}}" \
+		    -G "${genre:-${genre_tmp}}" \
+		    -n "${track:-0}" -N "${track_total:-0}" \
+		    "${file}"
+		;;
+	*'.flac')
+		cat << EOF | metaflac --remove-all-tags --import-tags-from=- "${file}"
+TITLE=${title:-${title_tmp}}
+ARTIST=${artist:-${artist_tmp}}
+ALBUM=${album:-${album_tmp}}
+TRACKNUMBER=${track:-0}
+TOTALTRACKS=${total:-0}
+GENRE=${genre:-${genre_tmp}}
+DESCRIPTION=${comment}
+EOF
+		;;
+	*)
+		printf '%s: File type for %s not implemented yet.\n' \
+		    "${progname}" "${file}" 1>&2
+		;;
+	esac
+done
+

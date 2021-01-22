@@ -1,0 +1,29 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel
+#	* sensors module
+#	* Display cpu temperature and fan speed.
+# Dependency:
+#	* sysctl(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+cpu_temp="$(sysctl -n hw.sensors.cpu0.temp0 | cut -d ' ' -f 1)"
+cpu_temp="${cpu_temp%.*}"
+fan_speed="$(sysctl -n hw.sensors.acpithinkpad0.fan0 | cut -d ' ' -f 1)"
+
+if test "${cpu_temp}" -ge '75';then
+	cpu_temp_icon=''
+elif test "${cpu_temp}" -ge '70'; then
+	cpu_temp_icon=''
+elif test "${cpu_temp}" -ge '62'; then
+	cpu_temp_icon=''
+elif test "${cpu_temp}" -ge '55'; then
+	cpu_temp_icon=''
+else
+	cpu_temp_icon=''
+fi
+
+printf 'sensors_fan; %04drpm\n' "${fan_speed}"
+printf 'sensors_cpu;%s %02d°C\n' "${cpu_temp_icon}" "${cpu_temp}"
+

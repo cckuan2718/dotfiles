@@ -1,0 +1,42 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel
+#	* torrent module
+#	* Display transmission status.
+# Dependency:
+#	* transmission-remote(1)
+#	* notify-send(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+torrent()
+{
+	transmission-remote -l \
+	    | grep % \
+	    | sed "
+		s/.*Stopped.*/Sp/g;
+		s/.*Seeding.*/Sd/g;
+		s/.*100%.*/Dn/g;
+		s/.*Idle.*/Id/g;
+		s/.*Uploading.*/Up/g;
+		s/.*%.*/Dl/g" \
+	    | sort -h \
+	    | uniq -c \
+	    | sed "
+	        s/Sp//g;
+	        s/Id//g;
+	        s/Up//g;
+	        s/Dl//g;
+	        s/Dn//g;
+	        s/Sd//g" \
+	    | awk '
+	        BEGIN{printf("torrent;")}
+		{printf(" %s %s", $2, $1)}
+	        END{printf("\n")}'
+}
+
+if pgrep 'transmission-dae'; then
+	torrent
+else
+	printf 'torrent_alert; DOWN\n'
+fi

@@ -1,0 +1,66 @@
+#!/bin/sh
+# Alias:
+#	* A dmenu prompt to unmount drives.
+#	* Provides you with mounted partitions, select one to unmount.
+#	* Drives mounted at /, /boot and /home will not be options to unmount.
+# Dependency:
+# 	* dmenu(1)
+#	* prompt.sh
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# shellcheck source=/dev/null
+. prompt.sh
+
+readonly progname="$(basename "$0")"
+
+#
+# Functions
+#
+
+notify()
+{
+	notify-send --urgency=normal --icon=usbpendrive_unmount \
+	--hint="string:synchronous:${progname}" "${progname}" \
+	"$@"
+}
+
+unmountdisk() {
+	chosen="$(printf '%s' "${disks}" | dmenu -l 5 -i -p 'Unmount which drive?')"
+	test -z "${chosen}" && exit 1
+
+	chosen_disk="$(       printf '%s' "${chosen}" | cut -d ' ' -f 1)"
+	chosen_mountpoint="$( printf '%s' "${chosen}" | cut -d ' ' -f 3)"
+	chosen_fstype="$(     printf '%s' "${chosen}" | cut -d ' ' -f 5)"
+	if test -z "${chosen_disk}" \
+	    || test -z "${chosen_mountpoint}" \
+	    || test -z "${chosen_fstype}"; then
+		exit 1
+	fi
+
+	prompt "Umount ${chosen_disk} (${chosen_fstype}) on ${chosen_mountpoint}?" \
+	    || exit 1
+
+	doas -n umount "${chosen_disk}"
+
+	if mount | grep -q "${chosen_disk}"; then
+		notify "Failed unmounting ${chosen_disk} from ${chosen_mountpoint}."
+	else
+		notify "${chosen_disk} unmounted from ${chosen_mountpoint}."
+	fi
+}
+
+#
+# Proper
+#
+
+readonly disks="$(mount | grep '/mnt')"
+
+if test -z "${disks}"; then
+	notify 'No unmountable disk detected.'
+	exit 1
+else
+	notify 'Umnountable disks detected.'
+	unmountdisk
+fi
+

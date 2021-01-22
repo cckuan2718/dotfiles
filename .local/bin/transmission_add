@@ -1,0 +1,26 @@
+#!/bin/sh
+# Program:
+#	* Mimeapp script for adding torrent to transmission-daemon, but will
+# 	  also start the daemon first if not running.
+#	* transmission-daemon sometimes fails to take remote requests in its
+# 	  first moments. sleep 3 sec before adding torrent
+# Dependency:
+#	* notify-send(1)
+#	* transmission-daemon(1)
+#	* transmission-remote(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+
+if ! pgrep 'transmission-dae'; then
+	transmission-daemon \
+	    && notify-send --urgency=normal --hint='string:synchronous:p2p' \
+	        "${progname}" 'Starting transmission daemon...' \
+	    && sleep 3
+fi
+
+transmission-remote -a "$@" \
+    && notify-send --urgency=normal --hint='string:synchronous:p2p' \
+        "${progname}" 'Torrent added.'
+

@@ -1,0 +1,88 @@
+#!/bin/sh
+# Program:
+#	* Take screenshot using maim
+#	* Notify that the screenshot has been taken
+# Usage:
+#	* ./take_screenshot [-i]
+# 	* -i Interactive mode. Choose the kind of screenshot to take,
+# 	  including copying the image or even highlighting an area to copy.
+# Dependency:
+# 	* dmenu(1)
+#	* maim(1)
+#	* notify-send(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# Settings
+readonly screenshots_dir="${HOME}/pictures/screenshots"
+
+readonly progname="$(basename "$0")"
+readonly dmenu_options='s (selected area)
+f (full screen)
+cs (copy selected area)
+cf (copy full screen)'
+
+save_screen()
+{
+	readonly timestamp="$(date '+%Y%m%d_%H%M%S')"
+
+	case "$1" in
+	's')
+		readonly filename="selected_${timestamp}.png"
+		readonly filepath="${screenshots_dir}/${filename}"
+		maim --format=png --select "${filepath}"
+		;;
+	'f')
+		readonly filename="${timestamp}.png"
+		readonly filepath="${screenshots_dir}/${filename}"
+		maim --format=png "${filepath}"
+		;;
+	esac
+
+	printf '%s' "${filepath}" | xclip -selection clipboard
+	notify-send --urgency=normal -i "${filepath}" "${progname}" \
+	    "Screenshot saved to: ${filename}\\nFilepath copied to clipboard."
+}
+
+copy_screen()
+{
+	case "$1" in
+	'cs')
+		maim --format=png --select \
+		    | xclip -selection clipboard -t image/png
+		;;
+	'cf')
+		maim --format=png \
+		    | xclip -selection clipboard -t image/png
+		;;
+	esac
+
+	notify-send --urgency=normal "${progname}" \
+	    'Screenshot copied to clipboard.'
+}
+
+case "$1" in
+	# Interactive mode
+'-i')
+	selected_option="$(printf '%s' "${dmenu_options}" \
+	    | dmenu -i -l 4 -p 'Screenshot mode?' \
+	    | cut -d ' ' -f '1'
+	)"
+
+	test -z "${selected_option}" && exit 1
+
+	case "${selected_option}" in
+	c*)
+		copy_screen "${selected_option}"
+		;;
+	*)
+		save_screen "${selected_option}"
+		;;
+	esac
+	;;
+# Default: capture fullscreen
+*)
+	save_screen 'f'
+	;;
+esac
+

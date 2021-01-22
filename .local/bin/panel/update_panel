@@ -1,0 +1,18 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel
+#	* when called, update specific panel module.
+# Dependency:
+#	* pl_volume(1)
+#	* pl_backlight(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+case "$1" in
+	'-v')
+		pl_volume > "${PANEL_FIFO}"
+		;;
+	'-b')
+		pl_backlight > "${PANEL_FIFO}"
+		;;
+esac

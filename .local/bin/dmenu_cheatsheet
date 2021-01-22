@@ -1,0 +1,20 @@
+#!/bin/sh
+# Program:
+#	* Select and open cheatsheet
+# Dependency:
+# 	* dmenu(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly csdir="${HOME}/documents/cheatsheets/"
+
+cd "${csdir}" || exit 1
+
+file="$(
+find . -type f \
+    | sed "s|^\\./||" \
+    | dmenu -i -l 5 -p "Which Cheatsheet to open?"
+)"
+
+test -f "${file}" && xdg-open "${file}"
+

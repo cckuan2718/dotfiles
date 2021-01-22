@@ -1,0 +1,114 @@
+#!/bin/sh
+# Program:
+# 	* Sync "${src}" and "${dest}"
+# Dependency:
+# 	* rsync(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+
+check_dest()
+{
+	if test ! -d "${dest}" && test ! -f "${dest}"; then
+		printf '%s: %s does not exist\n' "${progname}" "${dest}" 1>&2
+		exit 1
+	fi
+}
+
+check_src()
+{
+	if test ! -d "${src}" && test ! -f "${src}"; then
+		printf '%s: %s does not exist\n' "${progname}" "${src}" 1>&2
+		exit 1
+	fi
+}
+
+help_msg()
+{
+	cat << EOF
+Usage:
+  ${progname} [-hmw] - sync target according to options given
+
+Options:
+  -h                   Sync home folder
+  -m                   Sync music folder
+  -s                   Sync sieve script
+  -w                   Sync website folder and reload httpd
+
+EOF
+}
+
+msg()
+{
+	printf '%s: syncing %s from %s -> %s...\n' "${progname}" "${target}" \
+	    "${src}" "${dest}"
+}
+
+case "$1" in
+# sync home
+'-h')
+	target='home'
+	user="$(id -un)"
+	src="/home/${user}/"
+	dest="/mnt/backup0/${user}_home_mirror"
+
+	check_dest
+	check_src
+	msg
+
+	rsync -auvh --delete-after --delete-excluded \
+	    --exclude='.Xauthority' \
+	    --exclude='.cache' \
+	    --exclude='.chewing' \
+	    --exclude='.dbus' \
+	    --exclude='.gnupg' \
+	    --exclude='.local/share/password-store' \
+	    --exclude='.mozilla' \
+	    --exclude='.password-store' \
+	    --exclude='.sndio' \
+	    --exclude='.ssh' \
+	    --exclude='documents/secure' \
+	    "${src}" "${dest}"
+	;;
+# sync music
+'-m')
+	target='music'
+	src="${HOME}/music/"
+	dest='/mnt/mplayer0/music'
+
+	check_dest
+	check_src
+	msg
+
+	rsync -ruvh --delete-after "${src}" "${dest}"
+	;;
+# sync sieve script
+'-s')
+	target='sieve'
+
+	src="${XDG_CONFIG_HOME:-${HOME}/.config}/neomutt/accounts/core.sieve"
+	dest='cckuan@core.changchukuan.name:~/.dovecot.sieve'
+
+	check_src
+	msg
+
+	rsync -auvh --no-o --no-g --delete-after --rsh=ssh "${src}" "${dest}"
+	;;
+# sync website
+'-w')
+	target='website'
+	src="${HOME}/documents/htdocs/www.changchukuan.name/"
+	dest='cckuan@core.changchukuan.name:/var/www/htdocs/www.changchukuan.name'
+
+	check_src
+	msg
+
+	rsync -auvh --no-o --no-g --delete-after --rsh=ssh "${src}" "${dest}"
+	ssh cckuan@core.changchukuan.name doas rcctl reload httpd
+	;;
+*)
+	help_msg
+	;;
+esac
+

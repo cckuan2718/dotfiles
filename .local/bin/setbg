@@ -1,0 +1,22 @@
+#!/bin/sh
+# Program:
+#	* if given an argument, moves it to ${wallpaper_loc}
+#	* if called withoutany argument, sets ${wallpaper_loc} as the
+# 	  wallpaper
+# Dependency:
+#	* xwallpaper(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly wallpaper_loc="${HOME}/.local/share/data/wallpaper"
+
+readonly progname="$(basename "$0")"
+
+if test -f "$1"; then
+	fpath="$(readlink -f "$1")"
+	ln -fs "${fpath}" "${wallpaper_loc}"
+	notify-send --icon="${wallpaper_loc}" "${progname}" 'Wallpaper changed.'
+fi
+
+xwallpaper --zoom "${wallpaper_loc}"
+

@@ -1,0 +1,33 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel.
+#	* vmstatus module.
+#	* Display memory nad cpu usage
+# Dependency:
+#	* top(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# Fetch total memory in MB
+memory_total="$(( $(sysctl -n hw.physmem) / 1024 / 1024 ))"
+
+# Fetch free memory(MB) and cpu idle(%) from vmstat
+memory_free_and_cpu_idle="$(vmstat -w 3 -c 2 \
+    | tail -n 1 \
+    | tr -d '[:alpha:]' \
+    | tr -s ' ' ';' \
+    | cut -f '5,19' -d ';')"
+memory_free="${memory_free_and_cpu_idle%;*}"
+cpu_idle="${memory_free_and_cpu_idle#*;}"
+
+# Calculate cpu usage(%), determone cpu usage status
+cpu_usage="$((100 - cpu_idle))"
+test "$((cpu_usage < 0 || cpu_usage > 100))" = '1' && cpu_usage='0'
+
+# Calculate memory usage(%), determone memory usage status
+memory_usage="$(((memory_total - memory_free) * 100 / memory_total))"
+test "$((memory_usage < 0 || memory_usage > 100))" = '1' && memory_usage='0'
+
+printf 'cpu; %02d%%\n' "${cpu_usage}"
+printf 'memory; %02d%%\n' "${memory_usage}"
+

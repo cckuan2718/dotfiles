@@ -1,0 +1,166 @@
+#!/bin/sh
+# Program:
+#	* Gives a dmenu prompt to mount unmounted drives and Android phones. If
+#	  they're in /etc/fstab, they'll be mounted automatically. Otherwise,
+# 	  you'll be prompted to give a mountpoint from already existsing
+# 	  directories. If you input a novel directory, it will prompt you to
+# 	  create that directory.
+# Dependency:
+# 	* dmenu(1)
+# 	* mount.exfat-fuse(1)
+#	* prompt.sh
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Setting
+#
+
+readonly exclude_disks='sd0|sd1' # Extended regex
+readonly progname="$(basename "$0")"
+
+# shellcheck source=/dev/null
+. prompt.sh
+
+#
+# Functions
+#
+
+lsdisk()
+{
+	for disk in ${disks}; do
+		doas -n disklabel -h "${disk}" \
+		    | awk -v disk="${disk}" '
+		        /^label: / {
+			    sub("^label: ", "", $0);
+			    sub("[[:blank:]]*$", "", $0);
+			    label = $0;
+		        }
+
+		        /^total sectors: / {
+			    total_bytes = $NF;
+		        }
+
+		        /^[[:blank:]]+[[:alpha:]]:/ {
+			    if ($1 == "c:" || $4 == "swap") {
+				next;
+			    }
+			    printf("/dev/%s%c %10s %10s (%s, total bytes: %s)\n",
+				disk, $1, $2, $4, label, total_bytes);
+		        }
+		    '
+	done
+}
+
+get_mount_point() {
+	already_mounted="$(mount \
+	    | awk '/.*\/mnt.*/ { printf("-not ( -path %s -prune ) ", $3) }'
+	)"
+	# shellcheck disable=SC2086
+	mount_point="$(find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
+	    | dmenu -l 15 -p 'Type in mount point:'
+	)"
+
+	if test ! -d "${mount_point}"; then
+		notify "${mount_point} does not exist."
+		exit 1
+	fi
+}
+
+mountdisk() {
+	disk_info="$(lsdisk)"
+
+	chosen="$(printf '%s' "${disk_info}" \
+	    | dmenu -l 15 -p 'Mount which drive?' \
+	    | tr -s ' '
+	)"
+	test -z "${chosen}" && exit 1
+
+	chosen_disk="$(   printf '%s' "${chosen}"   | cut -d ' ' -f 1)"
+	chosen_size="$(   printf '%s' "${chosen}"   | cut -d ' ' -f 2)"
+	chosen_fstype="$( printf '%s' "${chosen}"   | cut -d ' ' -f 3)"
+
+	if test "${chosen_fstype}" = 'NTFS'; then
+		chosen_fstype="$(printf 'exFAT\nNTFS' \
+		    | dmenu -l 15 -p 'File system?' \
+		)"
+	fi
+
+	if test -z "${chosen_disk}" \
+	    || test -z "${chosen_size}" \
+	    || test -z "${chosen_fstype}"; then
+		exit 1
+	fi
+
+	if mount | grep -q "${chosen_disk}"; then
+		notify "${chosen_disk} already mounted."
+		exit 1
+	fi
+
+	get_mount_point
+
+	prompt "Mount ${chosen_disk} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
+	    || exit 1
+
+	doas -n mount "${chosen_disk}" 2>/dev/null \
+	    && notify "${chosen_disk} mounted." \
+	    && exit 0
+
+	case "${chosen_fstype}" in
+	'4.2BSD')
+		doas -n mount_ffs "${chosen_disk}" "${mount_point}"
+		;;
+	'cd9660')
+		doas -n mount_cd9660 "${chosen_disk}" "${mount_point}"
+		;;
+	'exFAT')
+		doas -n mount.exfat-fuse -o "gid=$(id -g),uid=$(id -u)" \
+		    "${chosen_disk}" "${mount_point}"
+		chosen_disk='fusefs'
+		;;
+	'MSDOS')
+		doas -n mount_msdos -g "$(id -g)" -u "$(id -u)" \
+		    "${chosen_disk}" "${mount_point}"
+		;;
+	'NTFS')
+		doas -n mount_ntfs -g "$(id -g)" -u "$(id -u)" \
+		    "${chosen_disk}" "${mount_point}"
+		;;
+	*)
+		notify 'Unknown filesystem.'
+		exit 1
+		;;
+	esac
+
+	if mount | grep -q "${chosen_disk}.*${mount_point}"; then
+		notify "${chosen_disk} mounted to ${mount_point}."
+	else
+		notify "Failed mounting ${chosen_disk} to ${mount_point}."
+	fi
+}
+
+notify()
+{
+	notify-send --urgency=normal --icon=drive-harddisk-usb \
+	    --hint="string:synchronous:${progname}" "${progname}" \
+	    "$@"
+}
+
+#
+# Proper
+#
+
+readonly disks="$(sysctl -n hw.disknames \
+    | tr ',' '\n' \
+    | cut -d ':' -f 1 \
+    | grep -Ev "${exclude_disks:-nil}"
+)"
+
+if test -z "${disks}"; then
+	notify 'No mountable disk detected.'
+	exit 1
+else
+	notify 'Mountable disks detected.'
+	mountdisk
+fi
+

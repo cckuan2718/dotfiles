@@ -1,0 +1,61 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel
+#	* iface module
+#	* Display Network status
+# Dependency:
+#	* ifconfig(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly trunk_iface='trunk0'
+readonly wired_iface='em0'
+readonly wireless_iface='iwn0'
+
+trunk_status="$(
+ifconfig "${trunk_iface}" \
+    | awk '
+	BEGIN {
+		have_ip="0"
+		active_iface="nil"
+	}
+
+	/^[[:space:]]*inet.*netmask/ {
+		have_ip="1"
+	}
+
+	/port.*active/ {
+		active_iface=$1
+	}
+
+	END {
+		if (have_ip == "1" && active_iface != "nil") {
+			printf("up;%s", active_iface)
+		} else {
+			printf("down")
+		}
+	}'
+)"
+
+case "${trunk_status}" in
+up*)
+	active_iface="${trunk_status#*;}"
+	case "${active_iface}" in
+	"${wireless_iface}")
+		ssid="$(ifconfig "${wireless_iface}" \
+		    | grep ieee80211 \
+		    | cut -d ' ' -f 3)"
+		printf 'iface; %s\n' "${ssid}"
+		;;
+	"${wired_iface}")
+		ipaddr="$(ifconfig "${trunk_iface}" \
+		    | grep inet \
+		    | cut -d ' ' -f 2)"
+		printf 'iface; %s\n' "${ipaddr}"
+		;;
+	esac
+	;;
+'down')
+	printf 'iface; DOWN\n'
+	;;
+esac

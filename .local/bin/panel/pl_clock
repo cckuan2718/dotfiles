@@ -1,0 +1,10 @@
+#!/bin/sh
+# Program:
+#	* This program belongs to panel.
+#	* clock module.
+# Dependency:
+#	* date(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+date +'clock; %Y-%m-%d %a %H:%M:%S'
