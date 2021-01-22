@@ -1,0 +1,32 @@
+#
+# Mbsyncrc file for account 'core'
+#
+
+# Remote
+IMAPStore core-remote
+Host mta0.changchukuan.name
+Port 993
+User cckuan
+PassCmd "pass core"
+AuthMechs LOGIN
+SSLType IMAPS
+CertificateFile /etc/ssl/cert.pem
+
+# Local
+MaildirStore core-local
+Subfolders Verbatim
+Path ~/.local/share/mail/core/
+Inbox ~/.local/share/mail/core/INBOX
+Flatten .
+
+# Channel
+Channel core
+Expunge Both
+Master :core-remote:
+Slave :core-local:
+Patterns * !\"[Gmail]/All Mail\"
+Create Both
+SyncState *
+MaxMessages 0
+ExpireUnread no
+
