@@ -1,0 +1,25 @@
+#
+# Beets configuration
+#
+
+directory: ~/music
+
+library: ~/.local/share/data/musiclibrary.db
+
+import:
+    # Write metadata to music files
+    write: yes # default
+
+    # Copy imported files from source to the music directory
+    copy: yes # default
+    move: no # default
+
+    resume: ask # default
+    quiet_fallback: skip # default
+    timid: no # default
+    log: beetslog.txt
+
+plugins: fetchart lastgenre
+
+ui:
+    color: yes

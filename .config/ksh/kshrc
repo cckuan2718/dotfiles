@@ -1,0 +1,226 @@
+#
+# .kshrc for desktop
+#
+
+case "$-" in
+#
+# We are interactive
+#
+*i*)
+
+#
+# Ksh setting
+#
+
+set -o vi
+set -o vi-tabcomplete
+
+#
+# Ksh completion
+#
+
+set -A complete_beet_1 -- import list remove modify move update write stats \
+    fields config
+set -A complete_git_1 -- clone commit config pull push status add
+set -A complete_git -- origin master
+set -A complete_g_1 -- clone commit config pull push status add
+set -A complete_g -- origin master
+set -A complete_cbk_1 -- clone commit config pull push status add
+set -A complete_cbk -- origin master
+set -A complete_kill_1 -- -9 -HUP -INFO -KILL -TERM
+set -A complete_make -- build checksum clean extract fake fetch install makesum \
+   package patch port-lib-depends-check search uninstall update-patches \
+   update-plist
+set -A complete_pass -- init ls list grep find show insert edit generate \
+    rm mv cp git help version otp
+set -A complete_tmux_1 -- attach-session attach detach-client detach \
+    has-session has kill-server kill-session list-clients lsc \
+    list-commands lscm list-sessions ls lock-client lockc lock-session locks \
+    new-session new refresh-client refresh rename-session rename \
+    show-messages showmsgs source-file source start-server start \
+    suspend-client suspendc switch-client switchc
+set -A complete_rcctl_1 -- disable enable get getdef ls order set reload \
+    restart start stop
+
+#
+# Aliases
+#
+
+# Base utils
+alias cls='clear'
+alias cp='cp -iv'
+alias cpr='diff -up'
+alias df='df -h'
+alias du='du -h'
+alias ll='ls -aFhl'
+alias lld='ls -dFhl'
+alias mv='mv -iv'
+alias p='ps -l'
+alias pwd='pwd -P'
+alias rm='rm -iv'
+alias ssh='TERM=xterm ssh'
+
+# Ksh
+alias bye='exit'
+alias h='fc -l | more'
+alias j='jobs'
+alias logout='exit'
+alias o='fg %-'
+alias quit='exit'
+alias r='fc -s'
+
+# Miscellaneous
+alias bc='bc -l'
+alias cbk="/usr/local/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
+alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
+alias e="${EDITOR}"
+alias g='git'
+alias irssi="irssi --home="${XDG_CONFIG_HOME:-${HOME}/.config}/irssi""
+alias lynx='lynx -vikeys -accept_all_cookies -scrollbar'
+alias rsize='eval $(resize)'
+alias tad='tmux new-session -A -s default'
+alias tai="tmux new-session -A -s irssi irssi --home=${XDG_CONFIG_HOME:-${HOME}/.config}/irssi"
+alias tmux="tmux -f "${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf""
+alias trem='transmission-remote'
+alias v="${EDITOR}"
+alias yt='youtube-dl --add-metadata --ignore-errors'
+alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
+alias z='zathura'
+
+#
+# Prompt
+#
+
+_prompt_user()
+{
+	case "${USER}" in
+	'root')
+		printf '\\[\033[31m\\]%s\\[\033[00m\\]' "${USER}"
+		;;
+	*)
+		printf '\\[\033[33m\\]%s\\[\033[00m\\]' "${USER}"
+		;;
+	esac
+}
+
+_prompt_pwd()
+{
+	case "${PWD}" in
+	"${HOME}"*)
+		printf '\\[\033[33m\\]~%s\\[\033[00m\\]' "${PWD#${HOME}}"
+		;;
+	*)
+		printf '\\[\033[33m\\]%s\\[\033[00m\\]' "${PWD}"
+		;;
+	esac
+}
+
+_prompt_exit_status()
+{
+	case "$1" in
+	'0')
+		printf '\\[\033[32m\\]%s\\[\033[00m\\]' "${PS1S}"
+		;;
+	*)
+		printf '\\[\033[31m\\](%s) %s\\[\033[00m\\]' "$1" "${PS1S}"
+		;;
+	esac
+}
+
+# we may have su'ed so reset these
+USER="$(id -un)"
+UID="$(id -u)"
+case "${UID}" in
+'0')
+	PS1S='# '
+	;;
+*)
+	PS1S='$ '
+esac
+# if inside nnn, prepend N${NNNLVL} to ${PS1S}
+test -n "${NNNLVL}" && PS1S="N${NNNLVL} ${PS1S}"
+HOSTNAME="${HOSTNAME:-$(uname -n)}"
+HOST="${HOSTNAME%%.*}"
+PPROMPT="\$(_prompt_user)\[\033[32m\]@\[\033[34m\]\${HOST}\[\033[00m\] \$(_prompt_pwd)
+\$(_prompt_exit_status \$?)"
+
+PS1="${PPROMPT}"
+PS2='> '
+PS3='#? '
+PS4='+ '
+
+#
+# Functions
+#
+
+# Fuzzy edit config files.
+fec()
+{
+	find "${XDG_CONFIG_HOME:-${HOME}/.config}" \
+	    -type f -maxdepth 3 \
+	    \! -name '*db*' \
+	    \! -name '*log*' \
+	    \! -name '*pid*' \
+	    \! -name '*sql*' \
+	    \! -path '*GIMP*' \
+	    \! -path '*libreoffice*' \
+	    \! -path '*mpv/watch_later*' \
+	    \! -path '*plugin*' \
+	    \! -path '*stat*' \
+	    -print0 \
+	    | fzf --read0 --print0 -i -0 -1 -m -d 'config/' --with-nth='2..' \
+	        --header='Fuzzy edit config files.' \
+	    | xargs -0 -r ${EDITOR:-vi}
+}
+
+# Fuzzy edit scripts
+fes()
+{
+	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f -print0 \
+	    | fzf --read0 --print0 -i -0 -1 -m -d 'bin/|lib/' --with-nth='2..' \
+	        --header='Fuzzy edit scripts.' \
+	    | xargs -0 -r ${EDITOR:-vi}
+}
+
+# Fuzzy cmd history
+fh()
+{
+	print -s "$(fc -l 1 \
+	    | fzf --no-sort --tac \
+	    | cut -f '2-')"
+}
+
+# Shellcheck all scripts
+sc()
+{
+	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f \
+	    -exec shellcheck {} +
+}
+
+# cd on quit in nnn
+n()
+{
+	# Block nesting of nnn in subshells
+	if test -n "${NNNLVL}" && test "${NNNLVL:-0}" -ge 1; then
+		echo "nnn is already running"
+		return
+	fi
+
+	NNN_TMPFILE="${XDG_CONFIG_HOME:-${HOME}/.config}/nnn/.lastd"
+
+	nnn "$@"
+
+	if test -f "${NNN_TMPFILE}"; then
+		. "${NNN_TMPFILE}"
+		rm -f "${NNN_TMPFILE}" > /dev/null
+	fi
+}
+
+;;
+#
+# We are non-interactive
+#
+*)
+# Do nothing
+;;
+esac

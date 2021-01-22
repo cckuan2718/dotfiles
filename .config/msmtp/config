@@ -1,0 +1,14 @@
+defaults
+auth	on
+tls	on
+tls_trust_file /etc/ssl/cert.pem
+logfile	~/.config/msmtp/msmtp.log
+
+account core
+host mta0.changchukuan.name
+port 465
+from cckuan@changchukuan.name
+user cckuan
+passwordeval "pass core"
+tls_starttls off
+

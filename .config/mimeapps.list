@@ -1,0 +1,16 @@
+[Default Applications]
+application/pdf=org.pwmt.zathura.desktop
+image/gif=sxiv.desktop
+image/jpeg=sxiv.desktop
+image/jpg=sxiv.desktop
+image/png=sxiv.desktop
+image/bmp=sxiv.desktop
+audio/x-flac=mpv.desktop
+audio/flac=mpv.desktop
+application/x-bittorrent=transmission.desktop
+x-scheme-handler/magnet=transmission.desktop
+application/x-tex=nvim.desktop
+application/x-latex=nvim.desktop
+application/postscript=nvim.desktop
+application/x-shellscript=nvim.desktop
+x-scheme-handler/mailto=neomutt.desktop;

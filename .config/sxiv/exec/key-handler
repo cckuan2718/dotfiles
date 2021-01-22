@@ -1,0 +1,40 @@
+#!/bin/sh
+
+. prompt.sh
+
+while read file; do
+        case "$1" in
+	'd')
+		prompt "Delete ${file}?" \
+		    && rm "${file}" \
+		    && notify-send 'sxiv' "${file} deleted."
+		;;
+	'f')
+		convert -flop "${file}" "${file}"
+		;;
+	'g')
+		gimp "${file}" &
+		;;
+	'i')
+		notify-send 'File information' "$(mediainfo "${file}")"
+		;;
+	'r')
+		convert -rotate 90 "${file}" "${file}"
+		;;
+	'R')
+		convert -rotate -90 "${file}" "${file}"
+		;;
+	'w')
+		setbg "${file}" &
+		;;
+	'y')
+		printf '%s' "${file}" | xclip -selection clipboard \
+		    && notify-send 'sxiv' "${file} copied to clipboard." &
+		;;
+	'Y')
+		readlink -f "${file}" | xclip -selection clipboard \
+		    && notify-send 'sxiv' \
+		        "Full path of ${file} copied to clipboard." &
+		;;
+        esac
+done

@@ -1,0 +1,86 @@
+# vim: filetype=neomuttrc
+#
+# neomuttrc file for account 'core'
+#
+
+# Identity
+set realname = "Chang, Chu-Kuan"
+set from = "cckuan@changchukuan.name"
+alias me Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+# SMTP
+set sendmail = "msmtp -a core"
+
+# IMAP
+set folder = "~/.local/share/mail/core"
+
+# Cache header and body
+set header_cache = ~/.cache/neomutt/core/headers
+set message_cachedir = ~/.cache/neomutt/core/bodies
+
+# Signature
+set signature = ~/.config/neomutt/accounts/core.signature
+set crypt_autosign = yes
+set crypt_opportunistic_encrypt = yes
+set pgp_self_encrypt = yes
+set pgp_default_key = 3BFF0775354DC84B
+
+# Force Use SSL
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+# Mailbox
+set mbox_type = Maildir
+unmailboxes *
+
+set spoolfile = "+INBOX"
+set record = "+Sent"
+set postponed = "+Drafts"
+set trash = "+Trash"
+mailboxes "=INBOX" "=Drafts" "=Sent" "=Spam" "=Trash" "=Mlist" "=Sysadmin" "=Archive" "=Archive.2021"
+
+# Mailbox bindings
+bind index,pager gg noop
+bind index,pager g noop
+bind index,pager M noop
+bind index,pager C noop
+bind index gg first-entry
+
+macro index o "<shell-escape>mbsync -V core<enter>" "run mbsync to sync core"
+
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to INBOX"
+macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to INBOX"
+macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to INBOX"
+
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to Drafts"
+macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to Drafts"
+macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to Drafts"
+
+macro index,pager gs "<change-folder>=Sent<enter>" "go to Sent"
+macro index,pager Ms ";<save-message>=Sent<enter>" "move mail to Sent"
+macro index,pager Cs ";<copy-message>=Sent<enter>" "copy mail to Sent"
+
+macro index,pager gS "<change-folder>=Spam<enter>" "go to Spam"
+macro index,pager MS ";<save-message>=Spam<enter>" "move mail to Spam"
+macro index,pager CS ";<copy-message>=Spam<enter>" "copy mail to Spam"
+
+macro index,pager gt "<change-folder>=Trash<enter>" "go to Trash"
+macro index,pager Mt ";<save-message>=Trash<enter>" "move mail to Trash"
+macro index,pager Ct ";<copy-message>=Trash<enter>" "copy mail to Trash"
+
+macro index,pager gm "<change-folder>=Mlist<enter>" "go to Mlist"
+macro index,pager Mm ";<save-message>=Mlist<enter>" "move mail to Mlist"
+macro index,pager Cm ";<copy-message>=Mlist<enter>" "copy mail to Mlist"
+
+macro index,pager gy "<change-folder>=Sysadmin<enter>" "go to Sysadmin"
+macro index,pager My ";<save-message>=Sysadmin<enter>" "move mail to Sysadmin"
+macro index,pager Cy ";<copy-message>=Sysadmin<enter>" "copy mail to Sysadmin"
+
+macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
+macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to Archive"
+macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to Archive"
+
+macro index,pager gA "<change-folder>=Archive.2021<enter>" "go to Archive.2021"
+macro index,pager MA ";<save-message>=Archive.2021<enter>" "move mail to Archive.2021"
+macro index,pager CA ";<copy-message>=Archive.2021<enter>" "copy mail to Archive.2021"
+
