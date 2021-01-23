@@ -29,8 +29,8 @@ set -A complete_cbk_1 -- clone commit config pull push status add
 set -A complete_cbk -- origin master
 set -A complete_kill_1 -- -9 -HUP -INFO -KILL -TERM
 set -A complete_make -- build checksum clean extract fake fetch install makesum \
-   package patch port-lib-depends-check search uninstall update-patches \
-   update-plist
+   modgo-gen-modules package patch port-lib-depends-check search uninstall \
+   update-patches update-plist
 set -A complete_pass -- init ls list grep find show insert edit generate \
     rm mv cp git help version otp
 set -A complete_tmux_1 -- attach-session attach detach-client detach \
