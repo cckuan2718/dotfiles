@@ -23,13 +23,16 @@ go--
 htop--
 i3lock--
 inconsolata-font--
+irssi--
 isync--
 khal--
 khard--
+lf--
 libnotify--
 libreoffice--
 lynx--
 maim--
+mediainfo--
 mpc--
 mpd--
 mpv--
@@ -42,6 +45,10 @@ nnn--
 noto-cjk--
 noto-emoji--
 noto-fonts--
+p5-DBD-SQLite--
+p5-DBI--
+p5-LWP-Protocol-https--
+p5-LWP-UserAgent-Determined--
 p7zip--
 p7zip-rar--
 paper-icon-theme--
@@ -54,6 +61,7 @@ portslist--
 quirks--
 rsync--iconv
 shellcheck--
+sqlports--
 sxiv--
 texlive_texmf-full--
 transmission--
