@@ -29,7 +29,7 @@ set -A complete_cbk_1 -- clone commit config pull push status add
 set -A complete_cbk -- origin master
 set -A complete_kill_1 -- -9 -HUP -INFO -KILL -TERM
 set -A complete_make -- build checksum clean extract fake fetch install makesum \
-   modgo-gen-modules package patch port-lib-depends-check search test \
+   modgo-gen-modules package patch port-lib-depends-check search show test \
    test-depends uninstall update-patches update-plist
 set -A complete_pass -- init ls list grep find show insert edit generate \
     rm mv cp git help version otp
