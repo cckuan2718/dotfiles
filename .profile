@@ -26,21 +26,20 @@ umask 022
 #
 
 # Default programs
+export BROWSER='firefox'
+export EDITOR='nvim'
+export MANPAGER='more'
+export OPENER='xdg-open'
+export PAGER='more'
+export READER='zathura'
 export TERMINAL='st'
 export VISUAL='nvim'
-export EDITOR='nvim'
-export BROWSER='firefox'
-export READER='zathura'
-export MANPAGER='more'
-export PAGER='more'
 
 # Default command options
-export MORE='-is'
-# -e option is required for less to avoid st crash
-# DO NOT use less in st to avoid crashing
 export LESS='-eiQMX'
-export TOP='-s 1 -o cpu'
+export MORE='-is'
 export NEXINIT='set autoindent noexpandtab extended noflash ignorecase number ruler searchincr showmatch showmode tabstop=8'
+export TOP='-s 1 -o cpu'
 
 # XDG base directory
 export XDG_CACHE_HOME="${HOME}/.cache"
@@ -59,10 +58,10 @@ export MPD_HOST="${XDG_CONFIG_HOME}/mpd/socket"
 export PANEL_FIFO="/tmp/panel_$(id -u)_fifo"
 
 # nnn
-export NNN_OPTS='AdeHoRU'
 export NNN_BMS="c:${HOME}/.config;d:${HOME}/documents;D:${HOME}/downloads;\
 h:${HOME};m:${HOME}/music;M:/mnt;p:${HOME}/pictures;s:${HOME}/.local/bin;\
 t:${HOME}/tmp;v:${HOME}/videos"
-export NNN_PLUG='i:imgview;m:mediainf'
 export NNN_COLORS='3245'
+export NNN_OPTS='AdeHoRU'
+export NNN_PLUG='i:imgview;m:mediainf'
 
