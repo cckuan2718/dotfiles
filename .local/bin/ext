@@ -10,7 +10,6 @@
 #	* unrar(1)
 #	* unzip(1)
 #	* xz(1)
-# 	* cpio(1)
 # Author:
 # 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
 
@@ -24,15 +23,6 @@ extract_archive()
 	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
 
 	case "${file}" in
-	*.7z)
-		7z x "${file}"
-		;;
-	*.lzma)
-		xz -dvF lzma "${file}"
-		;;
-	*.rar)
-		unrar x -ad "${file}"
-		;;
 	*.tar)
 		tar -xvf "${file}"
 		;;
@@ -45,6 +35,12 @@ extract_archive()
 	*.tar.gz|*.tgz)
 		tar -xzvf "${file}"
 		;;
+	*.tar.xz|*.txz)
+		xz -dc "${file}" | tar -xvf -
+		;;
+	*.tar.lzma|*.tlz)
+		xz -dcF lzma "${file}" | tar -xvf -
+		;;
 	*.Z)
 		compress -dv "${file}"
 		;;
@@ -56,6 +52,15 @@ extract_archive()
 		;;
 	*.xz)
 		xz -dv "${file}"
+		;;
+	*.lzma)
+		xz -dvF lzma "${file}"
+		;;
+	*.7z)
+		7z x "${file}"
+		;;
+	*.rar)
+		unrar x -ad "${file}"
 		;;
 	*.zip)
 		unzip "${file}"
@@ -82,7 +87,6 @@ Supported file type:
   7z
   Z
   bz2
-  cpio
   gz
   lzma
   rar
@@ -104,12 +108,6 @@ list_archive()
 	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
 
 	case "${file}" in
-	*.7z)
-		7z l "${file}"
-		;;
-	*.rar)
-		unrar lb "${file}"
-		;;
 	*.tar)
 		tar -tf "${file}"
 		;;
@@ -121,6 +119,18 @@ list_archive()
 		;;
 	*.tar.gz|*.tgz)
 		tar -tzf "${file}"
+		;;
+	*.tar.xz|*.txz)
+		xz -dc "${file}" | tar -tf -
+		;;
+	*.tar.lzma|*.tlz)
+		xz -dcF lzma "${file}" | tar -tf -
+		;;
+	*.7z)
+		7z l "${file}"
+		;;
+	*.rar)
+		unrar lb "${file}"
 		;;
 	*.zip)
 		unzip -l "${file}"
