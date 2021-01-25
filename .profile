@@ -57,11 +57,3 @@ export FZF_DEFAULT_OPTS='--bind=alt-h:up,alt-l:down --no-mouse
 export MPD_HOST="${XDG_CONFIG_HOME}/mpd/socket"
 export PANEL_FIFO="/tmp/panel_$(id -u)_fifo"
 
-# nnn
-export NNN_BMS="c:${HOME}/.config;d:${HOME}/documents;D:${HOME}/downloads;\
-h:${HOME};m:${HOME}/music;M:/mnt;p:${HOME}/pictures;s:${HOME}/.local/bin;\
-t:${HOME}/tmp;v:${HOME}/videos"
-export NNN_COLORS='3245'
-export NNN_OPTS='AdeHoRU'
-export NNN_PLUG='i:imgview;m:mediainf'
-
