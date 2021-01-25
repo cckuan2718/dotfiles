@@ -137,8 +137,6 @@ case "${UID}" in
 *)
 	PS1S='$ '
 esac
-# if inside nnn, prepend N${NNNLVL} to ${PS1S}
-test -n "${NNNLVL}" && PS1S="N${NNNLVL} ${PS1S}"
 HOSTNAME="${HOSTNAME:-$(uname -n)}"
 HOST="${HOSTNAME%%.*}"
 PPROMPT="\$(_prompt_user)\[\033[32m\]@\[\033[34m\]\${HOST}\[\033[00m\] \$(_prompt_pwd)
@@ -197,22 +195,15 @@ sc()
 	    -exec shellcheck {} +
 }
 
-# cd on quit in nnn
-n()
+# cd on quit in lf
+lfcd()
 {
-	# Block nesting of nnn in subshells
-	if test -n "${NNNLVL}" && test "${NNNLVL:-0}" -ge 1; then
-		echo "nnn is already running"
-		return
-	fi
-
-	NNN_TMPFILE="${XDG_CONFIG_HOME:-${HOME}/.config}/nnn/.lastd"
-
-	nnn "$@"
-
-	if test -f "${NNN_TMPFILE}"; then
-		. "${NNN_TMPFILE}"
-		rm -f "${NNN_TMPFILE}" > /dev/null
+	tmpf="$(mktemp)" || return 1
+	lf -last-dir-path="${tmpf}" "$@"
+	dir="$(cat "${tmpf}")"
+	rm -f "${tmpf}"
+	if test -d "${dir}" && test "${dir}" != "$(pwd)"; then
+		cd "${dir}"
 	fi
 }
 
