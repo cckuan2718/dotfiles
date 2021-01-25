@@ -26,35 +26,35 @@ extract_archive()
 	*.tar)
 		tar -xvf "${file}"
 		;;
-	*.tar.Z|*.taZ|*.tZ)
-		tar -xZvf "${file}"
-		;;
 	*.tar.bz2|*.tbz2|*.tb2|*.tz2)
 		tar -xjvf "${file}"
+		;;
+	*.tar.Z|*.taZ|*.tZ)
+		tar -xZvf "${file}"
 		;;
 	*.tar.gz|*.tgz)
 		tar -xzvf "${file}"
 		;;
-	*.tar.xz|*.txz)
-		xz -dc "${file}" | tar -xvf -
-		;;
 	*.tar.lzma|*.tlz)
 		xz -dcF lzma "${file}" | tar -xvf -
 		;;
-	*.Z)
-		compress -dv "${file}"
+	*.tar.xz|*.txz)
+		xz -dc "${file}" | tar -xvf -
 		;;
 	*.bz2)
 		bzip2 -dv "${file}"
 		;;
+	*.Z)
+		compress -dv "${file}"
+		;;
 	*.gz)
 		gzip -dv "${file}"
 		;;
-	*.xz)
-		xz -dv "${file}"
-		;;
 	*.lzma)
 		xz -dvF lzma "${file}"
+		;;
+	*.xz)
+		xz -dv "${file}"
 		;;
 	*.7z)
 		7z x "${file}"
@@ -84,17 +84,19 @@ Options:
   -t                   List contents of archive.
 
 Supported file type:
-  7z
-  Z
+  tar
+  tar.bz2  | tbz2 | tb2 | tz2
+  tar.Z    | taZ   | tZ
+  tar.gz   | tgz
+  tar.lzma | tlz
+  tar.xz   | txz
   bz2
+  Z
   gz
   lzma
-  rar
-  tar
-  tar.Z   | taZ   | tZ
-  tar.bz2 | tbz2 | tb2 | tz2
-  tar.gz  | tgz
   xz
+  7z
+  rar
   zip
 
 EOF
@@ -111,20 +113,20 @@ list_archive()
 	*.tar)
 		tar -tf "${file}"
 		;;
-	*.tar.Z|*.taZ|*.tZ)
-		tar -tZf "${file}"
-		;;
 	*.tar.bz2|*.tbz2|*.tb2|*.tz2)
 		tar -tjf "${file}"
+		;;
+	*.tar.Z|*.taZ|*.tZ)
+		tar -tZf "${file}"
 		;;
 	*.tar.gz|*.tgz)
 		tar -tzf "${file}"
 		;;
-	*.tar.xz|*.txz)
-		xz -dc "${file}" | tar -tf -
-		;;
 	*.tar.lzma|*.tlz)
 		xz -dcF lzma "${file}" | tar -tf -
+		;;
+	*.tar.xz|*.txz)
+		xz -dc "${file}" | tar -tf -
 		;;
 	*.7z)
 		7z l "${file}"
