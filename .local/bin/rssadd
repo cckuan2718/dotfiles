@@ -1,0 +1,24 @@
+#!/bin/sh
+# Program:
+# 	* add url to rssfile
+# Dependency:
+# 	* notify-send(1)
+# Author:
+# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
+readonly url="$1"
+readonly rssfile="${XDG_CONFIG_HOME:-${HOME}/.config}/newsboat/urls"
+
+if ! { printf '%s' "${url}" | grep 'https*://[^[:space:]]+\.[:alpha:]+[^[:space:]]*'; }; then
+	notify-send "${progname}" 'That does not look like a full URL.'
+	exit 1
+fi
+
+if grep "^${url}" "${rssfile}" >/dev/null; then
+	notify-send "${progname}" 'You already have this RSS feed.'
+else
+	printf '%s' "${url}" >> "${rssfile}" \
+	    && notify-send "${progname}" 'RSS feed added.'
+fi
+
