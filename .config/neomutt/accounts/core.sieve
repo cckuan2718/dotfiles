@@ -30,7 +30,7 @@ if anyof (header :is "Precedence" ["list", "bulk"], exists "List-Id") {
 	fileinto :create "Sysadmin";
 
 # DMARC
-} elsif header :contains "subject" "Report domain:" {
+} elsif anyof (header :contains "subject" ["Report domain:", "DMARC"]) {
 
 	fileinto :create "DMARC";
 
