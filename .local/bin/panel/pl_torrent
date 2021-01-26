@@ -13,26 +13,30 @@ torrent()
 {
 	transmission-remote -l \
 	    | grep % \
-	    | sed "
-		s/.*Stopped.*/Sp/g;
-		s/.*Seeding.*/Sd/g;
-		s/.*100%.*/Dn/g;
-		s/.*Idle.*/Id/g;
-		s/.*Uploading.*/Up/g;
-		s/.*%.*/Dl/g" \
+	    | sed -e 's/.*Stopped.*/Sp/g' \
+	        -e 's/.*Seeding.*/Sd/g' \
+	        -e 's/.*100%.*/Dn/g' \
+	        -e 's/.*Idle.*/Id/g' \
+	        -e 's/.*Uploading.*/Up/g' \
+	        -e 's/.*%.*/Dl/g' \
 	    | sort -h \
 	    | uniq -c \
-	    | sed "
-	        s/Sp//g;
-	        s/Id//g;
-	        s/Up//g;
-	        s/Dl//g;
-	        s/Dn//g;
-	        s/Sd//g" \
+	    | sed -e 's/Sp//g' \
+	        -e 's/Id//g' \
+	        -e 's/Up//g' \
+	        -e 's/Dl//g' \
+	        -e 's/Dn//g' \
+	        -e 's/Sd//g" ' \
 	    | awk '
-	        BEGIN{printf("torrent;")}
-		{printf(" %s %s", $2, $1)}
-	        END{printf("\n")}'
+	        BEGIN {
+	    		printf("torrent;");
+	    	}
+		{
+			printf(" %s %s", $2, $1);
+		}
+	        END {
+			printf("\n");
+		}'
 }
 
 if pgrep 'transmission-dae'; then
@@ -40,3 +44,4 @@ if pgrep 'transmission-dae'; then
 else
 	printf 'torrent_alert; DOWN\n'
 fi
+

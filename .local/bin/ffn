@@ -37,7 +37,7 @@ process_file()
 	base="$(basename "${file}")"
 
 	# Return if there is error parsing file name
-	if test -z "${file}" || test -z "${dir}" || test -z "${base}"; then
+	if [ -z "${file}" ] || [ -z "${dir}" ] || [ -z "${base}" ]; then
 		printf '%s: error parsing file: %s\n' "${progname}" "${file}" 1>&2
 		return 1
 	fi
@@ -48,29 +48,31 @@ process_file()
 		# get file extension
 		extension="${base##*.}"
 		# process file name
-		new_base="$(printf '%s' "${base%.*}" \
-		    | iconv --to-code=utf-8 \
-		    | tr "${sep}" ' ' \
-		    | tr -d '[:punct:]' \
-		    | tr '[:upper:]' '[:lower:]' \
-		    | tr -s ' ' '_' \
-		    | sed 's/^_//; s/_$//'
+		new_base="$(
+			printf '%s' "${base%.*}" \
+			    | iconv --to-code=utf-8 \
+			    | tr "${sep}" ' ' \
+			    | tr -d '[:punct:]' \
+			    | tr '[:upper:]' '[:lower:]' \
+			    | tr -s ' ' '_' \
+			    | sed 's/^_//; s/_$//'
 		).${extension}"
 		;;
 	# file name without extension
 	*)
-		new_base="$(printf '%s' "${base}" \
-		    | iconv --to-code=utf-8 \
-		    | tr "${sep}" ' ' \
-		    | tr -d '[:punct:]' \
-		    | tr '[:upper:]' '[:lower:]' \
-		    | tr -s ' ' '_' \
-		    | sed 's/^_//; s/_$//'
+		new_base="$(
+			printf '%s' "${base}" \
+			    | iconv --to-code=utf-8 \
+			    | tr "${sep}" ' ' \
+			    | tr -d '[:punct:]' \
+			    | tr '[:upper:]' '[:lower:]' \
+			    | tr -s ' ' '_' \
+			    | sed 's/^_//; s/_$//'
 		)"
 		;;
 	esac
 
-	if test "${base}" = "${new_base}"; then
+	if [ "${base}" = "${new_base}" ]; then
 		clean_file_cnt="$((clean_file_cnt + 1))"
 		printf '%s: file %s require no rename\n' "${progname}" \
 		    "${base}"

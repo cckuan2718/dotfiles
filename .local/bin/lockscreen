@@ -12,9 +12,11 @@
 
 readonly tmpbg='/tmp/lock_screen.png' # Modified screenshot
 readonly lock="${HOME}/.local/share/data/lock.png" # Lock image
-readonly res="$(xrandr \
-    | grep 'current' \
-    | sed -E 's/.*current ([0-9]+) x ([0-9]+).*/\1x\2/')"
+readonly res="$(
+	xrandr \
+	    | grep 'current' \
+	    | sed -E 's/.*current ([0-9]+) x ([0-9]+).*/\1x\2/'
+)"
 
 # Process screenshot
 ffmpeg -f x11grab -video_size "${res}" -y -i "${DISPLAY}" -i "${lock}" \

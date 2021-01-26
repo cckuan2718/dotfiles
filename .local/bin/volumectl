@@ -33,7 +33,7 @@ case "$1" in
 esac
 
 # reset volume if there are two different volume status
-if test "${#volume}" != '5'; then
+if [ "${#volume}" != '5' ]; then
 	volume="$(printf '%s' "${volume}" | head -n 1)"
 	sndioctl -n output.level="${volume}"
 fi

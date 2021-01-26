@@ -14,7 +14,7 @@
 # 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 # If no url given. Opens browser. For using script as $BROWSER.
-test -z "$1" && { "${BROWSER}"; exit 1; }
+[ -z "$1" ] && { "${BROWSER}"; exit 1; }
 
 case "$1" in
 *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*)
@@ -29,7 +29,7 @@ case "$1" in
 	curl -LO "$1" > /dev/null 2>&1 &
 	;;
 *)
-	if test -f "$1" ; then
+	if [ -f "$1" ]; then
 		"${TERMINAL}" -e "${EDITOR}" "$1"
 	else
 		"${BROWSER}" "$1" > /dev/null 2>&1 &

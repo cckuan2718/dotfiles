@@ -8,3 +8,4 @@
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 printf 'music; %.20s\n' "$(mpc current)"
+

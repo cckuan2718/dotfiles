@@ -53,15 +53,17 @@ lsdisk()
 }
 
 get_mount_point() {
-	already_mounted="$(mount \
-	    | awk '/.*\/mnt.*/ { printf("-not ( -path %s -prune ) ", $3) }'
+	already_mounted="$(
+		mount \
+		    | awk '/.*\/mnt.*/ { printf("-not ( -path %s -prune ) ", $3) }'
 	)"
 	# shellcheck disable=SC2086
-	mount_point="$(find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
-	    | dmenu -l 15 -p 'Type in mount point:'
+	mount_point="$(
+		find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
+		    | dmenu -l 15 -p 'Type in mount point:'
 	)"
 
-	if test ! -d "${mount_point}"; then
+	if [ ! -d "${mount_point}" ]; then
 		notify "${mount_point} does not exist."
 		exit 1
 	fi
@@ -70,25 +72,27 @@ get_mount_point() {
 mountdisk() {
 	disk_info="$(lsdisk)"
 
-	chosen="$(printf '%s' "${disk_info}" \
-	    | dmenu -l 15 -p 'Mount which drive?' \
-	    | tr -s ' '
+	chosen="$(
+		printf '%s' "${disk_info}" \
+		    | dmenu -l 15 -p 'Mount which drive?' \
+		    | tr -s ' '
 	)"
-	test -z "${chosen}" && exit 1
+	[ -z "${chosen}" ] && exit 1
 
 	chosen_disk="$(   printf '%s' "${chosen}"   | cut -d ' ' -f 1)"
 	chosen_size="$(   printf '%s' "${chosen}"   | cut -d ' ' -f 2)"
 	chosen_fstype="$( printf '%s' "${chosen}"   | cut -d ' ' -f 3)"
 
-	if test "${chosen_fstype}" = 'NTFS'; then
-		chosen_fstype="$(printf 'exFAT\nNTFS' \
-		    | dmenu -l 15 -p 'File system?' \
+	if [ "${chosen_fstype}" = 'NTFS' ]; then
+		chosen_fstype="$(
+			printf 'exFAT\nNTFS' \
+			    | dmenu -l 15 -p 'File system?' \
 		)"
 	fi
 
-	if test -z "${chosen_disk}" \
-	    || test -z "${chosen_size}" \
-	    || test -z "${chosen_fstype}"; then
+	if [ -z "${chosen_disk}" ] \
+	    || [ -z "${chosen_size}" ] \
+	    || [ -z "${chosen_fstype}" ]; then
 		exit 1
 	fi
 
@@ -150,13 +154,14 @@ notify()
 # Proper
 #
 
-readonly disks="$(sysctl -n hw.disknames \
-    | tr ',' '\n' \
-    | cut -d ':' -f 1 \
-    | grep -Ev "${exclude_disks:-nil}"
+readonly disks="$(
+	sysctl -n hw.disknames \
+	    | tr ',' '\n' \
+	    | cut -d ':' -f 1 \
+	    | grep -Ev "${exclude_disks:-nil}"
 )"
 
-if test -z "${disks}"; then
+if [ -z "${disks}" ]; then
 	notify 'No mountable disk detected.'
 	exit 1
 else

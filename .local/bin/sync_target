@@ -10,7 +10,7 @@ readonly progname="$(basename "$0")"
 
 check_dest()
 {
-	if test ! -d "${dest}" && test ! -f "${dest}"; then
+	if [ ! -d "${dest}" ] && [ ! -f "${dest}" ]; then
 		printf '%s: %s does not exist\n' "${progname}" "${dest}" 1>&2
 		exit 1
 	fi
@@ -18,7 +18,7 @@ check_dest()
 
 check_src()
 {
-	if test ! -d "${src}" && test ! -f "${src}"; then
+	if [ ! -d "${src}" ] && [ ! -f "${src}" ]; then
 		printf '%s: %s does not exist\n' "${progname}" "${src}" 1>&2
 		exit 1
 	fi

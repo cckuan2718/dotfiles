@@ -7,12 +7,14 @@
 # Author:
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-readonly unread_cnt="$(find "${HOME}"/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new/* \
-    -type f 2>/dev/null \
-    | wc -l 2>/dev/null)"
+readonly unread_cnt="$(
+	find "${HOME}"/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new/* \
+	    -type f 2>/dev/null \
+	    | wc -l 2>/dev/null
+)"
 
-if test -s "/var/mail/$(id -un)"; then
-	local_mail='loc'
+if [ -s "/var/mail/$(id -un)" ]; then
+	local_mail='lo'
 else
 	local_mail=''
 fi

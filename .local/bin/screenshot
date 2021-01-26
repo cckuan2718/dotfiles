@@ -64,12 +64,13 @@ copy_screen()
 case "$1" in
 	# Interactive mode
 '-i')
-	selected_option="$(printf '%s' "${dmenu_options}" \
-	    | dmenu -i -l 4 -p 'Screenshot mode?' \
-	    | cut -d ' ' -f '1'
+	selected_option="$(
+		printf '%s' "${dmenu_options}" \
+		    | dmenu -i -l 4 -p 'Screenshot mode?' \
+		    | cut -d ' ' -f '1'
 	)"
 
-	test -z "${selected_option}" && exit 1
+	[ -z "${selected_option}" ] && exit 1
 
 	case "${selected_option}" in
 	c*)

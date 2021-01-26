@@ -20,8 +20,5 @@ case "${filepath}" in
 *.html)
 	"${BROWSER}" "${filepath%.*}.html" > /dev/null 2>&1 &
 	;;
-*.sent)
-	sent "$1" > /dev/null 2>&1 &
-	;;
 esac
 

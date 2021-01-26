@@ -42,15 +42,19 @@ up*)
 	active_iface="${trunk_status#*;}"
 	case "${active_iface}" in
 	"${wireless_iface}")
-		ssid="$(ifconfig "${wireless_iface}" \
-		    | grep ieee80211 \
-		    | cut -d ' ' -f 3)"
+		ssid="$(
+			ifconfig "${wireless_iface}" \
+			    | grep ieee80211 \
+			    | cut -d ' ' -f 3
+		)"
 		printf 'iface; %s\n' "${ssid}"
 		;;
 	"${wired_iface}")
-		ipaddr="$(ifconfig "${trunk_iface}" \
-		    | grep inet \
-		    | cut -d ' ' -f 2)"
+		ipaddr="$(
+			ifconfig "${trunk_iface}" \
+			    | grep inet \
+			    | cut -d ' ' -f 2
+		)"
 		printf 'iface; %s\n' "${ipaddr}"
 		;;
 	esac
@@ -59,3 +63,4 @@ up*)
 	printf 'iface; DOWN\n'
 	;;
 esac
+

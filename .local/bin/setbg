@@ -12,7 +12,7 @@ readonly wallpaper_loc="${HOME}/.local/share/data/wallpaper"
 
 readonly progname="$(basename "$0")"
 
-if test -f "$1"; then
+if [ -f "$1" ]; then
 	fpath="$(readlink -f "$1")"
 	ln -fs "${fpath}" "${wallpaper_loc}"
 	notify-send --icon="${wallpaper_loc}" "${progname}" 'Wallpaper changed.'

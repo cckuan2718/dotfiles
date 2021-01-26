@@ -16,3 +16,4 @@ case "$1" in
 		pl_backlight > "${PANEL_FIFO}"
 		;;
 esac
+

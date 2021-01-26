@@ -9,10 +9,10 @@
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly transfer_rx="$(
-iostat -d -w 3 -c 2 \
-    | tail -n 1 \
-    | tr -s '[:blank:]' ':' \
-    | cut -d ':' -f 4
+	iostat -d -w 3 -c 2 \
+	    | tail -n 1 \
+	    | tr -s '[:blank:]' ':' \
+	    | cut -d ':' -f 4
 )"
 
 printf 'diskio; %.2fMB/s\n' "${transfer_rx}"

@@ -12,13 +12,13 @@ cpu_temp="$(sysctl -n hw.sensors.cpu0.temp0 | cut -d ' ' -f 1)"
 cpu_temp="${cpu_temp%.*}"
 fan_speed="$(sysctl -n hw.sensors.acpithinkpad0.fan0 | cut -d ' ' -f 1)"
 
-if test "${cpu_temp}" -ge '75';then
+if [ "${cpu_temp}" -ge '75' ];then
 	cpu_temp_icon=''
-elif test "${cpu_temp}" -ge '70'; then
+elif [ "${cpu_temp}" -ge '70' ]; then
 	cpu_temp_icon=''
-elif test "${cpu_temp}" -ge '62'; then
+elif [ "${cpu_temp}" -ge '62' ]; then
 	cpu_temp_icon=''
-elif test "${cpu_temp}" -ge '55'; then
+elif [ "${cpu_temp}" -ge '55' ]; then
 	cpu_temp_icon=''
 else
 	cpu_temp_icon=''

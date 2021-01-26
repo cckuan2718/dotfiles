@@ -165,7 +165,7 @@ done
 shift "$((OPTIND - 1))"
 
 for arg; do
-	if test ! -f "${arg}"; then
+	if [ ! -f "${arg}" ]; then
 		printf '%s: %s does not exist\n' "${progname}" "${arg}" 2>&1
 		continue
 	fi

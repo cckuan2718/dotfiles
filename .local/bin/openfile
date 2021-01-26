@@ -13,3 +13,4 @@ mkdir -p "${tempdir}"
 cp -f "$1" "${file}"
 xdg-open "${file}" >/dev/null 2>&1
 find "${tempdir:?}" -mtime +1 -type f -delete
+

@@ -11,10 +11,10 @@ readonly csdir="${HOME}/documents/cheatsheets/"
 cd "${csdir}" || exit 1
 
 file="$(
-find . -type f \
-    | sed "s|^\\./||" \
-    | dmenu -i -l 5 -p "Which Cheatsheet to open?"
+	find . -type f \
+	    | sed "s|^\\./||" \
+	    | dmenu -i -l 5 -p 'Which Cheatsheet to open?'
 )"
 
-test -f "${file}" && xdg-open "${file}"
+[ -f "${file}" ] && xdg-open "${file}"
 

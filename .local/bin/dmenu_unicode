@@ -9,20 +9,19 @@
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly progname="$(basename "$0")"
+readonly emoji_file="${HOME}/.local/share/data/emoji"
 
-# Get user selection via dmenu from emoji file.
-readonly chosen="$(cut -d ';' -f 1 ~/.local/share/data/emoji \
-    | dmenu -i -l 15 \
-    | cut -d ' ' -f 1)"
+readonly chosen="$(
+	cut -d ';' -f 1 "${emoji_file}" \
+	    | dmenu -i -l 15 \
+	    | cut -d ' ' -f 1
+)"
 
-# Exit if none chosen.
-test -z "${chosen}" && exit 1
+[ -z "${chosen}" ] && exit 1
 
-# Copy ${chosen} to clipboard
-echo "${chosen}" \
+printf '%s' "${chosen}" \
     | tr -d '\n' \
     | xclip -selection clipboard
 
-# Show a message that the emoji has been copied.
-notify-send --urgency=normal "${progname}" "'$chosen' copied to clipboard."
+notify-send --urgency=normal "${progname}" "${chosen} copied to clipboard."
 

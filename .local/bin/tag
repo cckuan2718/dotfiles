@@ -68,16 +68,16 @@ done
 shift $((OPTIND - 1))
 
 for file; do
-	if ! test -f "${file}"; then
+	if [ ! -f "${file}" ]; then
 		printf '%s: file %s not found\n' "${progname}" "${file}" 1>&2
 	fi
 
 	printf '%s: processing %s\n' "${progname}" "${file}"
-	test -z "${title}"        && printf '%s' 'Enter a title: '          && read -r title_tmp
-	test -z "${artist}"       && printf '%s' 'Enter an artist: '        && read -r artist_tmp
-	test -z "${album}"        && printf '%s' 'Enter an album: '         && read -r album_tmp
-	test -z "${album_artist}" && printf '%s' 'Enter an album artist : ' && read -r album_artist_tmp
-	test -z "${genre}"        && printf '%s' 'Enter an genre: '         && read -r genre_tmp
+	[ -z "${title}"        ] && printf '%s' 'Enter a title: '          && read -r title_tmp
+	[ -z "${artist}"       ] && printf '%s' 'Enter an artist: '        && read -r artist_tmp
+	[ -z "${album}"        ] && printf '%s' 'Enter an album: '         && read -r album_tmp
+	[ -z "${album_artist}" ] && printf '%s' 'Enter an album artist : ' && read -r album_artist_tmp
+	[ -z "${genre}"        ] && printf '%s' 'Enter an genre: '         && read -r genre_tmp
 
 	case "${file}" in
 	*'.mp3')

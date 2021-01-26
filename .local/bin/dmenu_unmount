@@ -26,15 +26,18 @@ notify()
 }
 
 unmountdisk() {
-	chosen="$(printf '%s' "${disks}" | dmenu -l 5 -i -p 'Unmount which drive?')"
-	test -z "${chosen}" && exit 1
+	chosen="$(
+		printf '%s' "${disks}" \
+		    | dmenu -l 5 -i -p 'Unmount which drive?'
+	)"
+	[ -z "${chosen}" ] && exit 1
 
-	chosen_disk="$(       printf '%s' "${chosen}" | cut -d ' ' -f 1)"
-	chosen_mountpoint="$( printf '%s' "${chosen}" | cut -d ' ' -f 3)"
-	chosen_fstype="$(     printf '%s' "${chosen}" | cut -d ' ' -f 5)"
-	if test -z "${chosen_disk}" \
-	    || test -z "${chosen_mountpoint}" \
-	    || test -z "${chosen_fstype}"; then
+	chosen_disk="$(		printf '%s' "${chosen}" | cut -d ' ' -f 1)"
+	chosen_mountpoint="$(	printf '%s' "${chosen}" | cut -d ' ' -f 3)"
+	chosen_fstype="$(	printf '%s' "${chosen}" | cut -d ' ' -f 5)"
+	if [ -z "${chosen_disk}" ] \
+	    || [ -z "${chosen_mountpoint}" ] \
+	    || [ -z "${chosen_fstype}" ]; then
 		exit 1
 	fi
 
@@ -56,7 +59,7 @@ unmountdisk() {
 
 readonly disks="$(mount | grep '/mnt')"
 
-if test -z "${disks}"; then
+if [ -z "${disks}" ]; then
 	notify 'No unmountable disk detected.'
 	exit 1
 else
