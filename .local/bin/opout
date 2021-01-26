@@ -15,10 +15,10 @@ readonly filepath="$(readlink -f "$*")"
 
 case "${filepath}" in
 *.tex|*.m[dse]|*.[rR]md|*.mom|*.[0-9])
-	xdg-open "${filepath%.*}.pdf" > /dev/null 2>&1 &
+	${OPENER:-xdg-open} "${filepath%.*}.pdf" > /dev/null 2>&1 &
 	;;
 *.html)
-	"${BROWSER}" "${filepath%.*}.html" > /dev/null 2>&1 &
+	${BROWSER} "${filepath%.*}.html" > /dev/null 2>&1 &
 	;;
 esac
 
