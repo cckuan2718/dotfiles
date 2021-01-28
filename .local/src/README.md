@@ -1,6 +1,7 @@
 # Manually installed program
 
 In OpenBSD:
+
 *   Programs are installed at '/usr/local/bin'.
 *   Man pages are installed at '/usr/local/man'.
 *   Configure make(1) accordingly.
