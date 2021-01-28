@@ -6,14 +6,14 @@
 # Author:
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-readonly csdir="${HOME}/documents/cheatsheets/"
+readonly csdir="${HOME}/documents/"
 
 cd "${csdir}" || exit 1
 
 file="$(
-	find . -type f \
+	find . -type f -maxdepth 2 \
 	    | sed "s|^\\./||" \
-	    | dmenu -i -l 5 -p 'Which Cheatsheet to open?'
+	    | dmenu -i -l 5 -p 'Which document to open?'
 )"
 
 [ -f "${file}" ] && xdg-open "${file}"

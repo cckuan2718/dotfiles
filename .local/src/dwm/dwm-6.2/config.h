@@ -77,7 +77,7 @@ static const char *termcmd[]  = { "st", NULL              };
 /* Custom commands */
 static const char *backlight_dec_cmd[]             = { "backlightctl", "-d", NULL    };
 static const char *backlight_inc_cmd[]             = { "backlightctl", "-i", NULL    };
-static const char *dmenu_cheatsheet_cmd[]          = { "dmenu_cheatsheet", NULL      };
+static const char *dmenu_doc_cmd[]                 = { "dmenu_doc", NULL             };
 static const char *dmenu_unicode_cmd[]             = { "dmenu_unicode", NULL         };
 static const char *dmenu_unmount_cmd[]             = { "dmenu_unmount", NULL         };
 static const char *dmenu_mount_cmd[]               = { "dmenu_mount", NULL           };
@@ -153,7 +153,7 @@ static Key keys[] = {
 	{ 0,                   XK_Print,     spawn,    {.v = screenshot_cmd }                },
 	{ ShiftMask,           XK_Print,     spawn,    {.v = screenshot_interactive_cmd }    },
 	{ MODKEY,              XK_grave,     spawn,    {.v = dmenu_unicode_cmd }             },
-	{ MODKEY,              XK_F1,        spawn,    {.v = dmenu_cheatsheet_cmd }          },
+	{ MODKEY,              XK_F1,        spawn,    {.v = dmenu_doc_cmd }                 },
 	{ MODKEY,              XK_F9,        spawn,    {.v = dmenu_mount_cmd }               },
 	{ MODKEY,              XK_F10,       spawn,    {.v = dmenu_unmount_cmd }             },
 	{ MODKEY|ShiftMask,    XK_p,         spawn,    {.v = dmenu_pass_cmd }                },
