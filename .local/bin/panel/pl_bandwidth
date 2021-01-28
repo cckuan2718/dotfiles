@@ -9,12 +9,13 @@
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly interval='3'
+readonly iface='trunk0'
 
 rx_tx_rate_byte="$(
-	netstat -w "${interval}" -c 2 -b \
+	netstat -bw "${interval}" -c 2 -I "${iface}" \
 	    | tail -n 1 \
-	    | tr -s ' ' ';' \
-	    | cut -d ';' -f '4,5'
+	    | tr -s '[:blank:]' ';' \
+	    | cut -d ';' -f '2,3'
 )"
 
 rx_rate_byte="${rx_tx_rate_byte%;*}"
