@@ -37,6 +37,7 @@ export VISUAL='nvim'
 
 # Default command options
 export LESS='-eiQMX'
+export LYNX_LSS='/usr/local/share/doc/lynx/lynx_doc/samples/opaque.lss'
 export MORE='-is'
 export NEXINIT='set autoindent noexpandtab extended noflash ignorecase number ruler searchincr showmatch showmode tabstop=8'
 export TOP='-s 1 -o cpu'
@@ -54,6 +55,6 @@ export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/password-store
 export FZF_DEFAULT_OPTS='--bind=alt-h:up,alt-l:down --no-mouse
 --color=fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
 --color=info:#83a598,prompt:#bdae93,spinner:#fabd2f,pointer:#83a598,marker:#fe8019,header:#665c54'
-export MPD_HOST="${XDG_CONFIG_HOME}/mpd/socket"
+export MPD_HOST="${XDG_CONFIG_HOME:-${HOME}/.config}/mpd/socket"
 export PANEL_FIFO="/tmp/panel_$(id -u)_fifo"
 

@@ -11,14 +11,14 @@
 # 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 
-readonly filepath="$(readlink -f "$*")"
+readonly file="$(readlink -f "$1")"
 
-case "${filepath}" in
-*.tex|*.m[dse]|*.[rR]md|*.mom|*.[0-9])
-	${OPENER:-xdg-open} "${filepath%.*}.pdf" > /dev/null 2>&1 &
+case "${file}" in
+*.html|*.md)
+	${TERMINAL:-st} -e lynx -vikeys -scrollbar "${file%.*}.html" > /dev/null 2>&1 &
 	;;
-*.html)
-	${BROWSER} "${filepath%.*}.html" > /dev/null 2>&1 &
+*.tex|*.m[dse]|*.[rR]md|*.mom|*.[0-9])
+	${OPENER:-xdg-open} "${file%.*}.pdf" > /dev/null 2>&1 &
 	;;
 esac
 
