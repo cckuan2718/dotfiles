@@ -27,6 +27,7 @@ umask 022
 
 # Default programs
 export BROWSER='firefox'
+export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar'
 export EDITOR='nvim'
 export MANPAGER='more'
 export OPENER='xdg-open'
