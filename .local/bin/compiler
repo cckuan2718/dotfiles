@@ -13,8 +13,12 @@
 # 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 textype() {
-	cmd='pdflatex'
-	{ head -n 5 "${file}" | grep -i -q 'xelatex'; } && cmd='xelatex'
+	if { head -n 5 "${file}" | grep -i -q 'xelatex'; }; then
+		cmd='xelatex'
+	else
+		cmd='pdflatex'
+	fi
+
 	"${cmd}" "${base_wo_ext}" \
 	    && { head -n 20 | grep -i 'addbibresource' "${file}" >/dev/null; } \
 	    && bibtex "${base_wo_ext}" \

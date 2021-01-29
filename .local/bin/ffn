@@ -74,7 +74,7 @@ process_file()
 
 	if [ "${base}" = "${new_base}" ]; then
 		clean_file_cnt="$((clean_file_cnt + 1))"
-		printf '%s: file %s require no rename\n' "${progname}" \
+		printf '%s: %s require no rename\n' "${progname}" \
 		    "${base}"
 		return 0
 	fi
