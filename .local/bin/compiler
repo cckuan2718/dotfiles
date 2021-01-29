@@ -8,17 +8,18 @@
 #	  5 lines.
 # Dependency:
 #	* pdflatex(1), xelatex(1), bibtex(1)
+# 	* discount
 # Author:
 # 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 textype() {
-	command='pdflatex'
-	{ head -n 5 "${file}" | grep -i -q 'xelatex'; } && command='xelatex'
-	"${command}" "${base_wo_ext}" \
-	    && { head -n 20 | grep -i addbibresource "${file}" >/dev/null; } \
+	cmd='pdflatex'
+	{ head -n 5 "${file}" | grep -i -q 'xelatex'; } && cmd='xelatex'
+	"${cmd}" "${base_wo_ext}" \
+	    && { head -n 20 | grep -i 'addbibresource' "${file}" >/dev/null; } \
 	    && bibtex "${base_wo_ext}" \
-	    && "${command}" "${base_wo_ext}" \
-	    && "${command}" "${base_wo_ext}"
+	    && "${cmd}" "${base_wo_ext}" \
+	    && "${cmd}" "${base_wo_ext}"
 }
 
 readonly file="$(readlink -f "$1")"
