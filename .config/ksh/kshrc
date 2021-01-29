@@ -88,18 +88,19 @@ alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 alias z='zathura'
 
 # Bookmarks
-alias gD="cd "${XDG_DOWNLOAD_DIR:-${HOME}/downloads}" && ll"
-alias gcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}" && ll"
-alias gcf="cd "${XDG_CONFIG_HOME:-${HOME}/.config}" && ll"
-alias gd="cd "${XDG_DOCUMENTS_DIR:-${HOME}/documents}" && ll"
-alias gdt="cd "${XDG_DATA_HOME:-${HOME}/.local/share}" && ll"
-alias gh="cd "${HOME}" && ll"
-alias gm="cd "${XDG_MUSIC_DIR:-${HOME}/music}" && ll"
-alias gmn='cd /mnt && ll'
-alias gpp="cd "${XDG_PICTURES_DIR:-${HOME}/pictures}" && ll"
-alias gsc="cd "${HOME}/.local/bin" && ll"
-alias gsrc="cd "${HOME}/.local/src" && ll"
-alias gvv="cd "${XDG_VIDEOS_DIR:-${HOME}/videos}" && ll"
+alias gD="cd "${XDG_DOWNLOAD_DIR:-${HOME}/downloads}""
+alias gcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}""
+alias gcf="cd "${XDG_CONFIG_HOME:-${HOME}/.config}""
+alias gd="cd "${XDG_DOCUMENTS_DIR:-${HOME}/documents}""
+alias gdt="cd "${XDG_DATA_HOME:-${HOME}/.local/share}""
+alias gh="cd "${HOME}""
+alias gm="cd "${XDG_MUSIC_DIR:-${HOME}/music}""
+alias gmn='cd /mnt'
+alias gpp="cd "${XDG_PICTURES_DIR:-${HOME}/pictures}""
+alias gsc="cd "${HOME}/.local/bin""
+alias gsrc="cd "${HOME}/.local/src""
+alias gt="cd "${HOME}/tmp""
+alias gvv="cd "${XDG_VIDEOS_DIR:-${HOME}/videos}""
 
 #
 # Prompt
