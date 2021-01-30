@@ -217,7 +217,7 @@ lfcd()
 	lf -last-dir-path="${tmpf}" "$@"
 	dir="$(cat "${tmpf}")"
 	rm -f "${tmpf}"
-	if test -d "${dir}" && test "${dir}" != "$(pwd)"; then
+	if [ -d "${dir}" ] && [ "${dir}" != "$(pwd)" ]; then
 		cd "${dir}"
 	fi
 }
