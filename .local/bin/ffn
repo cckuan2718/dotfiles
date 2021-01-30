@@ -37,6 +37,7 @@ process_file()
 	file="$1"
 	dir="$(dirname "${file}")"
 	base="$(basename "${file}")"
+	new_base="${base}"
 
 	# Return if there is error parsing file name
 	if [ -z "${file}" ] || [ -z "${dir}" ] || [ -z "${base}" ]; then
@@ -45,8 +46,8 @@ process_file()
 	fi
 
 	if [ "${e_flag}" = '1' ]; then
-		base="$(
-			printf '%s' "${base}" | sed ${e_string}
+		new_base="$(
+			printf '%s' "${new_base}" | sed ${e_string}
 		)"
 		if [ "$?" != '0' ]; then
 			printf '%s: error executing sed %s\n' "${progname}" \
@@ -54,14 +55,14 @@ process_file()
 		fi
 	fi
 
-	case "${base}" in
+	case "${new_base}" in
 	# file name with extension
 	*.*)
 		# get file extension
-		extension="${base##*.}"
+		extension="${new_base##*.}"
 		# process file name
 		new_base="$(
-			printf '%s' "${base%.*}" \
+			printf '%s' "${new_base%.*}" \
 			    | iconv --to-code=utf-8 \
 			    | tr "${sep}" ' ' \
 			    | tr -d '[:punct:]' \
@@ -73,7 +74,7 @@ process_file()
 	# file name without extension
 	*)
 		new_base="$(
-			printf '%s' "${base}" \
+			printf '%s' "${new_base}" \
 			    | iconv --to-code=utf-8 \
 			    | tr "${sep}" ' ' \
 			    | tr -d '[:punct:]' \
@@ -86,8 +87,7 @@ process_file()
 
 	if [ "${base}" = "${new_base}" ]; then
 		clean_file_cnt="$((clean_file_cnt + 1))"
-		printf '%s: %s require no rename\n' "${progname}" \
-		    "${base}"
+		printf '%s: %s require no rename\n' "${progname}" "${base}"
 		return 0
 	fi
 
