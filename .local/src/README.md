@@ -20,6 +20,7 @@ In OpenBSD:
 *   No patch applied
 
 ## st
+
 *   st(1) crashes when using less(1) command, USE more(1) INSTEAD.
 *   Patched with scrollback, gruvbox theme, anysize
 
