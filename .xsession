@@ -41,7 +41,7 @@ dunst > /dev/null &
 fcitx -r -d -s 3 > /dev/null &
 setbg &
 picom > /dev/null &
-test ! -s ~/.config/mpd/mpd.pid && mpd &
+{ [ ! -s ~/.config/mpd/mpd.pid ] && mpd; } &
 pass core > /dev/null 2>&1 &
 
 # start window manager
