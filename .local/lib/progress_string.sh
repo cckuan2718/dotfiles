@@ -13,15 +13,15 @@
 
 progress_string()
 {
-	readonly length="$1"
-	readonly perc="$2"
-	readonly filled_icon="$3"
-	readonly lead_icon="$4"
-	readonly unfilled_icon="$5"
+	length="$1"
+	perc="$2"
+	filled_icon="$3"
+	lead_icon="$4"
+	unfilled_icon="$5"
 
 	# calculate how many items need to be filled and not filled
-	readonly filled_cnt="$(( length * perc / 100 ))"
-	readonly unfilled_cnt="$(( length - filled_cnt ))"
+	filled_cnt="$(( length * perc / 100 ))"
+	unfilled_cnt="$(( length - filled_cnt ))"
 
 	# Assemble the bar string
 	str="$(printf "%${filled_cnt}s" "${lead_icon}" | tr ' ' "${filled_icon}")"
