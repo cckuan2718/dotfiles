@@ -16,34 +16,6 @@ set -o vi
 set -o vi-tabcomplete
 
 #
-# Ksh completion
-#
-
-set -A complete_beet_1 -- import list remove modify move update write stats \
-    fields config
-set -A complete_git_1 -- clone commit config pull push status add
-set -A complete_git -- origin master
-set -A complete_g_1 -- clone commit config pull push status add
-set -A complete_g -- origin master
-set -A complete_cbk_1 -- clone commit config pull push status add
-set -A complete_cbk -- origin master
-set -A complete_cdio -- eject
-set -A complete_kill_1 -- -9 -HUP -INFO -KILL -TERM
-set -A complete_make -- build checksum clean extract fake fetch install makesum \
-   modgo-gen-modules package patch port-lib-depends-check search show test \
-   test-depends uninstall update-patches update-plist
-set -A complete_pass -- init ls list grep find show insert edit generate \
-    rm mv cp git help version otp
-set -A complete_tmux_1 -- attach-session attach detach-client detach \
-    has-session has kill-server kill-session list-clients lsc \
-    list-commands lscm list-sessions ls lock-client lockc lock-session locks \
-    new-session new refresh-client refresh rename-session rename \
-    show-messages showmsgs source-file source start-server start \
-    suspend-client suspendc switch-client switchc
-set -A complete_rcctl_1 -- disable enable get getdef ls order set reload \
-    restart start stop
-
-#
 # Aliases
 #
 
@@ -89,19 +61,19 @@ alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 alias z='zathura'
 
 # Bookmarks
-alias gD="cd "${XDG_DOWNLOAD_DIR:-${HOME}/downloads}""
-alias gcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}""
-alias gcf="cd "${XDG_CONFIG_HOME:-${HOME}/.config}""
-alias gd="cd "${XDG_DOCUMENTS_DIR:-${HOME}/documents}""
-alias gdt="cd "${XDG_DATA_HOME:-${HOME}/.local/share}""
-alias gh="cd "${HOME}""
-alias gm="cd "${XDG_MUSIC_DIR:-${HOME}/music}""
-alias gmn='cd /mnt'
-alias gpp="cd "${XDG_PICTURES_DIR:-${HOME}/pictures}""
-alias gsc="cd "${HOME}/.local/bin""
-alias gsrc="cd "${HOME}/.local/src""
-alias gt="cd "${HOME}/tmp""
-alias gvv="cd "${XDG_VIDEOS_DIR:-${HOME}/videos}""
+alias gD="cd   "${HOME}/downloads"                        "
+alias gcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}"        "
+alias gcf="cd  "${XDG_CONFIG_HOME:-${HOME}/.config}"      "
+alias gd="cd   "${HOME}/documents"                        "
+alias gdt="cd  "${XDG_DATA_HOME:-${HOME}/.local/share}"   "
+alias gh="cd   "${HOME}"                                  "
+alias gm="cd   "${HOME}/music"                            "
+alias gmn='cd  /mnt                                       '
+alias gpp="cd  "${HOME}/pictures"                         "
+alias gsc="cd  "${HOME}/.local/bin"                       "
+alias gsrc="cd "${HOME}/.local/src"                       "
+alias gt="cd   "${HOME}/tmp"                              "
+alias gvv="cd  "${HOME}/videos}"                          "
 
 #
 # Prompt
