@@ -27,12 +27,12 @@ case "${devclass}" in
 '1') # CPU
 	;;
 '2') # Disk drive
-	notify --urgency=normal --icon=usbpendrive_unmount \
+	notify --urgency=critical --icon=usbpendrive_unmount \
 	    --hint='string:synchronous:hotplugd_disk_drive' \
 	    'Hotplugd' "Disk drive: ${devname} detached"
 	;;
 '3') # Network interface
-	notify --urgency=normal --hint='string:synchronous:hotplugd_nic' \
+	notify --urgency=critical --hint='string:synchronous:hotplugd_nic' \
 	    'Hotplugd' "NIC: ${devname} detached"
 	;;
 '4') # Tape device
