@@ -12,12 +12,12 @@ case "$(mpc "$@")" in
 *playing*)
 	status='Playing'
 	icon='media-playback-start'
-	description="$(mpc current)"
+	description="$(mpc current -f '[[%albumartist% - %album%\n]%title%]|[%file%]')"
 	;;
 *paused*)
 	status='Paused'
 	icon='media-playback-pause'
-	description="$(mpc current)"
+	description="$(mpc current -f '[[%albumartist% - %album%\n]%title%]|[%file%]')"
 	;;
 *)
 	status='Stopped'
