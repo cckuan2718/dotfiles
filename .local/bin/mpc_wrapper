@@ -8,16 +8,18 @@
 # Author:
 # 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+export MPC_FORMAT='[[%albumartist% - %album%\n]%title%]|[%file%]'
+
 case "$(mpc "$@")" in
 *playing*)
 	status='Playing'
 	icon='media-playback-start'
-	description="$(mpc current -f '[[%albumartist% - %album%\n]%title%]|[%file%]')"
+	description="$(mpc current)"
 	;;
 *paused*)
 	status='Paused'
 	icon='media-playback-pause'
-	description="$(mpc current -f '[[%albumartist% - %album%\n]%title%]|[%file%]')"
+	description="$(mpc current)"
 	;;
 *)
 	status='Stopped'
