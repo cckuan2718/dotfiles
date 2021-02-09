@@ -1,4 +1,3 @@
-query:Unread Articles:(unread = "yes") and (tags !~ "^Youtube.*")
 https://lukesmith.xyz/rss.xml "tech"
 https://notrelated.xyz/rss "tech"
 http://suckless.org/atom.xml "tech"
