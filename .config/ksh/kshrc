@@ -213,19 +213,20 @@ alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 alias z='zathura'
 
 # Bookmarks
-alias gD="cd   "${HOME}/downloads"                        "
-alias gcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}"        "
-alias gcf="cd  "${XDG_CONFIG_HOME:-${HOME}/.config}"      "
-alias gd="cd   "${HOME}/documents"                        "
-alias gdt="cd  "${XDG_DATA_HOME:-${HOME}/.local/share}"   "
-alias gh="cd   "${HOME}"                                  "
-alias gm="cd   "${HOME}/music"                            "
-alias gmn='cd  /mnt                                       '
-alias gpp="cd  "${HOME}/pictures"                         "
-alias gsc="cd  "${HOME}/.local/bin"                       "
-alias gsrc="cd "${HOME}/.local/src"                       "
-alias gt="cd   "${HOME}/tmp"                              "
-alias gvv="cd  "${HOME}/videos}"                          "
+alias cdD="cd   "${HOME}/downloads"                        "
+alias cdcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}"        "
+alias cdcf="cd  "${XDG_CONFIG_HOME:-${HOME}/.config}"      "
+alias cdd="cd   "${HOME}/documents"                        "
+alias cddt="cd  "${XDG_DATA_HOME:-${HOME}/.local/share}"   "
+alias cdh="cd   "${HOME}"                                  "
+alias cdm="cd   "${HOME}/music"                            "
+alias cdmn='cd  /mnt                                       '
+alias cdp='cd /usr/ports                                   '
+alias cdpp="cd  "${HOME}/pictures"                         "
+alias cdsc="cd  "${HOME}/.local/bin"                       "
+alias cdsrc="cd "${HOME}/.local/src"                       "
+alias cdt="cd   "${HOME}/tmp"                              "
+alias cdvv="cd  "${HOME}/videos}"                          "
 
 #
 # Prompt
