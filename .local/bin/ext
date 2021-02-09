@@ -20,7 +20,7 @@ extract_archive()
 	file="$1"
 
 	printf '\n%s: extracting %s\n' "${progname}" "${file}"
-	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
+	hline
 
 	case "${file}" in
 	*.tar)
@@ -107,7 +107,7 @@ list_archive()
 	file="$1"
 
 	printf '\n%s: listing %s\n' "${progname}" "${file}"
-	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
+	hline
 
 	case "${file}" in
 	*.tar)
@@ -144,6 +144,12 @@ list_archive()
 		;;
 	esac
 }
+
+hline()
+{
+	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
+}
+
 t_flag='0'
 
 while getopts 'ht' opt; do
