@@ -5,6 +5,7 @@
 # 	* while given '-d', do not rename file, only print new
 # 	  file name
 # 	* while given '-e <arg>', file name is preprocessed by sed -e <arg>...
+#	* while run without filename, read filename from stdin
 # Dependency:
 # 	* nil
 # Author:
@@ -22,68 +23,29 @@ help_msg()
 {
 	cat << EOF
 Usage:
-  ${progname} [-hd] file... - format filename
+  ${progname} [-dh] [-e <command>] [file ...] - format filename
 
 Options:
   -d                   Perform a 'dry run'. Do not actually rename file.
-  -e <arg>             Preprocessed file name by sed -e <arg>...
+  -e <arg>             Preprocessed file name by sed -e <command>...
   -h                   Show this message and exit.
 
 EOF
 }
 
-process_file()
+mv_file()
 {
 	file="$1"
 	dir="$(dirname "${file}")"
 	base="$(basename "${file}")"
-	new_base="${base}"
 
 	# Return if there is error parsing file name
 	if [ -z "${file}" ] || [ -z "${dir}" ] || [ -z "${base}" ]; then
-		printf '%s: error parsing file: %s\n' "${progname}" "${file}" 1>&2
+		printf '%s: error parsing file %s\n' "${progname}" "${file}" 1>&2
 		return 1
 	fi
 
-	if [ "${e_flag}" = '1' ]; then
-		new_base="$(
-			printf '%s' "${new_base}" | sed ${e_string}
-		)"
-		if [ "$?" != '0' ]; then
-			printf '%s: error executing sed %s\n' "${progname}" \
-			    "${e_string}" 1>&2
-		fi
-	fi
-
-	case "${new_base}" in
-	# file name with extension
-	*.*)
-		# get file extension
-		extension="${new_base##*.}"
-		# process file name
-		new_base="$(
-			printf '%s' "${new_base%.*}" \
-			    | iconv --to-code=utf-8 \
-			    | tr "${sep}" ' ' \
-			    | tr -d '[:punct:]' \
-			    | tr '[:upper:]' '[:lower:]' \
-			    | tr -s ' ' '_' \
-			    | sed 's/^_//; s/_$//'
-		).${extension}"
-		;;
-	# file name without extension
-	*)
-		new_base="$(
-			printf '%s' "${new_base}" \
-			    | iconv --to-code=utf-8 \
-			    | tr "${sep}" ' ' \
-			    | tr -d '[:punct:]' \
-			    | tr '[:upper:]' '[:lower:]' \
-			    | tr -s ' ' '_' \
-			    | sed 's/^_//; s/_$//'
-		)"
-		;;
-	esac
+	new_base="$(process_fname "${base}")"
 
 	if [ "${base}" = "${new_base}" ]; then
 		clean_file_cnt="$((clean_file_cnt + 1))"
@@ -105,13 +67,43 @@ process_file()
 	esac
 }
 
+process_fname()
+{
+	fname="$1"
+
+	if [ "${e_flag}" = '1' ]; then
+	# shellcheck disable=SC2086
+	if fname="$(printf '%s' "${fname}" | sed ${e_string})"; then
+		printf '%s: error executing sed %s\n' "${progname}" \
+		    "${e_string}" 1>&2
+		fi
+	fi
+
+	case "${fname}" in
+	# file name with extension
+	*.*)
+		extension=".${fname##*.}"
+		fname="${fname%.*}"
+		;;
+	# file name without extension
+	*)
+		extension=''
+		;;
+	esac
+
+	printf '%s%s' "${fname}" "${extension}" \
+	    | iconv --to-code=utf-8 \
+	    | tr "${sep}" ' ' \
+	    | tr -d '[:punct:]' \
+	    | tr '[:upper:]' '[:lower:]' \
+	    | tr -s ' ' '_' \
+	    | sed -e 's/^_//' -e 's/_$//'
+}
+
 readonly progname="$(basename "$0")"
 d_flag='0'
 e_flag='0'
 e_string=''
-total_file_cnt='0'
-success_file_cnt='0'
-clean_file_cnt='0'
 
 while getopts 'de:h' opt; do
 	case "${opt}" in
@@ -135,13 +127,23 @@ done
 
 shift "$((OPTIND - 1))"
 
-for arg; do
-	total_file_cnt="$((total_file_cnt + 1))"
-	process_file "${arg}"
-done
+if [ "$#" -gt '0' ]; then # move files if file names are given
+	total_file_cnt='0'
+	success_file_cnt='0'
+	clean_file_cnt='0'
 
-# Report status
-printf '\n%s: renamed %d, clean %d, total %d/%d\n' "${progname}" \
-    "${success_file_cnt}" "${clean_file_cnt}" \
-    "$((success_file_cnt + clean_file_cnt))" "${total_file_cnt}"
+	for arg; do
+		total_file_cnt="$((total_file_cnt + 1))"
+		mv_file "${arg}"
+	done
+
+	# Report status
+	printf '\n%s: renamed %d, clean %d, total %d/%d\n' "${progname}" \
+	    "${success_file_cnt}" "${clean_file_cnt}" \
+	    "$((success_file_cnt + clean_file_cnt))" "${total_file_cnt}"
+else # read file name from stdin
+	read -r file
+	process_fname "${file}"
+	printf '\n'
+fi
 
