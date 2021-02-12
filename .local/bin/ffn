@@ -23,12 +23,12 @@ help_msg()
 {
 	cat << EOF
 Usage:
-  ${progname} [-dh] [-e <command>] [file ...] - format filename
+	${progname} [-dh] [-e <command>] [file ...] - format filename
 
 Options:
-  -d                   Perform a 'dry run'. Do not actually rename file.
-  -e <arg>             Preprocessed file name by sed -e <command>...
-  -h                   Show this message and exit.
+	-d                   Perform a 'dry run'. Do not actually rename file.
+	-e <arg>             Preprocessed file name by sed -e <command>...
+	-h                   Show this message and exit.
 
 EOF
 }

@@ -77,27 +77,27 @@ help_msg()
 {
 	cat << EOF
 Usage:
-  ${progname} [-ht] file... - extract files using correct program
+	${progname} [-ht] file... - extract files using correct program
 
 Options:
-  -h                   Show this message and exit.
-  -t                   List contents of archive.
+	-h                   Show this message and exit.
+	-t                   List contents of archive.
 
 Supported file type:
-  tar
-  tar.bz2  | tbz2 | tb2 | tz2
-  tar.Z    | taZ   | tZ
-  tar.gz   | tgz
-  tar.lzma | tlz
-  tar.xz   | txz
-  bz2
-  Z
-  gz
-  lzma
-  xz
-  7z
-  rar
-  zip
+	tar
+	tar.bz2  | tbz2 | tb2 | tz2
+	tar.Z    | taZ   | tZ
+	tar.gz   | tgz
+	tar.lzma | tlz
+	tar.xz   | txz
+	bz2
+	Z
+	gz
+	lzma
+	xz
+	7z
+	rar
+	zip
 
 EOF
 }
