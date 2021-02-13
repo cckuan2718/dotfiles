@@ -45,7 +45,7 @@ for cmd in 'cbk' 'g' 'git'; do
 	    merge mv \
 	    notes \
 	    pull push \
-	    range-diff rebase reset restore revert rm \
+	    range-diff rebase remote reset restore revert rm \
 	    shortlog show sparse-checkout stash status submodule switch \
 	    tag \
 	    worktree
