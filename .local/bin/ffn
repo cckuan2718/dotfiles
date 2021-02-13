@@ -73,7 +73,7 @@ process_fname()
 
 	if [ "${e_flag}" = '1' ]; then
 	# shellcheck disable=SC2086
-	if fname="$(printf '%s' "${fname}" | sed ${e_string})"; then
+	if ! fname="$(printf '%s' "${fname}" | sed ${e_string})"; then
 		printf '%s: error executing sed %s\n' "${progname}" \
 		    "${e_string}" 1>&2
 		fi
