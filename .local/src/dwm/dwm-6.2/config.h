@@ -99,6 +99,7 @@ static const char *volume_dec_cmd[]                = { "volumectl", "-d", NULL  
 static const char *volume_inc_cmd[]                = { "volumectl", "-i", NULL       };
 static const char *volume_toggle_cmd[]             = { "volumectl", "-t", NULL       };
 static const char *www_browser_cmd[]               = { "firefox", NULL               };
+static const char *www_browser_tor_cmd[]           = { "tor-browser", NULL           };
 
 #include <X11/XF86keysym.h>
 static Key keys[] = {
@@ -144,6 +145,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,    XK_minus,     spawn,    {.v = backlight_dec_cmd }             },
 	{ MODKEY|ShiftMask,    XK_equal,     spawn,    {.v = backlight_inc_cmd }             },
 	{ MODKEY,              XK_w,         spawn,    {.v = www_browser_cmd }               },
+	{ MODKEY|ShiftMask,    XK_w,         spawn,    {.v = www_browser_tor_cmd }           },
 	{ MODKEY,              XK_n,         spawn,    {.v = mpc_status_cmd }                },
 	{ MODKEY|ShiftMask,    XK_n,         spawn,    {.v = music_player_cmd }              },
 	{ MODKEY,              XK_Up,        spawn,    {.v = mpc_stop_cmd }                  },
