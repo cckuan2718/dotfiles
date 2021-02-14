@@ -57,3 +57,4 @@ map a push A<a-b>		# after extention
 map b $setbg $f
 
 map e push :!nvim<space>
+map P $~/.config/lf/previewer "$f" | ${PAGER}
