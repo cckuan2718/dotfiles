@@ -226,7 +226,7 @@ alias cdpp="cd  "${HOME}/pictures"                         "
 alias cdsc="cd  "${HOME}/.local/bin"                       "
 alias cdsrc="cd "${HOME}/.local/src"                       "
 alias cdt="cd   "${HOME}/tmp"                              "
-alias cdvv="cd  "${HOME}/videos}"                          "
+alias cdvv="cd  "${HOME}/videos"                          "
 
 #
 # Prompt
