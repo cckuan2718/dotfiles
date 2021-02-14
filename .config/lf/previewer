@@ -11,10 +11,11 @@
 
 readonly file="$1"
 readonly progname="$(basename "$0")"
-readonly maxfsize='5000' # max file size to preview in kilobyte
 
 ckfsize()
 {
+	maxfsize="$1" # max file size to preview in kilobyte
+
 	if [ "$(du -k "${file}" | cut -f 1)" -gt "${maxfsize}" ]; then
 		printf '%s: file too large to preview\n' "${progname}"
 		exit 0
@@ -29,11 +30,11 @@ case "${file}" in
 	mediainfo "${file}"
 	;;
 *.pdf)
-	ckfsize
+	ckfsize 5000
 	pdftotext "${file}" -
 	;;
 *.tar|*.tar.bz2|*.tbz2|*.tb2|*.tz2|*.tar.Z|*.taZ|*.tZ|*.tar.gz|*.tgz|*.tar.lzma|*.tlz|*.tar.xz|*.txz|*.7z|*.rar|*.zip)
-	ckfsize
+	ckfsize 10000
 	ext -t "${file}"
 	;;
 #*.html|*.xml)
