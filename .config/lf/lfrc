@@ -13,6 +13,7 @@ set ifs "\n"
 set info 'size'
 set nodirfirst
 set period 1
+set previewer ~/.config/lf/previewer
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
