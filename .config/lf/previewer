@@ -11,10 +11,11 @@
 
 readonly file="$1"
 readonly progname="$(basename "$0")"
+readonly maxfsize='5000' # max file size to preview in kilobyte
 
 ckfsize()
 {
-	if [ "$(du -k "${file}" | cut -f 1)" -gt '5000' ]; then
+	if [ "$(du -k "${file}" | cut -f 1)" -gt "${maxfsize}" ]; then
 		printf '%s: file too large to preview\n' "${progname}"
 		exit 0
 	fi
