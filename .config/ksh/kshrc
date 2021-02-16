@@ -174,7 +174,7 @@ set -A complete_tmux_1 --  \
 # Base utils
 alias cls='clear'
 alias cp='cp -iv'
-alias cpr='diff -up'
+alias cmpr='diff -up'
 alias df='df -h'
 alias du='du -h'
 alias ll='ls -aFhl'
