@@ -6,20 +6,111 @@
 # Author:
 #       * Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-readonly conf_dir="${XDG_CONFIG_HOME:-${HOME}/.config}/xrandr"
+#
+# Settings
+#
 
-cd "${conf_dir}" || exit 1
+readonly ext='VGA-1'
+readonly int='LVDS-1'
 
-layout="$(
-	find . -type f -maxdepth 1 \
-	    | sed 's|^\./||' \
-	    | dmenu -i -l 5 -p 'Which layout?'
-)"
+#
+# Proper
+#
 
-if [ -z "${layout}" ]; then
-	exit 0
+readonly progname="$(basename "$0")"
+
+scale()
+{
+	xrandr --query \
+	| awk -v prim_pattern="^${prim}" -v sec_pattern="^${sec}" '
+		BEGIN {
+			prim_found = "0";
+			sec_found = "0";
+		}
+
+		$0 ~ prim_pattern {
+			prim_found = "1";
+		}
+
+		$0 ~ sec_pattern {
+			sec_found = "1";
+		}
+
+		/[[:digit:]]+x[[:digit:]]+.*\+$/ {
+			if (prim_found == "1") {
+				res_prim = $1;
+				split(res_prim, res_prim_arr, "x");
+				res_prim_x = res_prim_arr[1];
+				res_prim_y = res_prim_arr[2];
+				prim_found = "0";
+			} else if (sec_found == "1") {
+				res_sec = $1;
+				split(res_sec, res_sec_arr, "x");
+				res_sec_x = res_sec_arr[1];
+				res_sec_y = res_sec_arr[2];
+				sec_found = "0";
+			}
+		}
+
+		END {
+			printf("%sx%s", res_prim_x / res_sec_x,
+			    res_prim_y / res_sec_y);
+		}
+	'
+}
+
+if [ -n "$1" ]; then
+	readonly sel="$1"
+else
+	readonly opts='bl (both, EXTernal display at LEFT side)
+br (both, EXTernal display at RIGHT side)
+me  (mirror, optimize for EXTernal display)
+mi  (mirror, optimize for INTernal display)
+oe (only external display)
+oi (only internal display)'
+
+	readonly sel="$(
+		printf '%s' "${opts}" | dmenu -l 6 -p 'Which layout?'
+	)"
 fi
 
-sh "${layout}"
-setbg # Fix background if screen size/arangement has changed.
+case "${sel}" in
+bl*)
+	xrandr --output "${int}" --auto --scale '1.0x1.0' \
+	    --output "${ext}" --left-of "${int}" --auto --scale '1.0x1.0'
+	;;
+br*)
+	xrandr --output "${int}" --auto --scale '1.0x1.0' \
+	    --output "${ext}" --right-of "${int}" --auto --scale '1.0x1.0'
+	;;
+m*)
+	case "${sel}" in
+	me*)
+		prim="${ext}"
+		sec="${int}"
+		;;
+	mi*)
+		prim="${int}"
+		sec="${ext}"
+		;;
+	esac
+
+        xrandr --output "${prim}" --auto --scale '1.0x1.0' \
+            --output "${sec}" --auto --same-as "${prim}" --scale "$(scale)"
+	;;
+oe*)
+	xrandr --output "${ext}" --auto --scale '1.0x1.0' \
+	    --output "${int}" --off
+	;;
+oi*)
+	xrandr --output "${int}" --auto --scale '1.0x1.0' \
+	    --output "${ext}" --off
+	;;
+*)
+	printf '%s: unknown option %s\n' "${progname}" "${sel}" 1>&2
+	exit 1
+esac
+
+# Fix background if screen size/arangement has changed
+setbg
 
