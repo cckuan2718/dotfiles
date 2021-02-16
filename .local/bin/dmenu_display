@@ -1,0 +1,21 @@
+#!/bin/sh
+# Program:
+#	* Select and change display layout
+# Dependency:
+# 	* dmenu(1)
+# Author:
+#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly conf_dir="${XDG_CONFIG_HOME:-${HOME}/.config}/xrandr"
+
+cd "${conf_dir}" || exit 1
+
+layout="$(ls -1 | dmenu -l 5 -p 'Which layout?')"
+
+if [ -z "${layout}" ]; then
+	exit 0
+fi
+
+eval "./${layout}"
+setbg # Fix background if screen size/arangement has changed.
+
