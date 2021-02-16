@@ -10,7 +10,11 @@ readonly conf_dir="${XDG_CONFIG_HOME:-${HOME}/.config}/xrandr"
 
 cd "${conf_dir}" || exit 1
 
-layout="$(ls -1 | dmenu -l 5 -p 'Which layout?')"
+layout="$(
+	find . -type f -maxdepth 1 \
+	    | sed 's|^\./||' \
+	    | dmenu -i -l 5 -p 'Which layout?'
+)"
 
 if [ -z "${layout}" ]; then
 	exit 0

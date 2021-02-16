@@ -12,7 +12,7 @@ cd "${csdir}" || exit 1
 
 file="$(
 	find . -type f -maxdepth 2 \
-	    | sed "s|^\\./||" \
+	    | sed 's|^\./||' \
 	    | dmenu -i -l 5 -p 'Which document to open?'
 )"
 
