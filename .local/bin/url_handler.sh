@@ -1,17 +1,19 @@
 #!/bin/sh
 # Program:
-#	* Feed script a url or file location.
-#	  If an image, it will view in sxiv,
-#	  if a video or gif, it will view in mpv
-#	  if a music file or pdf, it will download,
-#	  otherwise it opens link in browser.
-#	* used in urlscan
+# *   Feed script a url or file location.
+#     If an image, it will view in sxiv,
+#     if a video or gif, it will view in mpv
+#     if a music file or pdf, it will download,
+#     otherwise it opens link in browser.
+# *   used in urlscan
 # Dependency:
-#	* sxiv(1)
-#	* mpv(1)
-#	* curl(1)
+# *   sxiv(1)
+# *   mpv(1)
+# *   curl(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 # If no url given. Opens browser. For using script as $BROWSER.
 [ -z "$1" ] && { "${BROWSER}"; exit 1; }

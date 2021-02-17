@@ -1,20 +1,27 @@
 #!/bin/sh
 # Program:
-#	* Take screenshot using maim
-#	* Notify that the screenshot has been taken
+# *   Take screenshot using maim
+# *   Notify that the screenshot has been taken
 # Usage:
-#	* ./take_screenshot [-i]
-# 	* -i Interactive mode. Choose the kind of screenshot to take,
-# 	  including copying the image or even highlighting an area to copy.
+# *   ./take_screenshot [-i]
+# *   -i Interactive mode. Choose the kind of screenshot to take,
+#     including copying the image or even highlighting an area to copy.
 # Dependency:
-# 	* dmenu(1)
-#	* maim(1)
-#	* notify-send(1)
+# *   dmenu(1)
+# *   maim(1)
+# *   notify-send(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+#
 # Settings
+#
+
 readonly screenshots_dir="${HOME}/pictures/screenshots"
+
+#
+# Proper
+#
 
 readonly progname="$(basename "$0")"
 readonly dmenu_options='s (selected area)

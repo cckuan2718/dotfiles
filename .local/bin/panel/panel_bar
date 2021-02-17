@@ -1,15 +1,25 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel(1).
-#	* takes output from panel(1) program (through PANEL_FIFO),
-#	  form a formatted string, print it back to 'panel', which calls
-#	  xsetroot(1) to draw status bar
+# *   This program belongs to panel(1).
+# *   takes output from panel(1) program (through PANEL_FIFO),
+#     form a formatted string, print it back to 'panel', which calls
+#     xsetroot(1) to draw status bar
 # Dependency:
-#	* panel(1)
+# *   panel(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
 
 readonly sep='  '
+
+#
+# Proper
+#
+
+readonly progname="$(basename "$0")"
 
 while read -r line; do
 	case "${line}" in
@@ -66,6 +76,7 @@ while read -r line; do
 		volume="${line#*;}"
 		;;
 	esac
+
 	printf '%s\n' "${torrent}${music}${sep}${mailbox}${sep}${news}${sep}${bandwidth}${sep}${sensors_fan}${sep}${sensors_cpu}${sep}${diskio}${sep}${memory}${sep}${cpu}${sep}${backlight}${sep}${volume}${sep}${iface}${sep}${battery}${sep}${clock}"
 done
 

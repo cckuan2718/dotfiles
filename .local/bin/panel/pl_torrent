@@ -1,13 +1,15 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel
-#	* torrent module
-#	* Display transmission status.
+# *   This program belongs to panel(1).
+# *   torrent module
+# *   Display transmission status.
 # Dependency:
-#	* transmission-remote(1)
-#	* notify-send(1)
+# *   transmission-remote(1)
+# *   notify-send(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 torrent()
 {
@@ -27,19 +29,22 @@ torrent()
 	        -e 's/Dl//g' \
 	        -e 's/Dn//g' \
 	        -e 's/Sd//g" ' \
-	    | awk '
-	        BEGIN {
-	    		printf("torrent;");
-	    	}
+	| awk '
+		BEGIN {
+			printf("torrent;");
+		}
+
 		{
 			printf(" %s %s", $2, $1);
 		}
-	        END {
+
+		END {
 			printf("\n");
-		}'
+		}
+	'
 }
 
-if pgrep 'transmission-dae'; then
+if pgrep -q 'transmission-dae'; then
 	torrent
 else
 	printf 'torrent_alert; DOWN\n'

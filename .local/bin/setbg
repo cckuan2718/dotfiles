@@ -1,13 +1,21 @@
 #!/bin/sh
 # Program:
-#	* if given an argument, moves it to ${bg_loc}
-#	* if called withoutany argument, sets ${bg_loc} as the wallpaper
+# *   if given an argument, moves it to ${bg_loc}
+# *   if called withoutany argument, sets ${bg_loc} as the wallpaper
 # Dependency:
-#	* xwallpaper(1)
+# *   xwallpaper(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
 
 readonly bg_loc="${HOME}/.local/share/data/bg"
+
+#
+# Proper
+#
 
 readonly progname="$(basename "$0")"
 

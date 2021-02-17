@@ -1,10 +1,10 @@
 #!/bin/sh
 # Program:
-# 	* Sync "${src}" and "${dest}"
+# *   Sync "${src}" and "${dest}"
 # Dependency:
-# 	* rsync(1)
+# *   rsync(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly progname="$(basename "$0")"
 
@@ -28,13 +28,13 @@ help_msg()
 {
 	cat << EOF
 Usage:
-  ${progname} [-hmw] - sync target according to options given
+	${progname} [-hmw] - sync target according to options given
 
 Options:
-  -h                   Sync home folder
-  -m                   Sync music folder
-  -s                   Sync sieve script
-  -w                   Sync website folder and reload httpd
+	-h		Sync home folder
+	-m		Sync music folder
+	-s		Sync sieve script
+	-w		Sync website folder and reload httpd
 
 EOF
 }

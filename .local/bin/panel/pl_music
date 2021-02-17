@@ -1,11 +1,13 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-#	* music module.
+# *   This program belongs to panel(1).
+# *   music module.
 # Dependency:
-#	* mpc(1)
+# *   mpc(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 printf 'music; %.20s\n' "$(mpc current)"
 

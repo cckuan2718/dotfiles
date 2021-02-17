@@ -1,13 +1,15 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-#	* News module.
-#	* Display unread news item.
+# *   This program belongs to panel(1).
+# *   News module.
+# *   Display unread news item.
 # Dependency:
-#	* newsboat(1)
-#	* ping(1)
+# *   newsboat(1)
+# *   ping(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 if ! ping -q -c 1 -w 5 example.org > /dev/null 2>&1; then
 	printf 'news; ?\n'

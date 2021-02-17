@@ -29,10 +29,10 @@ help_msg()
 {
 	cat << EOF
 Usage:
-  ${progname} [-s] - pack target according to options given
+	${progname} [-s] - pack target according to options given
 
 Options:
-  -s                   Pack secure files
+	-s		Pack secure files
 
 EOF
 }

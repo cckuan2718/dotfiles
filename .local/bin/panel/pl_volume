@@ -1,29 +1,33 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-#	* sndio(volume) module.
+# *   This program belongs to panel(1)
+# *   sndio(volume) module.
 # Dependency:
-#	* sndioctl(1)
+# *   sndioctl(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 sndioctl output.level output.mute | awk -F '=' '
 	/output\.level/ {
-		volume=$2 * 100
+		volume = $2 * 100
 	}
+
 	/output\.mute/ {
-		mute=$2
+		mute = $2
 	}
+
 	END {
 		if (mute == 1) {
 			printf("volume; MUTE\n")
 		} else {
 			if (volume >= 66) {
-				icon=""
+				icon = ""
 			} else if (volume >= 33) {
-				icon=""
+				icon = ""
 			} else {
-				icon=""
+				icon = ""
 			}
 			printf("volume;%s %02d%%\n", icon, volume)
 		}

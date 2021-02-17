@@ -1,11 +1,13 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-#	* backlight module.
+# *   This program belongs to panel(1).
+# *   backlight module.
 # Dependency:
-#	* backlight(1)
+# *   backlight(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 printf 'backlight; %02.0f%%\n' "$(xbacklight -get)"
 

@@ -1,11 +1,13 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-# 	* Displays number of unread mail and an loading icon if updating.
+# *   This program belongs to panel(1).
+# *   Displays number of unread mail and an loading icon if updating.
 # Dependency:
-#	* nil
+# *   nil
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 readonly unread_cnt="$(
 	find "${HOME}"/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new/* \
@@ -24,3 +26,4 @@ if pgrep -q mbsync; then
 else
 	printf 'mailbox; %d %s\n' "${unread_cnt}" "${local_mail}"
 fi
+

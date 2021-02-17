@@ -1,14 +1,24 @@
 #!/bin/sh
 # Program:
-#	* use mpc to manipulate mpd
-#	* show current mpd status using notify-send
+# *   Use mpc to manipulate mpd
+# *   Show current mpd status using notify-send
 # Dependency:
-#	* mpc(1)
-#	* notify-send(1)
+# *   mpc(1)
+# *   notify-send(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
 
 export MPC_FORMAT='[[%albumartist% - %album%\n]%title%]|[%file%]'
+
+#
+# Proper
+#
+
+readonly progname="$(basename "$0")"
 
 case "$(mpc "$@")" in
 *playing*)

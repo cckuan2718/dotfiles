@@ -1,12 +1,14 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-#	* iostatus module.
-#	* Display disk transfer
+# *   This program belongs to panel(1).
+# *   iostatus module.
+# *   Display disk transfer
 # Dependency:
-#	* iostat(1)
+# *   iostat(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 readonly transfer_rx="$(
 	iostat -d -w 3 -c 2 \

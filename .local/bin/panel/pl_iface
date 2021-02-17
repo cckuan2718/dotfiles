@@ -1,31 +1,39 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel
-#	* iface module
-#	* Display Network status
+# *   This program belongs to panel(1).
+# *   iface module
+# *   Display Network status
 # Dependency:
-#	* ifconfig(1)
+# *   ifconfig(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
 
 readonly trunk_iface='trunk0'
 readonly wired_iface='em0'
 readonly wireless_iface='iwn0'
 
+#
+# Proper
+#
+
 trunk_status="$(
 ifconfig "${trunk_iface}" \
-    | awk '
+| awk '
 	BEGIN {
-		have_ip="0"
-		active_iface="nil"
+		have_ip = "0"
+		active_iface = "nil"
 	}
 
 	/^[[:space:]]*inet.*netmask/ {
-		have_ip="1"
+		have_ip = "1"
 	}
 
 	/port.*active/ {
-		active_iface=$1
+		active_iface = $1
 	}
 
 	END {

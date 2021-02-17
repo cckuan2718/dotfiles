@@ -1,14 +1,16 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel.
-# 	* Calls various modules to fire up various modules, which send their
-# 	  outputs to "${PANEL_FIFO}". Then calls panel_statusline(1) to read
-# 	  from "${PANEL_FIFO}" and form a valid status line. Finally, display
-# 	  status line by calling xsetroot(1).
+# *   This program belongs to panel.
+# *   Calls various modules to fire up various modules, which send their
+#     outputs to "${PANEL_FIFO}". Then calls panel_statusline(1) to read
+#     from "${PANEL_FIFO}" and form a valid status line. Finally, display
+#     status line by calling xsetroot(1).
 # Dependency:
-#	* panel_statusline(1)
+# *   panel_statusline(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 [ -e "${PANEL_FIFO}" ] && rm "${PANEL_FIFO}"
 mkfifo "${PANEL_FIFO}"

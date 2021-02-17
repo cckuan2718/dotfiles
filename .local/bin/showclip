@@ -1,11 +1,13 @@
 #!/bin/sh
 # Program:
-#	* show clipboard content using notify-send
+# *   show clipboard content using notify-send
 # Dependency:
-#	* xclip
-#	* notify-send
+# *   xclip(1)
+# *   notify-send(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 readonly clipboard="$(xclip -o -selection clipboard)"
 readonly primary="$(xclip -o -selection primary)"

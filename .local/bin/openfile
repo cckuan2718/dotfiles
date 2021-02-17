@@ -1,14 +1,25 @@
 #!/bin/sh
 # Program:
-#	* Helps open a file with xdg-open from neomutt in a external program
-# 	  without weird side effects.
+# *   Helps open a file with xdg-open from neomutt in a external program
+#     without weird side effects.
 # Dependency:
-#	* xdg-open(1)
+# *   xdg-open(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-tempdir="${XDG_CACHE_HOME:-${HOME}/.cache}/mutt-wizard/files"
-file="${tempdir}/$(basename "$1")"
+#
+# Settings
+#
+
+readonly tempdir="${XDG_CACHE_HOME:-${HOME}/.cache}/mutt-wizard/files"
+
+#
+# Proper
+#
+
+readonly progname="$(basename "$0")"
+readonly file="${tempdir}/$(basename "$1")"
+
 mkdir -p "${tempdir}"
 cp -f "$1" "${file}"
 ${OPENER:-xdg-open} "${file}" >/dev/null 2>&1

@@ -1,18 +1,26 @@
 #!/bin/sh
 # Program:
-#	* change volume
-#	* notify volume with a progress bar
+# *   Change volume
 # Dependency:
-# 	* notify-send(1)
-#	* progress_string.sh
-# 	* sndioctl(1)
+# *   notify-send(1)
+# *   progress_string.sh
+# *   sndioctl(1)
+# *   update_panel(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-# Setting: step for increment or decrement
+#
+# Settings
+#
+
 readonly step='0.05'
 
-# Query sndioctl for the current volume and whether or not the speaker is muted
+#
+# Proper
+#
+
+readonly progname="$(basename "$0")"
+
 case "$1" in
 # Decrease
 '-d')

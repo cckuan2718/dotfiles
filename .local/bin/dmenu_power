@@ -1,15 +1,16 @@
 #!/bin/sh
-# Alias:
-# 	* A dmenu wrapper script for power management.
+# Program:
+# *   A dmenu wrapper script for power management.
 # Dependency:
-# 	* dmenu(1)
-#	* prompt.sh
+# *   dmenu(1)
+# *   prompt.sh
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 # shellcheck source=/dev/null
 . prompt.sh
 
+readonly progname="$(basename "$0")"
 readonly menu='lock
 leave window manager
 hibernate
@@ -17,8 +18,7 @@ reboot
 shutdown'
 
 readonly chosen="$(
-	printf '%s' "${menu}" | \
-	    dmenu -l 5 -p 'Power management option?'
+	printf '%s' "${menu}" | dmenu -l 5 -p 'Power management option?'
 )"
 
 case "${chosen}" in

@@ -1,11 +1,13 @@
 #!/bin/sh
 # Program:
-#	* Clears the build files of a LaTeX/XeLaTeX build.
-#	* I have vim run this file whenever I exit a .tex file.
+# *   Clears the build files of a LaTeX/XeLaTeX build.
+# *   I have vim run this file whenever I exit a .tex file.
 # Dependency:
-#	* nil
+# *   nil
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 case "$1" in
 *.tex)
@@ -25,7 +27,7 @@ case "$1" in
 	\) -delete
 	;;
 *)
-	printf 'Give .tex file as argument.\n'
+	printf '%s: Give .tex file as argument.\n' "${progname}" 1>&2
 	;;
 esac
 

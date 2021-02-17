@@ -1,16 +1,18 @@
 #!/bin/sh
 # Program:
-#	* This program belongs to panel
-#	* sensors module
-#	* Display cpu temperature and fan speed.
+# *   This program belongs to panel(1).
+# *   sensors module
+# *   Display cpu temperature and fan speed.
 # Dependency:
-#	* sysctl(1)
+# *   sysctl(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-cpu_temp="$(sysctl -n hw.sensors.cpu0.temp0 | cut -d ' ' -f 1)"
-cpu_temp="${cpu_temp%.*}"
-fan_speed="$(sysctl -n hw.sensors.acpithinkpad0.fan0 | cut -d ' ' -f 1)"
+readonly progname="$(basename "$0")"
+
+readonly cpu_temp="$(sysctl -n hw.sensors.cpu0.temp0 | cut -d ' ' -f 1)"
+readonly cpu_temp="${cpu_temp%.*}"
+readonly fan_speed="$(sysctl -n hw.sensors.acpithinkpad0.fan0 | cut -d ' ' -f 1)"
 
 if [ "${cpu_temp}" -ge '75' ];then
 	cpu_temp_icon=''

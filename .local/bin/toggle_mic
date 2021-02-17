@@ -1,14 +1,16 @@
 #!/bin/sh
 # Program:
-#	* toggle mic and send mic status using notify-send
+# *   toggle mic and send mic status using notify-send
 # Dependency:
-#	* notify-send(1)
-#	* sndioctl(1)
+# *   notify-send(1)
+# *   sndioctl(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 
-if test "$(sndioctl -n input.mute=!)" = '1'; then
+readonly progname="$(basename "$0")"
+
+if [ "$(sndioctl -n input.mute=!)" = '1' ]; then
 	notify-send --hint="string:synchronous:mic" --urgency=low "Mic" \
 		"switched OFF"
 else
