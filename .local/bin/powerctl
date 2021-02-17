@@ -1,0 +1,61 @@
+#!/bin/sh
+# Program:
+# *   A dmenu wrapper script for power management.
+# *   When given '-i', enter interactive mode.
+# Dependency:
+# *   dmenu(1)
+# *   mpc(1)
+# *   prompt.sh
+# *   sndioctl(1)
+# Author:
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+
+readonly progname="$(basename "$0")"
+
+if [ "$1" = '-i' ]; then
+	# shellcheck source=/dev/null
+	. prompt.sh
+
+	readonly action="$(
+		printf 'lockscreen\nleavewm\nsuspend\nreboot\nshutdown' \
+		    | dmenu -l 5 -p 'Power management option?'
+	)"
+else
+	readonly action="$1"
+fi
+
+case "${action}" in
+'lockscreen')
+	sndioctl -q output.mute='1'
+	mpc -q pause
+	pkill -USR1 xidle
+	;;
+'leavewm')
+	pkill -qu "$(id -u)" '^dwm$'
+	;;
+'suspend')
+	zzz
+	;;
+'reboot')
+	prompt "${action} now?" || exit 0
+	xsetroot -cursor_name watch
+	sync
+	sync
+	sync
+	doas shutdown -r now
+	;;
+'shutdown')
+	prompt "${action} now?" || exit 0
+	xsetroot -cursor_name watch
+	sync
+	sync
+	sync
+	doas shutdown -p now
+	;;
+*)
+	printf '%s: unknown action %s\n' "${progname}" "${action}" 1>&2
+	exit 1
+	;;
+esac
+

@@ -3,7 +3,7 @@
 # *   This script is used by apmd
 # *   Lock screen before suspend
 # Dependency:
-# *   lockscreen(1)
+# *   powerctl(1)
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
@@ -14,5 +14,5 @@ doas -u "${suspend_user}" env DISPLAY=':0' \
     XAUTHORITY="/home/${suspend_user}/.Xauthority" \
     HOME="/home/${suspend_user}" \
     MPD_HOST="/home/${suspend_user}/.config/mpd/socket" \
-    /home/${suspend_user}/.local/bin/lockscreen
+    "/home/${suspend_user}/.local/bin/powerctl" lockscreen
 
