@@ -28,6 +28,7 @@ export QT_IM_MODULE=fcitx
 setxkbmap -option caps:swapescape &  # swap Esc & Capslock
 xset r rate 300 50 &                 # increase key speed via a rate change
 xset b off &                         # turn off bell
+xset s off &                         # disable screen saver blanking
 xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation' 1 &
 xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation Button' 2 &
 xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation Axes' 6 7 4 5 &

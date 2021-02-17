@@ -45,6 +45,8 @@ XLock.invalid:     Authorization Failed
 XLock.timeout:     5
 XLock.font:        -misc-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
 XLock.planfont:    -misc-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
+XLock.background:  #282828
+XLock.foreground:  #ebdbb2
 
 !
 ! Gruvbox dark theme
