@@ -11,9 +11,9 @@
 . prompt.sh
 
 readonly progname="$(basename "$0")"
-readonly menu='lock
+readonly menu='lock screen
 leave window manager
-hibernate
+suspend
 reboot
 shutdown'
 
@@ -22,13 +22,13 @@ readonly chosen="$(
 )"
 
 case "${chosen}" in
-'lock')
+'lock screen')
 	lockscreen
 	;;
 'leave window manager')
 	pkill -qu "$(id -u)" '^dwm$'
 	;;
-'hibernate')
+'suspend')
 	zzz
 	;;
 'reboot')
