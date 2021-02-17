@@ -173,8 +173,8 @@ set -A complete_tmux_1 --  \
 
 # Base utils
 alias cls='clear'
-alias cp='cp -iv'
 alias cmpr='diff -up'
+alias cp='cp -iv'
 alias df='df -h'
 alias du='du -h'
 alias ll='ls -aFhl'
@@ -184,6 +184,7 @@ alias p='ps -l'
 alias pwd='pwd -P'
 alias rm='rm -iv'
 alias ssh='TERM=xterm ssh'
+alias svi='doas vi'
 
 # Ksh
 alias bye='exit'
