@@ -1,16 +1,26 @@
 #!/bin/sh
 # Program:
-# 	* change screen backlight
-# 	* notify backlight with a progress bar
+# *   Change screen backlight
+# *   Notify backlight with a progress bar
 # Dependency:
-# 	* notify-send(1)
-#	* progress_string.sh
-# 	* xbacklight(1)
+# *   notify-send(1)
+# *   update_panel(1)
+# *   xbacklight(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-# Setting: step for increment or decrement
+#
+# Setting
+#
+
+# % to incresse or decrease backlight
 readonly step='10'
+
+#
+# Proper
+#
+
+readonly progname="$(basename "$0")"
 
 case "$1" in
 '-d')

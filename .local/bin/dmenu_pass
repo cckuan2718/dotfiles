@@ -1,14 +1,23 @@
 #!/bin/sh
 # Program:
-#	* quickly copy a password to the clipboard from pass
+# *   Quickly copy a password to the clipboard from pass
 # Dependency:
-# 	* pass(1)
-# 	* dmenu(1)
+# *   pass(1)
+# *   dmenu(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
+
+readonly pass_dir="${PASSWORD_STORE_DIR:-${HOME}/.password-store}"
+
+#
+# Proper
+#
 
 readonly progname="$(basename "$0")"
-readonly pass_dir="${PASSWORD_STORE_DIR:-${HOME}/.password-store}"
 
 readonly passwd_name="$(
 	find "${pass_dir}" -type f \! -name '*.gpg-id' -print \

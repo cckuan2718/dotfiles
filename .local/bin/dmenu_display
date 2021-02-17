@@ -1,10 +1,12 @@
 #!/bin/sh
 # Program:
-#	* Select and change display layout
+# *   Select and change display layout
 # Dependency:
-# 	* dmenu(1)
+# *   dmenu(1)
+# *   setbg(1)
+# *   xrandr(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 #
 # Settings
@@ -62,12 +64,12 @@ scale()
 if [ -n "$1" ]; then
 	readonly sel="$1"
 else
-	readonly opts='bl (both, EXTernal display at LEFT side)
-br (both, EXTernal display at RIGHT side)
-me  (mirror, optimize for EXTernal display)
-mi  (mirror, optimize for INTernal display)
-oe (only external display)
-oi (only internal display)'
+	readonly opts='bl (BOTH, EXTernal display at LEFT side)
+br (BOTH, EXTernal display at RIGHT side)
+me  (MIRROR, optimize for EXTernal display)
+mi  (MIRROR, optimize for INTernal display)
+oe (ONLY EXTernal display)
+oi (ONLY INTernal display)'
 
 	readonly sel="$(
 		printf '%s' "${opts}" | dmenu -l 6 -p 'Which layout?'

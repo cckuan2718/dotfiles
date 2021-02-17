@@ -1,22 +1,18 @@
 #!/bin/sh
-# Alias:
-#	* A dmenu prompt to unmount drives.
-#	* Provides you with mounted partitions, select one to unmount.
-#	* Drives mounted at /, /boot and /home will not be options to unmount.
+# Program:
+# *   A dmenu prompt to unmount drives.
+# *   Provides you with mounted partitions, select one to unmount.
+# *   Drives mounted at /, /boot and /home will not be options to unmount.
 # Dependency:
-# 	* dmenu(1)
-#	* prompt.sh
+# *   dmenu(1)
+# *   prompt.sh
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 # shellcheck source=/dev/null
 . prompt.sh
 
 readonly progname="$(basename "$0")"
-
-#
-# Functions
-#
 
 notify()
 {
@@ -32,9 +28,9 @@ unmountdisk() {
 	)"
 	[ -z "${chosen}" ] && exit 1
 
-	chosen_disk="$(		printf '%s' "${chosen}" | cut -d ' ' -f 1)"
-	chosen_mountpoint="$(	printf '%s' "${chosen}" | cut -d ' ' -f 3)"
-	chosen_fstype="$(	printf '%s' "${chosen}" | cut -d ' ' -f 5)"
+	chosen_disk="$(	     printf '%s' "${chosen}" | cut -d ' ' -f 1)"
+	chosen_mountpoint="$(printf '%s' "${chosen}" | cut -d ' ' -f 3)"
+	chosen_fstype="$(    printf '%s' "${chosen}" | cut -d ' ' -f 5)"
 	if [ -z "${chosen_disk}" ] \
 	    || [ -z "${chosen_mountpoint}" ] \
 	    || [ -z "${chosen_fstype}" ]; then
@@ -52,10 +48,6 @@ unmountdisk() {
 		notify "${chosen_disk} unmounted from ${chosen_mountpoint}."
 	fi
 }
-
-#
-# Proper
-#
 
 readonly disks="$(mount | grep '/mnt')"
 

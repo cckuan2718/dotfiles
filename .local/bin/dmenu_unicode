@@ -1,15 +1,24 @@
 #!/bin/sh
 # Program:
-# 	* The famous "get a menu of emojis to copy" script.
+# *   The famous "get a menu of emojis to copy" script.
 # Dependency:
-# 	* dmenu(1)
-# 	* notify-send(1)
-# 	* xclip(1)
+# *   dmenu(1)
+# *   notify-send(1)
+# *   xclip(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
+
+readonly emoji_file="${HOME}/.local/share/data/emoji"
+
+#
+# Proper
+#
 
 readonly progname="$(basename "$0")"
-readonly emoji_file="${HOME}/.local/share/data/emoji"
 
 readonly chosen="$(
 	cut -d ';' -f 1 "${emoji_file}" \

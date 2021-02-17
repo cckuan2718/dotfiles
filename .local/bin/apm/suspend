@@ -1,12 +1,13 @@
 #!/bin/sh
 # Program:
-# 	* This script is used by apmd
-# 	* Lock screen before suspend
+# *   This script is used by apmd
+# *   Lock screen before suspend
 # Dependency:
-# 	* lock_screen(1)
+# *   lockscreen(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+readonly progname="$(basename "$0")"
 readonly suspend_user='cckuan'
 
 doas -u "${suspend_user}" env DISPLAY=':0' \

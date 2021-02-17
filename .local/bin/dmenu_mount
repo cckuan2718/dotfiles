@@ -1,54 +1,55 @@
 #!/bin/sh
 # Program:
-#	* Gives a dmenu prompt to mount unmounted drives and Android phones. If
-#	  they're in /etc/fstab, they'll be mounted automatically. Otherwise,
-# 	  you'll be prompted to give a mountpoint from already existsing
-# 	  directories. If you input a novel directory, it will prompt you to
-# 	  create that directory.
+# *   Gives a dmenu prompt to mount unmounted drives. If
+#     they're in /etc/fstab, they'll be mounted automatically. Otherwise,
+#     you'll be prompted to give a mountpoint from already existsing
+#     directories. If you input a novel directory, it will prompt you to
+#     create that directory.
 # Dependency:
-# 	* dmenu(1)
-# 	* mount.exfat-fuse(1)
-#	* prompt.sh
+# *   dmenu(1)
+# *   mount.exfat-fuse(1)
+# *   prompt.sh
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 #
 # Setting
 #
 
 readonly exclude_disks='sd0|sd1' # Extended regex
-readonly progname="$(basename "$0")"
+
+#
+# Proper
+#
 
 # shellcheck source=/dev/null
 . prompt.sh
 
-#
-# Functions
-#
+readonly progname="$(basename "$0")"
 
 lsdisk()
 {
 	for disk in ${disks}; do
 		doas -n disklabel -h "${disk}" \
-		    | awk -v disk="${disk}" '
-		        /^label: / {
-			    sub("^label: ", "", $0);
-			    sub("[[:blank:]]*$", "", $0);
-			    label = $0;
-		        }
+		| awk -v disk="${disk}" '
+			/^label: / {
+				sub("^label: ", "", $0);
+				sub("[[:blank:]]*$", "", $0);
+				label = $0;
+			}
 
-		        /^total sectors: / {
-			    total_bytes = $NF;
-		        }
+			/^total sectors: / {
+				total_bytes = $NF;
+			}
 
-		        /^[[:blank:]]+[[:alpha:]]:/ {
-			    if ($1 == "c:" || $4 == "swap") {
-				next;
-			    }
-			    printf("/dev/%s%c %10s %10s (%s, total bytes: %s)\n",
-				disk, $1, $2, $4, label, total_bytes);
-		        }
-		    '
+			/^[[:blank:]]+[[:alpha:]]:/ {
+				if ($1 == "c:" || $4 == "swap") {
+					next;
+				}
+				printf("/dev/%s%c %10s %10s (%s, total bytes: %s)\n",
+				    disk, $1, $2, $4, label, total_bytes);
+			}
+		'
 	done
 }
 
@@ -149,10 +150,6 @@ notify()
 	    --hint="string:synchronous:${progname}" "${progname}" \
 	    "$@"
 }
-
-#
-# Proper
-#
 
 readonly disks="$(
 	sysctl -n hw.disknames \

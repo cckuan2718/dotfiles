@@ -15,6 +15,9 @@
 
 readonly progname="$(basename "$0")"
 
+print_filename_flag='0'
+t_flag='0'
+
 extract_archive()
 {
 	file="$1"
@@ -82,8 +85,8 @@ Usage:
 	${progname} [-ht] file... - extract files using correct program
 
 Options:
-	-h                   Show this message and exit.
-	-t                   List contents of archive.
+	-h		Show this message and exit.
+	-t		List contents of archive.
 
 Supported file type:
 	tar
@@ -154,9 +157,6 @@ hline()
 	printf "%${COLUMNS:-$(tput cols)}s" '-' | tr ' ' '-'
 }
 
-t_flag='0'
-print_filename_flag='0'
-
 while getopts 'ht' opt; do
 	case "${opt}" in
 	'h')
@@ -172,7 +172,6 @@ while getopts 'ht' opt; do
 		;;
 	esac
 done
-
 shift "$((OPTIND - 1))"
 
 if [ "$#" -gt '1' ]; then

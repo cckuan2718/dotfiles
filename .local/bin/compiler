@@ -1,19 +1,21 @@
 #!/bin/sh
 # Program:
-#	* This script will compile or run another finishing operation on a
-# 	  document. I have this script run via vim.
-#	* Compiles .tex.
-#	* Note that .tex files which you wish to compile with XeLaTeX should
-#	  have the string "xelatex" somewhere in a comment/command in the first
-#	  5 lines.
+# *   This script will compile or run another finishing operation on a
+#     document. I have this script run via vim.
+# *   Compiles *.tex and *.md
+# *   Note that *.tex files which you wish to compile with XeLaTeX should
+#     have the string "xelatex" somewhere in a comment/command in the first
+#     5 lines.
 # Dependency:
-#	* pdflatex(1), xelatex(1), bibtex(1)
-# 	* discount
+# *   pdflatex(1), xelatex(1), bibtex(1)
+# *   discount(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+readonly progname="$(basename "$0")"
 
 textype() {
-	if { head -n 5 "${file}" | grep -i -q 'xelatex'; }; then
+	if head -n 5 "${file}" | grep -i -q 'xelatex'; then
 		cmd='xelatex'
 	else
 		cmd='pdflatex'

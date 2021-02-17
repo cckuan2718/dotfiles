@@ -1,12 +1,23 @@
 #!/bin/sh
 # Program:
-#	* Select and open cheatsheet
+# *   Select and open cheatsheet
 # Dependency:
-# 	* dmenu(1)
+# *   dmenu(1)
+# *   xdg-open(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
+
+#
+# Settings
+#
 
 readonly csdir="${HOME}/documents/"
+
+#
+# Proper
+#
+
+readonly progname="$(basename "$0")"
 
 cd "${csdir}" || exit 1
 
