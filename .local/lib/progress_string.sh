@@ -1,15 +1,15 @@
 #!/bin/sh
 # Function:
-#	* print progress string
+# *   print progress string
 # Usage:
-#	* progress_string <length> <perc> <filled_icon> <lead_icon> <unfilled_icon>
-#	* there should not be any leading 0 in <perc>, leading 0 in number may
-#	  cause the number to be treat as octant
-#	* For instance:
-#	  $ progress_string.sh 10 '=' '>' '-' 50
-#	  ====>-----
+# *   progress_string <length> <perc> <filled_icon> <lead_icon> <unfilled_icon>
+# *   there should not be any leading 0 in <perc>, leading 0 in number may
+#     cause the number to be treat as octant
+# *   For instance:
+#     $ progress_string.sh 10 '=' '>' '-' 50
+#     ====>-----
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 progress_string()
 {

@@ -1,13 +1,13 @@
 #!/bin/sh
 # Function:
-#	* A dmenu binary prompt script.
-#	* Gives a dmenu prompt labeled with $1
+# *   A dmenu binary prompt script.
+# *   Gives a dmenu prompt labeled with $1
 # Usage:
-# 	* prompt 'Do you want to shutdown?'
+# *   prompt 'Do you want to shutdown?'
 # Dependency:
-#	* dmenu(1)
+# *   dmenu(1)
 # Author:
-#       * Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 prompt()
 {
