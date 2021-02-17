@@ -6,28 +6,45 @@
 ! xterm
 !
 
-XTerm.termName: xterm-256color
-XTerm.vt100.locale: true
+XTerm.termName:                xterm-256color
+XTerm.vt100.locale:            true
 ! Make Alt instead send a ^[ (escape) key
-XTerm.vt100.metaSendsEscape: true
-XTerm.vt100.saveLines: 4096
-XTerm.vt100.scrollBar: false
+XTerm.vt100.metaSendsEscape:   true
+XTerm.vt100.saveLines:         4096
+XTerm.vt100.scrollBar:         false
 XTerm.vt100.selectToClipboard: true
-XTerm.vt100.translations: #override \n \
-    Alt <Key>C: copy-selection(CLIPBOARD) \n \
-    Alt <Key>V: insert-selection(CLIPBOARD)
-XTerm.vt100.faceName: Inconsolata:size=14:antialias=true
-XTerm.vt100.cursorBlink: true
-XTerm.vt100.cursorUnderLine: true
+XTerm.vt100.translations:      #override \n \
+    Alt <Key>C:                copy-selection(CLIPBOARD) \n \
+    Alt <Key>V:                insert-selection(CLIPBOARD)
+XTerm.vt100.faceName:          Inconsolata:size=14:antialias=true
+XTerm.vt100.cursorBlink:       true
+XTerm.vt100.cursorUnderLine:   true
 
 !
-! Misc
+! xidle
 !
 
-Sxiv.font: xft:inconsolata:size=12:antialias=true:hinting=true
+XIdle*position: no
+XIdle*delay:    2
 
-Xcursor.theme: Paper
-Xcursor.size: 25
+!
+! xlock
+!
+
+XLock.dpmsoff:     1
+XLock.description: off
+XLock.sound:       off
+XLock.echokeys:    on
+XLock.echokey:     *
+XLock.info:
+XLock.mode:        blank
+XLock.allowroot:   off
+XLock.username:    Login:\040\040\040\040
+XLock.password:    Password:
+XLock.invalid:     Authorization Failed
+XLock.timeout:     5
+XLock.font:        -misc-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
+XLock.planfont:    -misc-fixed-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
 
 !
 ! Gruvbox dark theme
@@ -61,4 +78,13 @@ Xcursor.size: 25
 ! LightGrey + White
 *color7:  #a89984
 *color15: #ebdbb2
+
+!
+! Miscellaneous
+!
+
+Sxiv.font: xft:inconsolata:size=12:antialias=true:hinting=true
+
+Xcursor.theme: Paper
+Xcursor.size: 25
 

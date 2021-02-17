@@ -14,5 +14,5 @@ doas -u "${suspend_user}" env DISPLAY=':0' \
     XAUTHORITY="/home/${suspend_user}/.Xauthority" \
     HOME="/home/${suspend_user}" \
     MPD_HOST="/home/${suspend_user}/.config/mpd/socket" \
-    /home/${suspend_user}/.local/bin/lockscreen -s
+    /home/${suspend_user}/.local/bin/lockscreen
 

@@ -1,52 +1,15 @@
 #!/bin/sh
 # Program:
-# *   Lock screen using i3lock, using blured screen shot as background
-# *   Mute sound and pause mpd befor lock screen
+# *   Lock screen using xlock
+# *   Mute sound and pause mpd before lock screen
 # Dependency:
-# *   ffmpeg(1)
-# *   i3lock(1)
-# *   jot(1)
-# *   xrandr(1)
+# *   mpc(1)
+# *   sndioctl(1)
+# *   xlock(1)
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-#
-# Settings
-#
-
-readonly tmpbg='/tmp/lock_screen.png'              # Modified screenshot
-readonly lock="${HOME}/.local/share/data/lock.png" # Lock image
-
-#
-# Proper
-#
-
-readonly res="$(
-	xrandr \
-	    | grep 'current' \
-	    | sed -E 's/.*current ([0-9]+) x ([0-9]+).*/\1x\2/'
-)"
-
-ffmpeg -f x11grab -video_size "${res}" -y -i "${DISPLAY}" -i "${lock}" \
-    -filter_complex 'boxblur=5:1,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2' \
-    -vframes 1 "${tmpbg}" -loglevel quiet
-
-sndioctl -q output.mute=1
+sndioctl -q output.mute='1'
 mpc -q pause
-
-case "$1" in
-# suspend
-'-s')
-	i3lock --show-failed-attempts --image="${tmpbg}"
-	;;
-*)
-	xset +dpms dpms 5 5 5
-	pkill -SIGUSR1 dunst
-	i3lock --nofork --show-failed-attempts --image="${tmpbg}"
-	pkill -SIGUSR2 dunst
-	xset +dpms dpms 600 600 600
-	;;
-esac
-
-rm "${tmpbg}"
+pkill -USR1 xidle
 
