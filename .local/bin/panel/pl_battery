@@ -10,7 +10,7 @@
 readonly progname="$(basename "$0")"
 
 readonly capacity="$(apm -l)"
-readonly ac_status="$(apm -a)"
+ac_status="$(apm -a)"
 
 # If it is discharging and capacity is lower than 25%, we will add a
 # '' as a warning.
