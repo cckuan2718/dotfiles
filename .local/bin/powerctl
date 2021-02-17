@@ -1,7 +1,9 @@
 #!/bin/sh
 # Program:
-# *   A dmenu wrapper script for power management.
-# *   When given '-i', enter interactive mode.
+# *   Script for power management.
+# Usage:
+# *   ./powerctl [-i|<action>]
+# *   -i Interactive mode. Choose which action to take
 # Dependency:
 # *   dmenu(1)
 # *   mpc(1)

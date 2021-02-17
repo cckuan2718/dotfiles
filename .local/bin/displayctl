@@ -1,6 +1,9 @@
 #!/bin/sh
 # Program:
 # *   Select and change display layout
+# Usage:
+# *   ./displayctl [-i|<layout>]
+# *   -i Interactive mode. Choose the kind of layout to use
 # Dependency:
 # *   dmenu(1)
 # *   setbg(1)
@@ -61,9 +64,7 @@ scale()
 	'
 }
 
-if [ -n "$1" ]; then
-	readonly sel="$1"
-else
+if [ "$1" = '-i' ]; then
 	readonly opts='bl (BOTH, EXTernal display at LEFT side)
 br (BOTH, EXTernal display at RIGHT side)
 me  (MIRROR, optimize for EXTernal display)
@@ -71,12 +72,14 @@ mi  (MIRROR, optimize for INTernal display)
 oe (ONLY EXTernal display)
 oi (ONLY INTernal display)'
 
-	readonly sel="$(
+	readonly layout="$(
 		printf '%s' "${opts}" | dmenu -l 6 -p 'Which layout?'
 	)"
+else
+	readonly layout="$1"
 fi
 
-case "${sel}" in
+case "${layout}" in
 bl*)
 	xrandr --output "${int}" --auto --scale '1.0x1.0' \
 	    --output "${ext}" --left-of "${int}" --auto --scale '1.0x1.0'
@@ -109,7 +112,7 @@ oi*)
 	    --output "${ext}" --off
 	;;
 *)
-	printf '%s: unknown option %s\n' "${progname}" "${sel}" 1>&2
+	printf '%s: unknown layout %s\n' "${progname}" "${layout}" 1>&2
 	exit 1
 esac
 
