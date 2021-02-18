@@ -89,7 +89,7 @@ br*)
 	    --output "${ext}" --right-of "${int}" --auto --scale '1.0x1.0'
 	;;
 m*)
-	case "${sel}" in
+	case "${layout}" in
 	me*)
 		prim="${ext}"
 		sec="${int}"
