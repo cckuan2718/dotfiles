@@ -6,11 +6,12 @@
 #     from "${PANEL_FIFO}" and form a valid status line. Finally, display
 #     status line by calling xsetroot(1).
 # Dependency:
-# *   panel_statusline(1)
+# *   panel_bar(1)
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly progname="$(basename "$0")"
+export PANEL_FIFO="${PANEL_FIFO:-/tmp/panel_$(id -u)}"
 
 [ -e "${PANEL_FIFO}" ] && rm "${PANEL_FIFO}"
 mkfifo "${PANEL_FIFO}"
