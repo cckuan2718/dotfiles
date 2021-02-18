@@ -2,7 +2,7 @@
 # Program:
 # *   This program belongs to panel.
 # *   Calls various modules to fire up various modules, which send their
-#     outputs to "${PANEL_FIFO}". Then calls panel_statusline(1) to read
+#     outputs to "${PANEL_FIFO}". Then calls panel_bar(1) to read
 #     from "${PANEL_FIFO}" and form a valid status line. Finally, display
 #     status line by calling xsetroot(1).
 # Dependency:
@@ -84,8 +84,8 @@ while true; do
 done > "${PANEL_FIFO}" &
 
 panel_bar < "${PANEL_FIFO}" \
-    | while read -r line; do
-    	xsetroot -name " ${line} "
-    done &
+| while read -r line; do
+	xsetroot -name " ${line} "
+done &
 
 wait

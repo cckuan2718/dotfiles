@@ -7,7 +7,7 @@
 userresources="${HOME}/.Xresources"
 usermodmap="${HOME}/.Xmodmap"
 [ -f "${userresources}" ] && xrdb -merge "${userresources}"
-[ -f "${usermodmap}" ] && xmodmap "${usermodmap}"
+[ -f "${usermodmap}"    ] && xmodmap "${usermodmap}"
 
 # Source ksh startup file
 [ -r "${HOME}/.profile" ] && . "${HOME}/.profile"
