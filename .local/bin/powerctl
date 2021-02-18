@@ -20,8 +20,8 @@ if [ "$1" = '-i' ]; then
 	. prompt.sh
 
 	readonly action="$(
-		printf 'lockscreen\nleavewm\nsuspend\nreboot\nshutdown' \
-		    | dmenu -l 5 -p 'Power management option?'
+		printf 'lockscreen\nleavewm\nsuspend\nhibernate\nreboot\nshutdown' \
+		    | dmenu -l 6 -p 'Power management option?'
 	)"
 else
 	readonly action="$1"
@@ -37,7 +37,11 @@ case "${action}" in
 	pkill -qu "$(id -u)" '^dwm$'
 	;;
 'suspend')
-	zzz
+	apm -z
+	;;
+'hibernate')
+	prompt "${action} now?" || exit 0
+	apm -Z
 	;;
 'reboot')
 	prompt "${action} now?" || exit 0
