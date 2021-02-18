@@ -6,15 +6,11 @@
 # merge in defaults and keymaps
 userresources="${HOME}/.Xresources"
 usermodmap="${HOME}/.Xmodmap"
-if [ -f "${userresources}" ]; then
-	xrdb -merge "${userresources}"
-fi
-if [ -f "${usermodmap}" ]; then
-	xmodmap "${usermodmap}"
-fi
+[ -f "${userresources}" ] && xrdb -merge "${userresources}"
+[ -f "${usermodmap}" ] && xmodmap "${usermodmap}"
 
 # Source ksh startup file
-test -r "${HOME}/.profile" && . "${HOME}/.profile"
+[ -r "${HOME}/.profile" ] && . "${HOME}/.profile"
 
 # Set locale
 export LC_CTYPE='en_US.UTF-8'
@@ -42,7 +38,7 @@ dunst > /dev/null &
 fcitx -r -d -s 3 > /dev/null &
 setbg &
 picom > /dev/null &
-{ [ ! -s ~/.config/mpd/mpd.pid ] && mpd; } &
+{ [ ! -s "${HOME}/.config/mpd/mpd.pid" ] && mpd; } &
 pass core > /dev/null 2>&1 &
 xidle &
 
