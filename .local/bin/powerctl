@@ -34,7 +34,7 @@ case "${action}" in
 	pkill -USR1 xidle
 	;;
 'leavewm')
-	pkill -qu "$(id -u)" '^dwm$'
+	pkill -qu "$(id -u)" '^dwm$|^bspwm$'
 	;;
 'suspend')
 	apm -z
