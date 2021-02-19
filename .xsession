@@ -43,6 +43,10 @@ pass core > /dev/null 2>&1 &
 xidle &
 
 # start window manager
-{ pkill -u "$(id -u)" -qf panel; panel; } &
-exec dwm
+if command -v 'dwm' > /dev/null; then
+	{ pkill -u "$(id -u)" -qf panel; panel; } &
+	exec dwm
+else
+	exec cwm
+fi
 
