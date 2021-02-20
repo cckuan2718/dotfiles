@@ -1,5 +1,3 @@
 [user]
 	name = Chang, Chu-Kuan
 	email = cckuan@changchukuan.name
-[filter "irssi_password"]
-	clean = sed
