@@ -54,7 +54,7 @@ if command -v 'dwm' > /dev/null; then
 	{ pkill -u "$(id -u)" -qf '^/bin/sh.*panel'; panel; } &
 	dwm
 else
-	cwm
+       cwm -c "${XDG_CONFIG_HOME:-${HOME}/.config}/cwm/cwmrc"
 fi
 
 exit_xsession
