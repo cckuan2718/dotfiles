@@ -1,14 +1,14 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 /* static const char *fonts[]          = { "monospace:size=10" }; */
-static const char *fonts[]          = { "Inconsolata:size=11" };
+static const char *fonts[]          = { "Iosevka:size=11" };
 /* static const char dmenufont[]       = "monospace:size=10"; */
-static const char dmenufont[]       = "Inconsolata:size=16";
+static const char dmenufont[]       = "Iosevka:size=16";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -100,7 +100,6 @@ static const char *volume_dec_cmd[]                = { "volumectl", "-d", NULL  
 static const char *volume_inc_cmd[]                = { "volumectl", "-i", NULL        };
 static const char *volume_toggle_cmd[]             = { "volumectl", "-t", NULL        };
 static const char *www_browser_cmd[]               = { "firefox", NULL                };
-static const char *www_browser_tor_cmd[]           = { "tor-browser", NULL            };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -147,7 +146,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_minus,     spawn, {.v = backlight_dec_cmd }          },
 	{ MODKEY|ShiftMask,             XK_equal,     spawn, {.v = backlight_inc_cmd }          },
 	{ MODKEY,                       XK_n,         spawn, {.v = mpc_status_cmd }             },
-	{ MODKEY|ControlMask,           XK_n,         spawn, {.v = music_player_cmd }           },
+	{ MODKEY|ShiftMask,             XK_n,         spawn, {.v = music_player_cmd }           },
 	{ MODKEY,                       XK_Up,        spawn, {.v = mpc_stop_cmd }               },
 	{ MODKEY,                       XK_Down,      spawn, {.v = mpc_toggle_cmd }             },
 	{ MODKEY,                       XK_Left,      spawn, {.v = mpc_prev_cmd }               },
@@ -160,12 +159,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_F7,        spawn, {.v = displayctl_default_cmd }     },
 	{ MODKEY,                       XK_F9,        spawn, {.v = dmenu_mount_cmd }            },
 	{ MODKEY,                       XK_F10,       spawn, {.v = dmenu_unmount_cmd }          },
-	{ MODKEY|ControlMask,           XK_p,         spawn, {.v = dmenu_pass_cmd }             },
-	{ MODKEY|ControlMask,           XK_e,         spawn, {.v = email_client_cmd }           },
-	{ MODKEY|ControlMask,           XK_r,         spawn, {.v = htop_cmd }                   },
-	{ MODKEY|ControlMask,           XK_Insert,    spawn, {.v = show_clipboard_cmd }         },
-	{ MODKEY|ControlMask,           XK_w,         spawn, {.v = www_browser_cmd }            },
-	{ MODKEY|ControlMask|ShiftMask, XK_w,         spawn, {.v = www_browser_tor_cmd }        },
+	{ MODKEY|ShiftMask,             XK_p,         spawn, {.v = dmenu_pass_cmd }             },
+	{ MODKEY|ShiftMask,             XK_e,         spawn, {.v = email_client_cmd }           },
+	{ MODKEY|ShiftMask,             XK_r,         spawn, {.v = htop_cmd }                   },
+	{ MODKEY,                       XK_Insert,    spawn, {.v = show_clipboard_cmd }         },
+	{ MODKEY|ShiftMask,             XK_w,         spawn, {.v = www_browser_cmd }            },
 	{ MODKEY,                       XK_w,         view,  {.ui = 1 << 4}                     },
 
 };
