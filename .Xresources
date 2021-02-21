@@ -26,7 +26,7 @@ XTerm.vt100.translations:       #override \n \
     Alt <KeyPress>J:                scroll-forw(1, line) \n \
     Alt <KeyPress>D:                scroll-forw(1, halfpage) \n \
     Alt <KeyPress>K:                scroll-back(1, line) \n \
-    Alt <KeyPress>U:                scroll-forw(1, halfpage) \n \
+    Alt <KeyPress>U:                scroll-back(1, halfpage) \n \
     Alt <Key>minus:                 smaller-vt-font() \n \
     Alt <Key>plus:                  larger-vt-font() \n \
     Alt <Key>f:                     set-vt-font(d) \n \
