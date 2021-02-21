@@ -6,28 +6,30 @@
 ! xterm
 !
 
-XTerm.termName:                xterm-256color
-XTerm.vt100.locale:            false
-XTerm.vt100.utf8:              true
+XTerm.termName:                 xterm-256color
+XTerm.vt100.locale:             false
+XTerm.vt100.utf8:               true
 ! Make 'Alt' key behave as on other terminal emulators
-XTerm.vt100.metaSendsEscape:   true
-XTerm.vt100.saveLines:         4096
-XTerm.vt100.scrollBar:         false
-XTerm.vt100.selectToClipboard: true
-XTerm.vt100.faceName:          Iosevka:size=14:antialias=true
-XTerm.vt100.cursorBlink:       false
-XTerm.vt100.cursorUnderLine:   false
-Xterm.vt100.OmitTranslation:   fullscreen
-XTerm.vt100.translations:      #override \n \
-    Alt <Key>C:                    copy-selection(CLIPBOARD) \n \
-    Alt <Key>V:                    insert-selection(CLIPBOARD) \n \
-    Alt <KeyPress>J:               scroll-forw(1, line) \n \
-    Alt <KeyPress>D:               scroll-forw(1, halfpage) \n \
-    Alt <KeyPress>K:               scroll-back(1, line) \n \
-    Alt <KeyPress>U:               scroll-forw(1, halfpage) \n \
-    Alt <Key>minus:                smaller-vt-font() \n \
-    Alt <Key>plus:                 larger-vt-font() \n \
-    Alt <Key>f:                    set-vt-font(d) \n \
+XTerm.vt100.metaSendsEscape:    true
+XTerm.vt100.saveLines:          4096
+XTerm.vt100.scrollBar:          false
+XTerm.vt100.selectToClipboard:  true
+XTerm.vt100.faceName:           Iosevka
+XTerm.ct100.FaceNameDoublesize: Noto Sans CJK
+XTerm.vt100.faceSize:           14
+XTerm.vt100.cursorBlink:        false
+XTerm.vt100.cursorUnderLine:    false
+Xterm.vt100.OmitTranslation:    fullscreen
+XTerm.vt100.translations:       #override \n \
+    Alt <Key>C:                     copy-selection(CLIPBOARD) \n \
+    Alt <Key>V:                     insert-selection(CLIPBOARD) \n \
+    Alt <KeyPress>J:                scroll-forw(1, line) \n \
+    Alt <KeyPress>D:                scroll-forw(1, halfpage) \n \
+    Alt <KeyPress>K:                scroll-back(1, line) \n \
+    Alt <KeyPress>U:                scroll-forw(1, halfpage) \n \
+    Alt <Key>minus:                 smaller-vt-font() \n \
+    Alt <Key>plus:                  larger-vt-font() \n \
+    Alt <Key>f:                     set-vt-font(d) \n \
 
 !
 ! xidle

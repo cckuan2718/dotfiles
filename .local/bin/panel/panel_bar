@@ -13,7 +13,7 @@
 # Settings
 #
 
-readonly sep='  '
+readonly sep=' '
 
 #
 # Proper
