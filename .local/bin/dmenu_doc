@@ -7,22 +7,12 @@
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
-#
-# Settings
-#
-
-readonly csdir="${HOME}/documents/"
-
-#
-# Proper
-#
-
 readonly progname="$(basename "$0")"
 
-cd "${csdir}" || exit 1
+cd "${HOME}" || exit 1
 
 file="$(
-	find . -type f -maxdepth 2 \
+	find 'downloads' 'documents' -type f -maxdepth 2 \
 	    | sed 's|^\./||' \
 	    | dmenu -i -l 5 -p 'Which document to open?'
 )"
