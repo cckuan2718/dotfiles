@@ -1,3 +1,5 @@
 [user]
 	name = Chang, Chu-Kuan
 	email = cckuan@changchukuan.name
+[pager]
+	branch = false
