@@ -35,7 +35,7 @@ xset s off -dpms &                    # disable screen saver blanking
 xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation' 1 &
 xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation Button' 2 &
 xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation Axes' 6 7 4 5 &
-xbacklight -set 60 -steps 1 -time 5 & # set brightness
+xbacklight -set 25 -steps 1 -time 5 & # set brightness
 sndioctl -q input.mute='1' &          # mute microphone
 sndioctl -q output.mute='1' &         # mute speaker
 sndioctl -q output.level='0.250' &    # set initial volume
