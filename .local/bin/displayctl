@@ -67,8 +67,8 @@ scale()
 if [ "$1" = '-i' ]; then
 	readonly opts='bl (BOTH, EXTernal display at LEFT side)
 br (BOTH, EXTernal display at RIGHT side)
-me  (MIRROR, optimize for EXTernal display)
-mi  (MIRROR, optimize for INTernal display)
+me (MIRROR, optimize for EXTernal display)
+mi (MIRROR, optimize for INTernal display)
 oe (ONLY EXTernal display)
 oi (ONLY INTernal display)'
 
