@@ -29,7 +29,7 @@ umask 022
 export BROWSER='firefox'
 export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar'
 export EDITOR='nvim'
-export MANPAGER='more'
+export MANPAGER='less'
 export OPENER='xdg-open'
 export PAGER='less'
 export READER='zathura'
