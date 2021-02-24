@@ -102,13 +102,14 @@ process_fname()
 		;;
 	esac
 
-	printf '%s%s' "${fname}" "${extension}" \
+	printf '%s' "${fname}" \
 	    | iconv --to-code=utf-8 \
 	    | tr "${sep}" ' ' \
 	    | tr -d '[:punct:]' \
 	    | tr '[:upper:]' '[:lower:]' \
 	    | tr -s ' ' '_' \
 	    | sed -e 's/^_//' -e 's/_$//'
+	printf '%s' "${extension}"
 }
 
 while getopts 'de:h' opt; do
