@@ -11,7 +11,7 @@ map K zoom in
 map J zoom out
 map i recolor
 map p print
-set font "inconsolata 16"
+set font "Iosevka 16"
 set selection-clipboard clipboard
 
 # color
