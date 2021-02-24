@@ -173,7 +173,7 @@ set -A complete_tmux_1 --  \
 
 # Base utils
 alias cls='clear'
-alias cmpr='diff -up'
+alias cmpr='diff -uNp'
 alias cp='cp -iv'
 alias df='df -h'
 alias du='du -ch'
@@ -194,6 +194,11 @@ alias logout='exit'
 alias o='fg %-'
 alias quit='exit'
 alias r='fc -s'
+
+# OpenBSD Ports
+alias portsql='sqlite3 /usr/local/share/sqlports'
+alias portslol='make 2>&1 | /usr/ports/infrastructure/bin/portslogger .'
+alias portsrc='cd $(make show=WRKSRC)'
 
 # Miscellaneous
 alias bc='bc -l'
@@ -222,7 +227,7 @@ alias cddt="cd  "${XDG_DATA_HOME:-${HOME}/.local/share}"   "
 alias cdh="cd   "${HOME}"                                  "
 alias cdm="cd   "${HOME}/music"                            "
 alias cdmn='cd  /mnt                                       '
-alias cdp='cd /usr/ports                                   '
+alias cdp='cd   /usr/ports                                 '
 alias cdpp="cd  "${HOME}/pictures"                         "
 alias cdsc="cd  "${HOME}/.local/bin"                       "
 alias cdsrc="cd "${HOME}/.local/src"                       "
@@ -333,13 +338,6 @@ fh()
 	    | cut -f '2-')"
 }
 
-# Shellcheck all scripts
-sc()
-{
-	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f \
-	    -exec shellcheck {} +
-}
-
 # cd on quit in lf
 lfcd()
 {
@@ -350,6 +348,29 @@ lfcd()
 	if [ -d "${dir}" ] && [ "${dir}" != "$(pwd)" ]; then
 		cd "${dir}"
 	fi
+}
+
+portsdiff()
+{
+	cvs diff > "/usr/ports/mystuff/${PWD##*/}.diff"
+	less "/usr/ports/mystuff/${PWD##*/}.diff"
+}
+
+portslessdiff()
+{
+	less "/usr/ports/mystuff/${PWD##*/}.diff"
+}
+
+portsgrep()
+{
+	cd /usr/ports && grep "$@" ./*/*/Makefile ./*/*/*/Makefile
+}
+
+# Shellcheck all scripts
+sc()
+{
+	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f \
+	    -exec shellcheck {} +
 }
 
 ;;
