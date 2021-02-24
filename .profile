@@ -52,6 +52,13 @@ export XDG_DATA_HOME="${HOME}/.local/share"
 export LESSHISTFILE='/dev/null'
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/password-store"
 
+# nnn
+export NNN_BMS="c:${HOME}/.config;d:${HOME}/documents;D:${HOME}/downloads;\
+h:${HOME};m:${HOME}/music;M:/mnt;p:${HOME}/pictures;s:${HOME}/.local/bin;\
+t:${HOME}/tmp;v:${HOME}/videos"
+export NNN_COLORS='3245'
+export NNN_OPTS='AdeHoRU'
+
 # Miscellaneous
 export FZF_DEFAULT_OPTS='--bind=alt-h:up,alt-l:down --no-mouse
 --color=fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
