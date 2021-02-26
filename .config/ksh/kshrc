@@ -183,7 +183,6 @@ alias mv='mv -iv'
 alias p='ps -l'
 alias pwd='pwd -P'
 alias rm='rm -iv'
-alias ssh='TERM=xterm ssh'
 alias svi='doas vi'
 
 # Ksh
@@ -207,6 +206,7 @@ alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites -
 alias e="${EDITOR}"
 alias g='git'
 alias irssi="irssi --home="${XDG_CONFIG_HOME:-${HOME}/.config}/irssi""
+alias pg="${PAGER}"
 alias lynx='lynx -vikeys -accept_all_cookies -scrollbar'
 alias rsize='eval $(resize)'
 alias tad='tmux new-session -A -s default'
@@ -338,18 +338,7 @@ fh()
 	    | cut -f '2-')"
 }
 
-# cd on quit in lf
-lfcd()
-{
-	tmpf="$(mktemp)" || return 1
-	lf -last-dir-path="${tmpf}" "$@"
-	dir="$(cat "${tmpf}")"
-	rm -f "${tmpf}"
-	if [ -d "${dir}" ] && [ "${dir}" != "$(pwd)" ]; then
-		cd "${dir}"
-	fi
-}
-
+# cd on quit in nnn
 n()
 {
 	# Block nesting of nnn in subshells
@@ -369,17 +358,20 @@ n()
 	fi
 }
 
+# Generate and view port diff
 portsdiff()
 {
 	cvs diff > "/usr/ports/mystuff/${PWD##*/}.diff"
 	less "/usr/ports/mystuff/${PWD##*/}.diff"
 }
 
+# View port diff
 portslessdiff()
 {
 	less "/usr/ports/mystuff/${PWD##*/}.diff"
 }
 
+# Grep in port Makefiles
 portsgrep()
 {
 	cd /usr/ports && grep "$@" ./*/*/Makefile ./*/*/*/Makefile
