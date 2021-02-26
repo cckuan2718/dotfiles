@@ -93,7 +93,7 @@ XLock.foreground:  #ebdbb2
 ! Miscellaneous
 !
 
-Sxiv.font: xft:inconsolata:size=12:antialias=true:hinting=true
+Sxiv.font: xft:Iosevka:size=12:antialias=true:hinting=true
 
 Xcursor.theme: Paper
 Xcursor.size: 25
