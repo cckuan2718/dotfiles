@@ -6,7 +6,7 @@
 # sh/ksh initialization
 #
 
-PATH="${HOME}/.local/bin:${HOME}/.local/bin/panel:${HOME}/.local/lib:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/sbin:/usr/games"
+PATH="${HOME}/.local/bin:${HOME}/.local/bin/panel:${HOME}/.local/lib:/bin:/sbin:/usr/ports/infrastructure/bin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/sbin:/usr/games"
 export PATH HOME TERM
 
 # In order to have an interactive (as opposed to login) shell process a startup
@@ -37,7 +37,8 @@ export TERMINAL='xterm'
 export VISUAL='nvim'
 
 # Default command options
-export LESS='-eiQRM'
+export LESS=' -FgiJMQRWX -x 8 '
+export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 export LYNX_LSS='/usr/local/share/doc/lynx/lynx_doc/samples/opaque.lss'
 export MORE='-is'
 export NEXINIT='set autoindent noexpandtab extended noflash ignorecase number report=1 ruler searchincr showmatch showmode tabstop=8'
