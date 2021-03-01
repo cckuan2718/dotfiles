@@ -7,12 +7,11 @@
 "
 
 call plug#begin('~/.local/share/nvim/plugged')
-" Plugin List Start
 
 Plug 'morhetz/gruvbox'
 Plug 'rlue/vim-barbaric'
+Plug 'vimwiki/vimwiki'
 
-" Plugin List End
 call plug#end()
 
 "
@@ -122,8 +121,8 @@ set showmode
 " Number of screen lines to use for the command-line
 set cmdheight=1
 
-" neomutt compatible
-au BufRead /tmp/neomutt-* setlocal textwidth=72 colorcolumn=72
+" neomutt/mutt compatible
+au BufRead /tmp/neomutt-*,/tmp/mutt-* setlocal textwidth=72 colorcolumn=72
 
 "
 " Colors and Fonts
@@ -134,7 +133,7 @@ syntax enable
 
 " Color scheme
 try
-    colorscheme gruvbox
+	colorscheme gruvbox
 catch
 endtry
 
@@ -235,8 +234,8 @@ autocmd BufRead,BufNewFile *.tex       set filetype=tex
 
 " view .h file as c header file, not c++
 augroup project
-  autocmd!
-  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+	autocmd!
+	autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 augroup END
 
 let g:tex_flavor = "latex"
@@ -250,8 +249,16 @@ let g:is_posix = 1
 nnoremap <leader>c :w! \| !compiler "%:p"<CR>
 " Open corresponding .pdf/.html or preview
 nnoremap <leader>p :!opout "%:p"<CR>
-" Check file in shellcheck:
+" Check file in shellcheck
 nnoremap <leader>s :!clear && shellcheck "%:p"<CR>
+
+"
+" Plugins
+"
+
+let g:vimwiki_list = [{'path': '~/documents/notes/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_global_ext = 0
 
 "
 " Miscellaneous
