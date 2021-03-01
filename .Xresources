@@ -96,5 +96,5 @@ XLock.foreground:  #ebdbb2
 Sxiv.font: xft:Iosevka:size=12:antialias=true:hinting=true
 
 Xcursor.theme: Paper
-Xcursor.size: 25
+Xcursor.size:  25
 
