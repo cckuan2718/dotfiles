@@ -207,6 +207,7 @@ alias e="${EDITOR}"
 alias g='git'
 alias irssi="irssi --home="${XDG_CONFIG_HOME:-${HOME}/.config}/irssi""
 alias lynx='lynx -vikeys -accept_all_cookies -scrollbar'
+alias notes="nvim "${HOME}/documents/notes/index.md""
 alias pg="${PAGER}"
 alias rsize='eval $(resize)'
 alias tad='tmux new-session -A -s default'
@@ -214,7 +215,6 @@ alias tai="tmux new-session -A -s irssi irssi --home=${XDG_CONFIG_HOME:-${HOME}/
 alias tmux="tmux -f "${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf""
 alias trem='transmission-remote'
 alias v="${EDITOR}"
-alias wiki='nvim -c VimwikiIndex'
 alias yt='youtube-dl --add-metadata --ignore-errors'
 alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 alias z='zathura'

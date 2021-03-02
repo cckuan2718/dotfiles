@@ -10,7 +10,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'morhetz/gruvbox'
 Plug 'rlue/vim-barbaric'
-Plug 'vimwiki/vimwiki'
 
 call plug#end()
 
@@ -251,14 +250,6 @@ nnoremap <leader>c :w! \| !compiler "%:p"<CR>
 nnoremap <leader>p :!opout "%:p"<CR>
 " Check file in shellcheck
 nnoremap <leader>s :!clear && shellcheck "%:p"<CR>
-
-"
-" Plugins
-"
-
-let g:vimwiki_list = [{'path': '~/documents/notes/',
-                      \ 'syntax': 'markdown', 'ext': '.md'}]
-let g:vimwiki_global_ext = 0
 
 "
 " Miscellaneous
