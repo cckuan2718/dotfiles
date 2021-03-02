@@ -6,6 +6,12 @@
 " Vim-Plug
 "
 
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+	    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync
+endif
+
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'morhetz/gruvbox'
@@ -159,8 +165,6 @@ set cindent
 
 " press F8 to disable auto indenting
 nnoremap <F8> :setl noai nocin nosi inde=<CR>
-" tab = 2 space width for html file
-autocmd FileType html,groff,tex setlocal shiftwidth=2 tabstop=2
 
 " Wrap lines
 set wrap
@@ -184,11 +188,11 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Show all open buffers and their status
-nmap <leader>lb :ls<CR>
+nmap <leader>bl :ls<CR>
 " delete the current buffer
-nmap <leader>db :ls<CR>:bdelete<Space>
+nmap <leader>bd :ls<CR>:bdelete<Space>
 " add a new buffer for a file to the buffer list without opening the file
-nmap <leader>ab :badd<CR>
+nmap <leader>ba :badd<CR>
 
 " go to buffer
 nnoremap gb :ls<CR>:buffer<Space>
@@ -224,7 +228,7 @@ map 0 ^
 autocmd BufWritePre * %s/\s\+$//e
 
 "
-" Highlight
+" Filetype
 "
 
 " Ensure files are read as what I want:
@@ -237,11 +241,24 @@ augroup project
 	autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 augroup END
 
+" view .tex file in latex syntax, not plain tex
 let g:tex_flavor = "latex"
+
+" shell script in posix standard
 let g:is_posix = 1
 
+" tab = 2 space width for html file
+autocmd FileType html,groff,tex setlocal shiftwidth=2 tabstop=2
+
+" Run xrdb whenever Xdefaults or Xresources are updated.
+autocmd BufWritePost *Xresources,*Xdefaults !xrdb "%:p"
+
+" Runs a script that cleans out tex build files whenever I close out of a .tex file.
+autocmd VimLeave *.tex !texclear "%:p"
+
+
 "
-" Compiling, shellcheck, and previewing
+" External command
 "
 
 " Compile latex document
@@ -250,13 +267,4 @@ nnoremap <leader>c :w! \| !compiler "%:p"<CR>
 nnoremap <leader>p :!opout "%:p"<CR>
 " Check file in shellcheck
 nnoremap <leader>s :!clear && shellcheck "%:p"<CR>
-
-"
-" Miscellaneous
-"
-
-" Run xrdb whenever Xdefaults or Xresources are updated.
-autocmd BufWritePost *Xresources,*Xdefaults !xrdb "%:p"
-" Runs a script that cleans out tex build files whenever I close out of a .tex file.
-autocmd VimLeave *.tex !texclear "%:p"
 
