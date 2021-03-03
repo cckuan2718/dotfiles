@@ -19,6 +19,7 @@ XTerm.vt100.faceSize:           14
 XTerm.vt100.cursorBlink:        false
 XTerm.vt100.cursorUnderLine:    false
 XTerm.vt100.OmitTranslation:    fullscreen
+XTerm.vt100.internalBorder:     5
 XTerm.vt100.translations:       #override \n \
     Alt <Key>C:                     copy-selection(CLIPBOARD) \n \
     Alt <Key>V:                     insert-selection(CLIPBOARD) \n \
