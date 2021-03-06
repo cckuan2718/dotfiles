@@ -51,7 +51,8 @@ for cmd in 'cbk' 'g' 'git'; do
 	    worktree
 	set -A "complete_${cmd}" -- \
 	    master \
-	    origin
+	    origin \
+	    upstream
 done
 
 set -A complete_cdio_1 -- \
@@ -383,6 +384,13 @@ sc()
 {
 	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f \
 	    -exec shellcheck {} +
+}
+
+# search word in wordnet
+sw()
+{
+	wn "$*" -over
+	return 0
 }
 
 ;;
