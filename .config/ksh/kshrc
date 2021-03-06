@@ -389,7 +389,7 @@ sc()
 # search word in wordnet
 sw()
 {
-	wn "$*" -over
+	wn "$*" -over | "${PAGER:-less}"
 	return 0
 }
 
