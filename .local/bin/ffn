@@ -4,7 +4,9 @@
 #     [:lower:], replace "${sep}" with '_'
 # *   while given '-d', do not rename file, only print new
 #     file name
-# *   while given '-e <arg>', file name is preprocessed by sed -e <arg>...
+# *   while given '-e <arg>', file name is preprocessed by sed -e <arg>, can
+#     only be invoked once in current implementation
+# *   while given '-i', do not convert [:upper:] to [:lower:]
 # *   while run without filename, read filename from stdin
 # Dependency:
 # *   nil
@@ -17,7 +19,7 @@
 
 # Characters which will be replaced by '_', other [:punct:] not presented here
 # will be deleted
-readonly sep='[]()._-[:blank:]'
+readonly sep='\[\]()._\-[:blank:]'
 
 #
 # Proper
@@ -27,6 +29,7 @@ readonly progname="$(basename "$0")"
 
 d_flag='0'
 e_flag='0'
+i_flag='0'
 e_string=''
 
 
@@ -34,11 +37,12 @@ help_msg()
 {
 	cat << EOF
 Usage:
-	${progname} [-dh] [-e <command>] [file ...] - format filename
+	${progname} [-dih] [-e <command>] [file ...] - format filename
 
 Options:
 	-d		Perform a 'dry run'. Do not actually rename file.
-	-e <arg>	Preprocessed file name by sed -e <command>...
+	-e <arg>	Preprocessed file name by sed -e <command>
+	-i              case Insensitive, do not convert [:upper:] to [:lower:]
 	-h		Show this message and exit.
 
 EOF
@@ -82,14 +86,16 @@ process_fname()
 {
 	fname="$1"
 
+	# Preprocess filename with sed
 	if [ "${e_flag}" = '1' ]; then
-	# shellcheck disable=SC2086
-	if ! fname="$(printf '%s' "${fname}" | sed ${e_string})"; then
-		printf '%s: error executing sed %s\n' "${progname}" \
-		    "${e_string}" 1>&2
-		fi
+		# shellcheck disable=SC2086
+		if ! fname="$(printf '%s' "${fname}" | sed -e "${e_string}")"; then
+			printf '%s: error executing sed %s\n' "${progname}" \
+			    "${e_string}" 1>&2
+			fi
 	fi
 
+	# Isolate extension
 	case "${fname}" in
 	# file name with extension
 	*.*)
@@ -102,24 +108,33 @@ process_fname()
 		;;
 	esac
 
-	printf '%s' "${fname}" \
-	    | iconv --to-code=utf-8 \
-	    | tr "${sep}" ' ' \
-	    | tr -d '[:punct:]' \
-	    | tr '[:upper:]' '[:lower:]' \
-	    | tr -s ' ' '_' \
-	    | sed -e 's/^_//' -e 's/_$//'
-	printf '%s' "${extension}"
+	fname="$(
+		printf '%s' "${fname}" \
+		    | iconv --to-code=utf-8 \
+		    | tr "${sep}" ' ' \
+		    | tr -d '[:punct:]' \
+		    | tr -s ' ' '_' \
+		    | sed -e 's/^_//' -e 's/_$//'
+	)"
+
+	if [ "${i_flag}" = '0' ]; then
+		printf '%s' "${fname}" | tr '[:upper:]' '[:lower:]'
+	fi
+
+	printf '%s%s' "${fname}" "${extension}"
 }
 
-while getopts 'de:h' opt; do
+while getopts 'de:ih' opt; do
 	case "${opt}" in
 	'd')
 		d_flag='1'
 		;;
 	'e')
 		e_flag='1'
-		e_string="${e_string} -e '${OPTARG}'"
+		e_string="${OPTARG}"
+		;;
+	'i')
+		i_flag='1'
 		;;
 	'h')
 		help_msg
