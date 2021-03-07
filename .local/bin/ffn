@@ -89,7 +89,7 @@ process_fname()
 	# Preprocess filename with sed
 	if [ "${e_flag}" = '1' ]; then
 		# shellcheck disable=SC2086
-		if ! fname="$(printf '%s' "${fname}" | sed -e "${e_string}")"; then
+		if ! fname="$(printf '%s' "${fname}" | sed "${e_string}")"; then
 			printf '%s: error executing sed %s\n' "${progname}" \
 			    "${e_string}" 1>&2
 			fi
@@ -118,7 +118,7 @@ process_fname()
 	)"
 
 	if [ "${i_flag}" = '0' ]; then
-		printf '%s' "${fname}" | tr '[:upper:]' '[:lower:]'
+		fname="$(printf '%s' "${fname}" | tr '[:upper:]' '[:lower:]')"
 	fi
 
 	printf '%s%s' "${fname}" "${extension}"
