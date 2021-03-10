@@ -202,20 +202,21 @@ alias portsrc='cd $(make show=WRKSRC)'
 
 # Miscellaneous
 alias bc='bc -l'
+alias cb=' xclip -filter -selection clipboard'
 alias cbk="/usr/local/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
-alias e="${EDITOR}"
+alias e="${EDITOR:-vi}"
 alias g='git'
 alias irssi="irssi --home="${XDG_CONFIG_HOME:-${HOME}/.config}/irssi""
 alias notes="nvim "${HOME}/documents/notes/index.md""
-alias pg="${PAGER}"
+alias pg="${PAGER:-less}"
 alias rsize='eval $(resize)'
 alias tad='tmux new-session -A -s default'
 alias tai="tmux new-session -A -s irssi irssi --home=${XDG_CONFIG_HOME:-${HOME}/.config}/irssi"
-alias tb="${TERM_BROWSER}"
+alias tb="${TERM_BROWSER:-lynx}"
 alias tmux="tmux -f "${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf""
 alias trem='transmission-remote'
-alias v="${EDITOR}"
+alias v="${EDITOR:-vi}"
 alias yt='youtube-dl --add-metadata --ignore-errors'
 alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 alias z='zathura'
