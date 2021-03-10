@@ -44,17 +44,19 @@ Useful scripts are in `~/.local/bin/` and `~/.local/lib/`. Some worth noting
 are:
 
 *   ffn - format filename
-    *   ffn turns nasty filename:
-        ```
-	[AnimeRG] One Piece - {701..730} [720p] [Dual-Audio] [Multi-Sub] [x265] [pseudo].mkv
-	```
-        into command line firendly name:
-        ```
-	animerg_one_piece_701_730_720p_dual_audio_multi_sub_x265_pseudo.mkv
-	```
-    *   Can be used in script to produce sensible filename
+
+ffn turns nasty filename:
+```
+[AnimeRG] One Piece - {701..730} [720p] [Dual-Audio] [Multi-Sub] [x265] [pseudo].mkv
+```
+into command line firendly name:
+```
+animerg_one_piece_701_730_720p_dual_audio_multi_sub_x265_pseudo.mkv
+```
+
+ffn also can be used in script to produce sensible filename.
 *   ext - extract file
-    *   ext let you extract or list archive regardless of file types.
+ext let you extract or list archive regardless of file types.
 
 ## Installation
 
