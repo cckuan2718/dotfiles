@@ -43,7 +43,7 @@ Settings for various program are in `~/.config/` and `${HOME}`:
 Useful scripts are in `~/.local/bin/` and `~/.local/lib/`. Some worth noting
 are:
 
-*   ffn - format filename
+### ffn - format filename
 
 ffn turns nasty filename:
 ```
@@ -55,7 +55,8 @@ animerg_one_piece_701_730_720p_dual_audio_multi_sub_x265_pseudo.mkv
 ```
 
 ffn also can be used in script to produce sensible filename.
-*   ext - extract file
+
+### ext - extract file
 ext let you extract or list archive regardless of file types.
 
 ## Installation
