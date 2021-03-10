@@ -7,7 +7,8 @@
 # *   while given '-e <arg>', file name is preprocessed by sed -e <arg>, can
 #     only be invoked once in current implementation
 # *   while given '-i', do not convert [:upper:] to [:lower:]
-# *   while run without filename, read filename from stdin
+# *   while run without filename, read filename from stdin, and output
+#     formatted filenmae to stdout
 # Dependency:
 # *   nil
 # Author:
@@ -92,17 +93,15 @@ process_fname()
 		if ! fname="$(printf '%s' "${fname}" | sed "${e_string}")"; then
 			printf '%s: error executing sed %s\n' "${progname}" \
 			    "${e_string}" 1>&2
-			fi
+		fi
 	fi
 
 	# Isolate extension
 	case "${fname}" in
-	# file name with extension
 	*.*)
 		extension=".${fname##*.}"
 		fname="${fname%.*}"
 		;;
-	# file name without extension
 	*)
 		extension=''
 		;;
@@ -163,8 +162,9 @@ if [ "$#" -gt '0' ]; then # move files if file names are given
 	    "${success_file_cnt}" "${clean_file_cnt}" \
 	    "$((success_file_cnt + clean_file_cnt))" "${total_file_cnt}"
 else # read file name from stdin
-	read -r file
-	process_fname "${file}"
-	printf '\n'
+	while read -r line; do
+		process_fname "${line}"
+		printf '\n'
+	done
 fi
 
