@@ -13,28 +13,34 @@
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+readonly file="$1"
 readonly progname="$(basename "$0")"
 
 # If no url given. Opens browser. For using script as $BROWSER.
-[ -z "$1" ] && { "${BROWSER}"; exit 1; }
+if [ -z "${file}" ]; then
+	${BROWSER:-firefox}
+	exit 1
+fi
 
-case "$1" in
+case "${file}" in
 *mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*)
-	mpv -quiet "$1" > /dev/null 2>&1 &
+	mpv -quiet "${file}" > /dev/null 2>&1 &
 	;;
 *png|*jpg|*jpe|*jpeg|*gif)
-	curl -sL "$1" > "/tmp/$(echo "$1" | sed 's/.*\///')" \
-	    && sxiv -a "/tmp/$(echo "$1" | sed 's/.*\///')" > /dev/null \
-	        2>&1 &
+	if tmpfile="$(mktemp -t url_handler.XXXXXXXXXX)"; then
+		curl -sL "${file}" > "${tmpfile}" \
+		    && sxiv -a "${tmpfile}" > /dev/null 2>&1
+		rm -f "${tmpfile}"
+	fi &
 	;;
 *mp3|*flac|*opus|*mp3?source*)
-	curl -LO "$1" > /dev/null 2>&1 &
+	curl -LO "${file}" > /dev/null 2>&1 &
 	;;
 *)
-	if [ -f "$1" ]; then
-		"${TERMINAL}" -e "${EDITOR}" "$1"
+	if [ -f "${file}" ]; then
+		${TERMINAL:-xterm} -e ${EDITOR:-vi} "${file}" > /dev/null 2>&1 &
 	else
-		"${BROWSER}" "$1" > /dev/null 2>&1 &
+		${BROWSER:-firefox} "${file}" > /dev/null 2>&1 &
 	fi
 	;;
 esac
