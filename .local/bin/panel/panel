@@ -19,68 +19,23 @@ mkfifo "${PANEL_FIFO}"
 trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
 while true; do
-	pl_backlight
-	sleep 10
-done > "${PANEL_FIFO}" &
-
-while true; do
-	pl_bandwidth
-	sleep 5
-done > "${PANEL_FIFO}" &
-
-while true; do
-	pl_battery
-	sleep 10
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_clock
 	sleep 1
 done > "${PANEL_FIFO}" &
 
 while true; do
+	pl_backlight
+	pl_bandwidth
+	pl_battery
 	pl_diskio
-	sleep 5
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_iface
-	sleep 10
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_mailbox
-	sleep 10
-done > "${PANEL_FIFO}" &
-
-# while true; do
-# 	pl_music
-# 	sleep 10
-# done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_news
-	sleep 30
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_sensors
-	sleep 5
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_torrent
-	sleep 10
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_vmstatus
-	sleep 5
-done > "${PANEL_FIFO}" &
-
-while true; do
 	pl_volume
-	sleep 15
+	sleep 10
 done > "${PANEL_FIFO}" &
 
 panel_bar < "${PANEL_FIFO}" \
