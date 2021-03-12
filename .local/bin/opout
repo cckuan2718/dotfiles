@@ -10,6 +10,7 @@
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 readonly file="$(readlink -f "$1")"
 

@@ -17,6 +17,7 @@ readonly tempdir="${XDG_CACHE_HOME:-${HOME}/.cache}/mutt-wizard/files"
 # Proper
 #
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 readonly file="${tempdir}/$(basename "$1")"
 

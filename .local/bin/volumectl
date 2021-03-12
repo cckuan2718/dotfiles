@@ -19,6 +19,7 @@ readonly step='0.05'
 # Proper
 #
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 case "$1" in

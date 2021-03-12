@@ -19,6 +19,7 @@ readonly iface='trunk0'
 # Proper
 #
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 readonly rx_tx_rate_byte="$(

@@ -13,6 +13,7 @@
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 notify-send --urgency=normal --hint='string:synchronous:p2p' \

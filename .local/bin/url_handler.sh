@@ -14,6 +14,7 @@
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly file="$1"
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 # If no url given. Opens browser. For using script as $BROWSER.
@@ -38,7 +39,7 @@ case "${file}" in
 	;;
 *)
 	if [ -f "${file}" ]; then
-		${TERMINAL:-xterm} -e ${EDITOR:-vi} "${file}" > /dev/null 2>&1 &
+		${TERMINAL:-xterm} -e "${EDITOR:-vi}" "${file}" > /dev/null 2>&1 &
 	else
 		${BROWSER:-firefox} "${file}" > /dev/null 2>&1 &
 	fi

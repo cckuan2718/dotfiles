@@ -18,6 +18,7 @@ export MPC_FORMAT='[[%albumartist% - %album%\n]%title%]|[%file%]'
 # Proper
 #
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 case "$(mpc "$@")" in

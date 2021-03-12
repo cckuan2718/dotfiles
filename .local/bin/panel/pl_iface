@@ -20,6 +20,9 @@ readonly wireless_iface='iwn0'
 # Proper
 #
 
+# shellcheck disable=SC2034
+readonly progname="$(basename "$0")"
+
 trunk_status="$(
 ifconfig "${trunk_iface}" \
 | awk '

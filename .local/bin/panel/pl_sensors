@@ -8,6 +8,7 @@
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 cpu_temp="$(sysctl -n hw.sensors.cpu0.temp0 | cut -d ' ' -f 1)"
