@@ -8,6 +8,7 @@
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 case "$1" in

@@ -19,6 +19,7 @@ readonly sep=' '
 # Proper
 #
 
+# shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
 while read -r line; do
