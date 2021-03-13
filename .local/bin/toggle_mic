@@ -17,3 +17,4 @@ else
 	notify-send --hint="string:synchronous:mic" --urgency=low "Mic" \
 		"switched ON"
 fi
+
