@@ -164,6 +164,7 @@ color header blue          default ".*"
 color header brightmagenta default "^From"
 color header brightcyan    default "^Subject"
 color header brightwhite   default "^(CC|BCC)"
+color header brightwhite   default "^OpenPGP"
 
 color body brightred  default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
 color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
@@ -191,7 +192,7 @@ color body brightwhite default "^diff -.*"
 color body brightwhite default "^Index: .*"
 color body white       default "^---.*"
 color body white       default "^\\+\\+\\+.*"
-color body red         default "^-.*"
+color body red         default "^-[^-].*"
 color body green       default "^\\+.*"
 color body brightblue  default "^@@ .*"
 
