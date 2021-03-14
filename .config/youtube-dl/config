@@ -1,2 +1,4 @@
 -o %(title)s.%(ext)s
 --ignore-errors
+--no-playlist
+
