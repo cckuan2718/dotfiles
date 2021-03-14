@@ -25,7 +25,7 @@ set crypt_opportunistic_encrypt = yes
 set pgp_self_encrypt = yes
 set pgp_default_key = 3BFF0775354DC84B
 set fcc_clear = yes
-my_hdr OpenPGP: url=https://www.changchukuan.name/files/gpgkey.asc\; id=3BFF0775354DC84B
+my_hdr OpenPGP: url=https://www.changchukuan.name/gpgkey.asc\; id=3BFF0775354DC84B
 
 # Force Use SSL
 set ssl_starttls = yes
