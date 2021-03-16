@@ -22,8 +22,8 @@ Flatten .
 # Channel
 Channel core
 Expunge Both
-Master :core-remote:
-Slave :core-local:
+Far :core-remote:
+Near :core-local:
 Patterns * !\"[Gmail]/All Mail\"
 Create Both
 SyncState *
