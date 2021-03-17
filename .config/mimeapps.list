@@ -1,6 +1,7 @@
 [Default Applications]
 application/pdf=pdf.desktop;
 application/postscript=pdf.desktop;
+image/vnd.djvu=pdf.desktop
 application/rss+xml=rss.desktop
 application/x-bittorrent=torrent.desktop;
 image/gif=img.desktop;

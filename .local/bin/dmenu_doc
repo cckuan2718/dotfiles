@@ -13,7 +13,8 @@ readonly progname="$(basename "$0")"
 cd "${HOME}" || exit 1
 
 file="$(
-	find 'downloads' 'documents' -type f -maxdepth 2 \
+	find 'downloads' 'documents' -type f -maxdepth 5 \
+	    \( -name '*.pdf' -o -name '*djvu' \) \
 	    | sed 's|^\./||' \
 	    | dmenu -i -l 5 -p 'Which document to open?'
 )"
