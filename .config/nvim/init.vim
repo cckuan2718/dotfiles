@@ -14,6 +14,7 @@ endif
 
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'rlue/vim-barbaric'
 
@@ -120,8 +121,8 @@ set cursorline
 " 80 column mark
 set colorcolumn=80
 
-" Show mode
-set showmode
+" Do not Show mode
+set noshowmode
 
 " Number of screen lines to use for the command-line
 set cmdheight=1
@@ -212,10 +213,10 @@ map <leader>cd :cd %:p:h<CR>:pwd<CR>
 set laststatus=2
 
 " Format the status line
-set statusline=\ [%n]\ %F\ %<%h%w%m%r
-set statusline+=%=\ \ \ [FORMAT=%{&fileformat}]\ [TYPE=%Y]
-set statusline+=\ \ \ Ln:%02l/%02L\ Col:%02c\ %02p%%
-set statusline+=\ \ \ ASCII:%03b
+"set statusline=\ [%n]\ %F\ %<%h%w%m%r
+"set statusline+=%=\ \ \ [FORMAT=%{&fileformat}]\ [TYPE=%Y]
+"set statusline+=\ \ \ Ln:%02l/%02L\ Col:%02c\ %02p%%
+"set statusline+=\ \ \ ASCII:%03b
 
 "
 " Editing mappings
@@ -267,4 +268,12 @@ nnoremap <leader>c :w! \| !compiler "%:p"<CR>
 nnoremap <leader>p :!opout "%:p"<CR>
 " Check file in shellcheck
 nnoremap <leader>s :!clear && shellcheck "%:p"<CR>
+
+"
+" Plugins
+"
+
+let g:lightline = {
+      \ 'colorscheme': 'seoul256',
+      \ }
 
