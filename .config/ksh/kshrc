@@ -313,6 +313,7 @@ fec()
 	    \! -name '*pid*' \
 	    \! -name '*sql*' \
 	    \! -path '*GIMP*' \
+	    \! -path '*calibre*' \
 	    \! -path '*libreoffice*' \
 	    \! -path '*mpv/watch_later*' \
 	    \! -path '*plugin*' \
