@@ -4,7 +4,7 @@
 
 directory: ~/music
 
-library: ~/.local/share/data/musiclibrary.db
+library: ~/music/musiclibrary.db
 
 import:
     # Write metadata to music files
@@ -23,3 +23,4 @@ plugins: fetchart lastgenre
 
 ui:
     color: yes
+
