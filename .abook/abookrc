@@ -1,0 +1,71 @@
+#
+# ~/.abookrc
+#
+
+#
+#  Variables
+#
+
+# Automatically save database on exit
+set autosave=true
+
+# Specify how fields not declared with the 'field' command nor
+# in a view should be preserved while loading an abook database.
+set preserve_fields=standard
+
+# Format of an entry's line in the main abook screen
+set index_format=" {name:22} {email:40} {phone:12|workphone|mobile}"
+
+# Show all email addresses in list
+set show_all_emails=true
+
+# Return all email addresses to a mutt query
+set mutt_return_all_emails=true
+
+# Command used to print
+set print_command=/usr/bin/lpr
+
+# Command used to start the web browser
+set www_command=/usr/local/bin/lynx
+
+# Command used to start mutt
+set mutt_command=/usr/local/bin/neomutt
+
+# address style [eu|us|uk]
+set address_style=eu
+
+# use ASCII characters only
+set use_ascii_only=false
+
+# Defines whether to avoid adding addresses already in data
+set add_email_prevent_duplicates=false
+
+# field to be used with "sort by field" command
+set sort_field=nick
+
+# show cursor in main display
+set show_cursor=false
+
+# colors
+set use_colors = true
+set color_header_fg =         yellow
+set color_header_bg =         default
+set color_footer_fg =         yellow
+set color_footer_bg =         default
+set color_list_even_fg =      default
+set color_list_even_bg =      default
+set color_list_odd_fg =       green
+set color_list_odd_bg =       default
+set color_list_header_fg =    yellow
+set color_list_header_bg =    default
+set color_list_highlight_fg = black
+set color_list_highlight_bg = white
+set color_tab_border_fg =     green
+set color_tab_border_bg =     default
+set color_tab_label_fg =      yellow
+set color_tab_label_bg =      default
+set color_field_name_fg =     yellow
+set color_field_name_bg =     default
+set color_field_value_fg =    default
+set color_field_value_bg =    default
+
