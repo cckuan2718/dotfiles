@@ -81,11 +81,11 @@ fi
 
 case "${layout}" in
 bl*)
-	xrandr --output "${int}" --auto --scale '1.0x1.0' \
+	xrandr --output "${int}" --primary --auto --scale '1.0x1.0' \
 	    --output "${ext}" --left-of "${int}" --auto --scale '1.0x1.0'
 	;;
 br*)
-	xrandr --output "${int}" --auto --scale '1.0x1.0' \
+	xrandr --output "${int}" --primary --auto --scale '1.0x1.0' \
 	    --output "${ext}" --right-of "${int}" --auto --scale '1.0x1.0'
 	;;
 m*)
