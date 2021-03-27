@@ -35,11 +35,11 @@ set ssl_force_tls = yes
 set mbox_type = Maildir
 unmailboxes *
 
-set spoolfile = "+INBOX"
+set spoolfile = "+Inbox"
 set record = "+Sent"
 set postponed = "+Drafts"
 set trash = "+Trash"
-mailboxes "=INBOX" "=Drafts" "=Sent" "=Spam" "=Trash" "=Mlist" "=Sysadmin" "=DMARC" "=Archive" "=Archive.2021"
+mailboxes "=Inbox" "=Drafts" "=Sent" "=Spam" "=Trash" "=Mlist" "=Sysadmin" "=DMARC" "=Archive" "=Archive.2021"
 
 # Mailbox bindings
 bind index,pager gg noop
@@ -50,9 +50,9 @@ bind index gg first-entry
 
 macro index o "<shell-escape>mbsync -V core<enter>" "run mbsync to sync core"
 
-macro index,pager gi "<change-folder>=INBOX<enter>" "go to INBOX"
-macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to INBOX"
-macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to INBOX"
+macro index,pager gi "<change-folder>=Inbox<enter>" "go to Inbox"
+macro index,pager Mi ";<save-message>=Inbox<enter>" "move mail to Inbox"
+macro index,pager Ci ";<copy-message>=Inbox<enter>" "copy mail to Inbox"
 
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to Drafts"
 macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to Drafts"

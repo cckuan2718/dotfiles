@@ -16,7 +16,7 @@ CertificateFile /etc/ssl/cert.pem
 MaildirStore core-local
 Subfolders Verbatim
 Path ~/.local/share/mail/core/
-Inbox ~/.local/share/mail/core/INBOX
+Inbox ~/.local/share/mail/core/Inbox
 Flatten .
 
 # Channel
