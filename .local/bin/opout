@@ -17,7 +17,7 @@ readonly file="$(readlink -f "$1")"
 case "${file}" in
 *.html|*.md)
 	# shellcheck disable=SC2086
-	${TERMINAL:-st} -e ${TERM_BROWSER} "${file%.*}.html" > /dev/null 2>&1 &
+	${TERMINAL:-xterm} -e ${TERM_BROWSER} "${file%.*}.html" > /dev/null 2>&1 &
 	;;
 *.tex|*.m[dse]|*.[rR]md|*.mom|*.[0-9])
 	# shellcheck disable=SC2086
