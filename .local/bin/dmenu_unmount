@@ -53,7 +53,7 @@ readonly disks="$(mount | grep '/mnt')"
 
 if [ -z "${disks}" ]; then
 	notify 'No unmountable disk detected.'
-	exit 1
+	exit 0
 else
 	notify 'Umnountable disks detected.'
 	unmountdisk

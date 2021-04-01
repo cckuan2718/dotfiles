@@ -13,12 +13,6 @@
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 #
-# Setting
-#
-
-readonly exclude_disks='sd0|sd1' # Extended regex
-
-#
 # Proper
 #
 
@@ -29,8 +23,19 @@ readonly progname="$(basename "$0")"
 
 lsdisk()
 {
+	disks="$(
+		sysctl -n hw.disknames \
+		    | tr ',' '\n' \
+		    | cut -d ':' -f 1
+	)"
+
+	# 'or' collection of mounted partitions
+	already_mounted_partition_regex="$(
+		mount | cut -d ' ' -f 1 | paste -sd '|' -
+	)"
+
 	for disk in ${disks}; do
-		doas -n disklabel -h "${disk}" \
+		doas -n disklabel -h "${disk}" 2>/dev/null \
 		| awk -v disk="${disk}" '
 			/^label: / {
 				sub("^label: ", "", $0);
@@ -43,13 +48,14 @@ lsdisk()
 			}
 
 			/^[[:blank:]]+[[:alpha:]]:/ {
-				if ($1 == "c:" || $4 == "swap") {
+				if ($1 == "c:" || $4 == "swap" || $4 == "RAID") {
 					next;
 				}
 				printf("/dev/%s%c %10s %10s (%s, total bytes: %s)\n",
 				    disk, $1, $2, $4, label, total_bytes);
 			}
-		'
+		' \
+		| grep -vE "${already_mounted_partition_regex}"
 	done
 }
 
@@ -58,23 +64,15 @@ get_mount_point() {
 		mount \
 		    | awk '/.*\/mnt.*/ { printf("-not ( -path %s -prune ) ", $3) }'
 	)"
-	# shellcheck disable=SC2086
-	mount_point="$(
-		find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
-		    | dmenu -l 15 -p 'Type in mount point:'
-	)"
 
-	if [ ! -d "${mount_point}" ]; then
-		notify "${mount_point} does not exist."
-		exit 1
-	fi
+	# shellcheck disable=SC2086
+	find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
+	    | dmenu -l 15 -p 'Type in mount point:'
 }
 
 mountdisk() {
-	disk_info="$(lsdisk)"
-
 	chosen="$(
-		printf '%s' "${disk_info}" \
+		printf '%s' "$1" \
 		    | dmenu -l 15 -p 'Mount which drive?' \
 		    | tr -s ' '
 	)"
@@ -87,7 +85,7 @@ mountdisk() {
 	if [ "${chosen_fstype}" = 'NTFS' ]; then
 		chosen_fstype="$(
 			printf 'exFAT\nNTFS' \
-			    | dmenu -l 15 -p 'File system?' \
+			    | dmenu -l 15 -p 'Which File system?' \
 		)"
 	fi
 
@@ -97,12 +95,12 @@ mountdisk() {
 		exit 1
 	fi
 
-	if mount | grep -q "${chosen_disk}"; then
-		notify "${chosen_disk} already mounted."
+	mount_point="$(get_mount_point)"
+
+	if [ ! -d "${mount_point}" ]; then
+		notify "${mount_point} does not exist."
 		exit 1
 	fi
-
-	get_mount_point
 
 	prompt "Mount ${chosen_disk} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
 	    || exit 1
@@ -151,18 +149,14 @@ notify()
 	    "$@"
 }
 
-readonly disks="$(
-	sysctl -n hw.disknames \
-	    | tr ',' '\n' \
-	    | cut -d ':' -f 1 \
-	    | grep -Ev "${exclude_disks:-nil}"
-)"
+readonly disk_info="$(lsdisk)"
 
-if [ -z "${disks}" ]; then
+
+if [ -z "${disk_info}" ]; then
 	notify 'No mountable disk detected.'
-	exit 1
+	exit 0
 else
 	notify 'Mountable disks detected.'
-	mountdisk
+	mountdisk "${disk_info}"
 fi
 
