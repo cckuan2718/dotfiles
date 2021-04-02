@@ -30,7 +30,7 @@ lsdisk()
 	)"
 
 	# 'or' collection of mounted partitions
-	already_mounted_partition_regex="$(
+	already_mounted_disks_regex="$(
 		mount | cut -d ' ' -f 1 | paste -sd '|' -
 	)"
 
@@ -55,7 +55,7 @@ lsdisk()
 				    disk, $1, $2, $4, label, total_bytes);
 			}
 		' \
-		| grep -vE "${already_mounted_partition_regex}"
+		| grep -vE "${already_mounted_disks_regex}"
 	done
 }
 
@@ -150,7 +150,6 @@ notify()
 }
 
 readonly disk_info="$(lsdisk)"
-
 
 if [ -z "${disk_info}" ]; then
 	notify 'No mountable disk detected.'
