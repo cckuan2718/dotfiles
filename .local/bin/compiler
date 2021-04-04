@@ -40,7 +40,7 @@ cd "${dir}" || exit 1
 
 case "${ext}" in
 'md')
-	discount -o "${base_wo_ext}.html" "${file}"
+	lowdown -o "${base_wo_ext}.html" "${file}"
 	;;
 'tex')
 	textype
