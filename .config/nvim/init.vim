@@ -233,8 +233,8 @@ autocmd BufWritePre * %s/\s\+$//e
 "
 
 " Ensure files are read as what I want:
-autocmd BufRead,BufNewFile *kshrc      set filetype=sh
-autocmd BufRead,BufNewFile *.tex       set filetype=tex
+autocmd BufRead,BufNewFile *kshrc,*cvsrc set filetype=sh
+autocmd BufRead,BufNewFile *.tex         set filetype=tex
 
 " view .h file as c header file, not c++
 augroup project
