@@ -98,7 +98,7 @@ case "$1" in
 # sync website
 '-w')
 	target='website'
-	src="${HOME}/documents/htdocs/www.changchukuan.name/"
+	src="${HOME}/documents/htdocs/www.changchukuan.name/build/"
 	dest='cckuan@core.changchukuan.name:/var/www/htdocs/www.changchukuan.name'
 
 	check_src
