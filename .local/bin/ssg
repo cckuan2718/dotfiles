@@ -1,0 +1,267 @@
+#!/bin/sh
+
+readonly progname="$(basename "$0")"
+readonly ignore_file_basename='.ssg_ignore'
+readonly status_file_basename='.ssg_status'
+readonly pages_file_basename='.ssg_pages'
+readonly header_file_basename='templates/header.html'
+readonly footer_file_basename='templates/footer.html'
+
+b_string='https://www.foo.bar/'
+i_string='src'
+o_string='build'
+t_string=''
+
+print_status()
+{
+	printf '%s: ' "${progname}"
+
+	line_num="$(
+		grep -v '^$' "$3" \
+		    | wc -l \
+		    | tr -d '[:space:]'
+	)"
+
+	if [ "${line_num}" -le '0' ]; then
+		printf 'no file\n'
+	elif [ "${line_num}" -eq '1' ]; then
+		printf '%d %s\n' "${line_num}" "$1"
+	elif [ "${line_num}" -ge '2' ]; then
+		printf '%d %s\n' "${line_num}" "$2"
+	fi
+}
+
+help_msg()
+{
+	cat << EOF
+Usage:
+	${progname} - generate static site
+
+Options:
+	-b <base url>   set base url.         default to https://www.foo.bar/
+	-h              Show this message and exit.
+	-i <dir>        set input directory.  default to src
+	-o <dir>        set output directory. default to build
+	-t <title>      set page title.       default to empty string
+
+EOF
+}
+
+no_dir()
+{
+	printf '%s: %s: No such directory\n' "${progname}" "$1" 1>&2
+	exit 2
+}
+
+cp_dir_structure()
+{
+	from="$1"
+	to="$2"
+	cd "${from}" \
+	    && (eval "find . -type d ! -name '.' ! -path '*/_*' ${IGNORE}" | cpio -pdu "${to}")
+}
+
+list_files()
+{
+	cd "$1" && eval "find . -type f ! -name '.' ! -path '*/_*' ${IGNORE}"
+}
+
+list_dependant_files ()
+{
+ 	e="\\( -name '*.html' -o -name '*.md' -o -name '*.css' -o -name '*.js' \\)"
+	cd "$1" && eval "find . -type f ! -name '.' ! -path '*/_*' ${IGNORE} $e"
+}
+
+list_newer_files()
+{
+	cd "$1" && eval "find . -type f ! -name '.' ${IGNORE} -newer $2"
+}
+
+has_partials() {
+	grep -qE '^./_.*\.html$|^./_.*\.js$|^./_.*\.css$'
+}
+
+list_affected_files()
+{
+	files=$(list_newer_files "$1" "$2")
+
+	if printf '%s' "${files}" | has_partials; then
+		list_dependant_files "$1"
+	else
+		printf '%s' "${files}"
+	fi
+}
+
+render_html_file() {
+	awk -v title="$1" '
+		{
+			body = body "\n" $0
+		}
+
+		END {
+			body = substr(body, 2)
+			if (body ~ /<[Hh][Tt][Mm][Ll]/) {
+				print body
+				exit
+			}
+
+			if (match(body, /<[[:space:]]*[Hh]1(>|[[:space:]][^>]*>)/)) {
+				t = substr(body, RSTART + RLENGTH)
+				sub("<[[:space:]]*/[[:space:]]*[Hh]1.*", "", t)
+				gsub(/^[[:space:]]*|[[:space:]]$/, "", t)
+
+				if (t) {
+					if (title) {
+						title = t " &mdash; " title
+					} else {
+						title = t
+					}
+				}
+			}
+
+			n = split(ENVIRON["HEADER"], header, /\n/)
+			for (i = 1; i <= n; i++) {
+				if (match(tolower(header[i]), "<title></title>")) {
+					head = substr(header[i], 1, RSTART - 1)
+					tail = substr(header[i], RSTART + RLENGTH)
+					print head "<title>" title "</title>" tail
+				} else {
+					print header[i]
+				}
+			}
+
+			print body
+			print ENVIRON["FOOTER"]
+		}
+	'
+}
+
+
+list_pages() {
+	e="\\( -name '*.html' -o -name '*.md' \\)"
+	cd "$1" && eval "find . -type f ! -path '*/.*' ! -path '*/_*' $IGNORE $e" \
+	    | sed -e 's|^./||' -e 's|.md$|.html|' -e 's|/index.html$|/|'
+}
+
+
+render_sitemap() {
+	date=$(date +%Y-%m-%d)
+
+	printf '<?xml version="1.0" encoding="UTF-8"?>\n'
+	printf '<urlset\n'
+	printf 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
+	printf 'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'
+	printf 'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"\n'
+	printf 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+
+	while read -r u; do
+		printf '<url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>1.0</priority></url>\n' \
+		    "$2" "$u" "${date}"
+	done < "$1"
+
+	printf '</urlset>\n'
+}
+
+set -e
+
+while getopts 'b:hi:o:t:' opt; do
+	case "${opt}" in
+	'b')
+		b_string="${OPTARG}"
+		;;
+	'h')
+		help_msg
+		exit 0
+		;;
+	'i')
+		i_string="${OPTARG}"
+		;;
+	'o')
+		o_string="${OPTARG}"
+		;;
+	't')
+		t_string="${OPTARG}"
+		;;
+	*)
+		printf '%s: invalid option\n' "${progname}" 1>&2
+		exit 1
+		;;
+	esac
+done
+shift "$((OPTIND - 1))"
+
+for dir in "${i_string}" "${o_string}"; do
+	[ ! -d "${dir}" ] && no_dir "${dir}"
+done
+
+title="${t_string}"
+base_url="${b_string%/}"
+src_dir="$(readlink -f "${i_string}")"
+build_dir="$(readlink -f "${o_string}")"
+ignore_file="${src_dir}/${ignore_file_basename}"
+status_file="${build_dir}/${status_file_basename}"
+pages_file="${build_dir}/${pages_file_basename}"
+
+IGNORE="$(
+	if [ ! -f "${ignore_file}" ]; then
+		printf ' ! -path "*/.*"'
+	else
+		while read -r line; do
+			[ -n "${line}" ] || continue
+			printf ' ! -path "*/%s*"' "${line}"
+		done < "${ignore_file}"
+	fi
+)"
+
+#
+# files
+#
+
+# Extract header and footer
+header_file="${src_dir}/${header_file_basename}"
+footer_file="${src_dir}/${footer_file_basename}"
+[ -f "${header_file}" ] && export HEADER="$(cat "${header_file}")"
+[ -f "${footer_file}" ] && export FOOTER="$(cat "${footer_file}")"
+
+cp_dir_structure "${src_dir}" "${build_dir}"
+
+# create status file
+if [ -f "${status_file}" ]; then
+	list_affected_files "${src_dir}" "${status_file}" | tee "${status_file}"
+else
+	list_files "${src_dir}" | tee "${status_file}"
+fi
+
+# process file
+while read -r f; do
+	case "$f" in
+	*.md)
+		if [ -x "$(which lowdown 2> /dev/null)" ]; then
+			lowdown < "${src_dir}/$f" \
+			    | render_html_file "${title}" \
+			    > "${build_dir}/${f%\.md}.html"
+		else
+			printf '%s: error locating lowdown\n' "${progname}" 1>&2
+			exit 3
+		fi
+		;;
+	*.html)
+		render_html_file "${title}" < "${src_dir}/$f" > "${build_dir}/$f"
+		;;
+	*)
+		printf '%s' "$f" \
+		    | (cd "${src_dir}" && cpio -pu "${build_dir}")
+		;;
+	esac
+done < "${status_file}"
+
+print_status 'file' 'files' "${status_file}"
+
+#
+# sitemap
+#
+
+list_pages "${src_dir}" > "${pages_file}"
+render_sitemap "${pages_file}" "${base_url}" > "${build_dir}/sitemap.xml"
+print_status 'url' 'urls' "${pages_file}"
+

@@ -55,7 +55,7 @@ if command -v 'dwm' > /dev/null; then
 	{ pkill -u "$(id -u)" -qf '^/bin/sh.*panel'; panel; } &
 	dwm
 else
-       fvwm
+	fvwm
 fi
 
 exit_xsession
