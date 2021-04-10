@@ -214,6 +214,7 @@ alias rsize='eval $(resize)'
 alias tad='tmux new-session -A -s default'
 alias tai="tmux new-session -A -s irssi irssi --home=${XDG_CONFIG_HOME:-${HOME}/.config}/irssi"
 alias tb="${TERM_BROWSER:-lynx}"
+alias tman='tmux split-window -h -l 82 man'
 alias trem='transmission-remote'
 alias v="${EDITOR:-vi}"
 alias yt='youtube-dl --add-metadata --ignore-errors'
