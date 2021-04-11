@@ -1,6 +1,6 @@
 #!/bin/sh
 # Program:
-# *   Select and open cheatsheet
+# *   Select and open file in $1
 # Dependency:
 # *   dmenu(1)
 # *   xdg-open(1)
@@ -9,14 +9,13 @@
 
 # shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
+readonly dir="$1"
 
-cd "${HOME}" || exit 1
-
-file="$(
-	find 'downloads' 'documents' -type f -maxdepth 5 \
-	    \( -name '*.pdf' -o -name '*djvu' \) \
+cd "${dir}" || exit 1
+readonly file="$(
+	find . -type f -maxdepth 5 \
 	    | sed 's|^\./||' \
-	    | dmenu -i -l 5 -p 'Which document to open?'
+	    | dmenu -i -l 5 -p "Which file to open in ${dir} ?"
 )"
 
 [ -f "${file}" ] && xdg-open "${file}"
