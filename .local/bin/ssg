@@ -16,11 +16,7 @@ print_status()
 {
 	printf '%s: ' "${progname}"
 
-	line_num="$(
-		grep -v '^$' "$3" \
-		    | wc -l \
-		    | tr -d '[:space:]'
-	)"
+	line_num="$(grep -c '^$' "$3")"
 
 	if [ "${line_num}" -le '0' ]; then
 		printf 'no file\n'
@@ -220,8 +216,8 @@ IGNORE="$(
 # Extract header and footer
 header_file="${src_dir}/${header_file_basename}"
 footer_file="${src_dir}/${footer_file_basename}"
-[ -f "${header_file}" ] && export HEADER="$(cat "${header_file}")"
-[ -f "${footer_file}" ] && export FOOTER="$(cat "${footer_file}")"
+[ -f "${header_file}" ] && HEADER="$(cat "${header_file}")" && export HEADER
+[ -f "${footer_file}" ] && FOOTER="$(cat "${footer_file}")" && export FOOTER
 
 cp_dir_structure "${src_dir}" "${build_dir}"
 
