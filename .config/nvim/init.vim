@@ -222,9 +222,6 @@ set laststatus=2
 " Editing mappings
 "
 
-" Remap VIM 0 to first non-blank character
-map 0 ^
-
 " Automatically deletes all trailing whitespace and newlines at end of file on save.
 autocmd BufWritePre * %s/\s\+$//e
 

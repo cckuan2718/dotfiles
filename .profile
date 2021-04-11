@@ -6,7 +6,7 @@
 # sh/ksh initialization
 #
 
-PATH="${HOME}/.local/bin:${HOME}/.local/bin/panel:${HOME}/.local/lib:/bin:/sbin:/usr/ports/infrastructure/bin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/sbin:/usr/games"
+PATH="${HOME}/.local/bin:${HOME}/.local/bin/panel:${HOME}/.local/lib:${PATH}"
 export PATH HOME TERM
 
 # In order to have an interactive (as opposed to login) shell process a startup
@@ -28,13 +28,13 @@ umask 022
 # Default programs
 export BROWSER='firefox'
 export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
-export EDITOR='nvim'
+export EDITOR='vi'
 export MANPAGER='less'
 export OPENER='xdg-open'
 export PAGER='less'
 export READER='zathura'
 export TERMINAL='xterm'
-export VISUAL='nvim'
+export VISUAL='vi'
 
 # Default command options
 export LESS=' -FgiJMQRWX -x 8 '
