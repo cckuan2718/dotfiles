@@ -41,7 +41,6 @@ export LESS=' -FgiJMQRWX -x 8 '
 export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 export LYNX_LSS='/usr/local/share/doc/lynx/lynx_doc/samples/opaque.lss'
 export MORE='-is'
-export NEXINIT='set autoindent noexpandtab extended noflash ignorecase number report=1 ruler searchincr showmatch showmode tabstop=8'
 export TOP='-s 5 -o cpu'
 
 # XDG base directory

@@ -207,12 +207,10 @@ alias cbk="/usr/local/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
 alias e="${EDITOR:-vi}"
 alias g='git'
-alias irssi="irssi --home="${XDG_CONFIG_HOME:-${HOME}/.config}/irssi""
 alias notes="nvim "${HOME}/documents/notes/index.md""
 alias pg="${PAGER:-less}"
 alias rsize='eval $(resize)'
 alias tad='tmux new-session -A -s default'
-alias tai="tmux new-session -A -s irssi irssi --home=${XDG_CONFIG_HOME:-${HOME}/.config}/irssi"
 alias tb="${TERM_BROWSER:-lynx}"
 alias tman='tmux split-window -h -l 82 man'
 alias trem='transmission-remote'
