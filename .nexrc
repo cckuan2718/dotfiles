@@ -17,6 +17,7 @@ set ruler
 set showmatch
 set showmode
 set tabstop=8
+set cedit=\
 
 "
 " Key bindings
@@ -26,11 +27,10 @@ map gg 1G
 
 map gd :r!date +\%Y\%m\%d
 map gp :r!xclip -o -selection clipboard
+map gX !'mtmux load-buffer -
 map gP :r!tmux show-buffer
-map gY !'mtmux load-buffer -
 map gs {!}sort -u
 map gS {j!}sort -ur
 map gf {!}fmt -spw 72
 map gt mm:%s/[[:space:]]*$//
-set cedit=\
 

@@ -302,36 +302,6 @@ PS4='+ '
 # Functions
 #
 
-# Fuzzy edit config files.
-fec()
-{
-	find "${XDG_CONFIG_HOME:-${HOME}/.config}" \
-	    -type f -maxdepth 3 \
-	    \! -name '*db*' \
-	    \! -name '*log*' \
-	    \! -name '*pid*' \
-	    \! -name '*sql*' \
-	    \! -path '*GIMP*' \
-	    \! -path '*calibre*' \
-	    \! -path '*libreoffice*' \
-	    \! -path '*mpv/watch_later*' \
-	    \! -path '*plugin*' \
-	    \! -path '*stat*' \
-	    -print0 \
-	    | fzf --read0 --print0 -i -0 -1 -m -d 'config/' --with-nth='2..' \
-	        --header='Fuzzy edit config files.' \
-	    | xargs -0 -r ${EDITOR:-vi}
-}
-
-# Fuzzy edit scripts
-fes()
-{
-	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f -print0 \
-	    | fzf --read0 --print0 -i -0 -1 -m -d 'bin/|lib/' --with-nth='2..' \
-	        --header='Fuzzy edit scripts.' \
-	    | xargs -0 -r ${EDITOR:-vi}
-}
-
 # Fuzzy cmd history
 fh()
 {
