@@ -27,14 +27,14 @@ umask 022
 
 # Default programs
 export BROWSER='firefox'
-export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
-export EDITOR='vi'
+export EDITOR='nvim'
 export MANPAGER='less'
 export OPENER='xdg-open'
 export PAGER='less'
 export READER='zathura'
 export TERMINAL='xterm'
-export VISUAL='vi'
+export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
+export VISUAL='nvim'
 
 # Default command options
 export LESS=' -FgiJMQRWX -x 8 '
