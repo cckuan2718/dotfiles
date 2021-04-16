@@ -22,11 +22,6 @@ extract_archive()
 {
 	file="$1"
 
-	if [ "${print_filename_flag}" = '1' ]; then
-		printf '\n%s: extracting %s\n' "${progname}" "${file}"
-		hline
-	fi
-
 	case "${file}" in
 	*.tar)
 		tar -xvf "${file}"
@@ -111,11 +106,6 @@ list_archive()
 {
 	file="$1"
 
-	if [ "${print_filename_flag}" = '1' ]; then
-		printf '\n%s: listing %s\n' "${progname}" "${file}"
-		hline
-	fi
-
 	case "${file}" in
 	*.tar)
 		tar -tf "${file}"
@@ -186,9 +176,19 @@ for arg; do
 
 	case "${t_flag}" in
 	'0')
+		if [ "${print_filename_flag}" = '1' ]; then
+			printf '\n%s: extracting %s\n' "${progname}" "${arg}"
+			hline
+		fi
+
 		extract_archive "${arg}"
 		;;
 	'1')
+		if [ "${print_filename_flag}" = '1' ]; then
+			printf '\n%s: listing %s\n' "${progname}" "${arg}"
+			hline
+		fi
+
 		list_archive "${arg}"
 		;;
 	*)
