@@ -9,12 +9,82 @@
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 #
-# Settings
+# Functions
 #
 
-readonly trunk_iface='trunk0'
-readonly wired_iface='em0'
-readonly wireless_iface='iwn0'
+# <iface>,<iface type>,<up|down>,<active iface>,<ipaddr>,<ssid>
+ifstat()
+{
+	case "$1" in
+	trunk*)
+		iface_type='trunk'
+		;;
+	em*)
+		iface_type='wired'
+		;;
+	iwn*)
+		iface_type='unwired'
+		;;
+	*)
+		iface_type='unknown'
+		;;
+	esac
+
+	ifconfig "$1" \
+	| awk -v iface="$1" -v iface_type="${iface_type}" '
+		BEGIN {
+			active       = "0";
+			active_iface = "nil";
+			ipaddr       = "nil";
+			ssid         = "nil";
+		}
+
+		/status.*active/ {
+			active = "1";
+		}
+
+		/port.*active/ {
+			active_iface = $1;
+		}
+
+		/inet.*netmask/ {
+			ipaddr = $2;
+		}
+
+		/ieee80211:/ {
+			ssid = $3;
+		}
+
+		END {
+			printf("%s,%s,", iface, iface_type);
+
+			if (active == "1" && iface_type == "trunk" && active_iface != "nil" && ipaddr != "nil") {
+				printf("up,%s,%s,%s", active_iface, ipaddr, ssid);
+			} else if (active == "1" && iface_type == "wired") {
+				printf("up,%s,%s,%s", active_iface, ipaddr, ssid);
+			} else if (active == "1" && iface_type == "unwired" && ssid != "nil") {
+				printf("up,%s,%s,%s", active_iface, ipaddr, ssid);
+			} else {
+				printf("down,,,");
+			}
+		}
+	'
+}
+
+extract_iface()
+{
+	printf '%s' "$1" | cut -d ',' -f 4
+}
+
+extract_ipaddr()
+{
+	printf '%s' "$1" | cut -d ',' -f 5
+}
+
+extract_ssid()
+{
+	printf '%s' "$1" | cut -d ',' -f 6
+}
 
 #
 # Proper
@@ -22,55 +92,35 @@ readonly wireless_iface='iwn0'
 
 # shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
+iface="${1:-trunk0}"
 
-trunk_status="$(
-ifconfig "${trunk_iface}" \
-| awk '
-	BEGIN {
-		have_ip = "0"
-		active_iface = "nil"
-	}
-
-	/^[[:space:]]*inet.*netmask/ {
-		have_ip = "1"
-	}
-
-	/port.*active/ {
-		active_iface = $1
-	}
-
-	END {
-		if (have_ip == "1" && active_iface != "nil") {
-			printf("up;%s", active_iface)
-		} else {
-			printf("down")
-		}
-	}'
-)"
-
-case "${trunk_status}" in
-up*)
-	active_iface="${trunk_status#*;}"
-	case "${active_iface}" in
-	"${wireless_iface}")
-		ssid="$(
-			ifconfig "${wireless_iface}" \
-			    | grep ieee80211 \
-			    | cut -d ' ' -f 3
-		)"
-		printf 'iface; %s\n' "${ssid}"
-		;;
-	"${wired_iface}")
-		ipaddr="$(
-			ifconfig "${trunk_iface}" \
-			    | grep inet \
-			    | cut -d ' ' -f 2
-		)"
-		printf 'iface; %s\n' "${ipaddr}"
+case "${iface}" in
+trunk*)
+	iface_status="$(ifstat "${iface}")"
+	case "${iface_status}" in
+	*,up,*)
+		iface="$(extract_iface "${iface_status}")"
+		ipaddr="$(extract_ipaddr "${iface_status}")"
+		iface_status="$(ifstat "${iface}")"
 		;;
 	esac
 	;;
-'down')
+*)
+	iface_status="$(ifstat "${iface}")"
+	;;
+esac
+
+case "${iface_status}" in
+*,wired,up,*)
+	if [ -z "${ipaddr}" ]; then
+		ipaddr="$(extract_ipaddr "${iface_status}")"
+	fi
+	printf 'iface; %s\n' "${ipaddr}"
+	;;
+*,unwired,up,*)
+	printf 'iface; %s\n' "$(extract_ssid "${iface_status}")"
+	;;
+*,down,*)
 	printf 'iface; DOWN\n'
 	;;
 esac

@@ -33,7 +33,7 @@ while true; do
 	sleep 1
 	pl_diskio
 	sleep 1
-	pl_iface
+	pl_iface trunk0
 	sleep 1
 	pl_mailbox
 	sleep 1
