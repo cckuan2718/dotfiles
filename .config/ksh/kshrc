@@ -126,6 +126,7 @@ set -A complete_rcctl_1 -- \
     get \
     ls \
     order \
+    reload \
     restart \
     set \
     start \
