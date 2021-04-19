@@ -12,7 +12,7 @@
 # Settings
 #
 
-export MPC_FORMAT='[[%albumartist% - %album%\n]%title%]|[%file%]'
+export MPC_FORMAT='[[[%albumartist% - ]%album%\n]%title%]|[%file%]'
 
 #
 # Proper

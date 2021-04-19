@@ -11,3 +11,4 @@
 readonly progname="$(basename "$0")"
 
 date +'clock; %Y-%m-%d %a %H:%M:%S'
+
