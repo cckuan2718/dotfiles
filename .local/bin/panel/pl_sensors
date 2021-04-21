@@ -19,7 +19,7 @@ if [ "${cpu_temp}" -ge '75' ];then
 	cpu_temp_icon=''
 elif [ "${cpu_temp}" -ge '70' ]; then
 	cpu_temp_icon=''
-elif [ "${cpu_temp}" -ge '62' ]; then
+elif [ "${cpu_temp}" -ge '65' ]; then
 	cpu_temp_icon=''
 elif [ "${cpu_temp}" -ge '55' ]; then
 	cpu_temp_icon=''
