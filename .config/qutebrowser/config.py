@@ -10,7 +10,23 @@ config.set('zoom.default', "175%")
 config.set('fonts.default_size', "16pt")
 config.set('url.default_page', "https://www.google.com/")
 config.set('url.start_pages', "https://www.google.com/")
-config.set('url.searchengines', {"DEFAULT": "https://www.google.com/search?q={}", "aw": "https://wiki.archlinux.org/index.php?search={}", "ddg": "https://duckduckgo.com/?q={}", "gh": "https://github.com/search?q={}", "gm": "https://www.google.com/maps?q={}", "gs": "https://www.google.com/search?q={}", "mba": "https://musicbrainz.org/search?query={}&type=artist", "mbr": "https://musicbrainz.org/search?query={}&type=release", "op": "https://openports.se/search.php?so={}", "so": "https://stackoverflow.com/search?q={}", "utd": "https://www.uptodate.com/contents/search?search={}&searchType=PLAIN_TEXT&source=USER_INPUT&searchControl=TOP_PULLDOWN&autoComplete=false", "wk": "https://www.wikipedia.org/w/index.php?title=Special:Search&search={}", "yt": "https://www.youtube.com/results?search_query={}"})
+config.set('completion.height', "25%")
+config.set('url.searchengines', { \
+	"DEFAULT": "https://www.google.com/search?q={}", \
+	"aw": "https://wiki.archlinux.org/index.php?search={}", \
+	"ddg": "https://duckduckgo.com/?q={}", \
+	"gh": "https://github.com/search?q={}", \
+	"gm": "https://www.google.com/maps?q={}", \
+	"gs": "https://www.google.com/search?q={}", \
+	"mba": "https://musicbrainz.org/search?query={}&type=artist", \
+	"mbr": "https://musicbrainz.org/search?query={}&type=release", \
+	"op": "https://openports.se/search.php?so={}", \
+	"so": "https://stackoverflow.com/search?q={}", \
+	"utd": "https://www.uptodate.com/contents/search?search={}&searchType=PLAIN_TEXT&source=USER_INPUT&searchControl=TOP_PULLDOWN&autoComplete=false", \
+	"wk": "https://www.wikipedia.org/w/index.php?title=Special:Search&search={}", \
+	"yt": "https://www.youtube.com/results?search_query={}" \
+	} \
+)
 
 
 # Color theme
