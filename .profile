@@ -27,14 +27,20 @@ umask 022
 
 # Default programs
 export BROWSER='qutebrowser'
-export EDITOR='nvim'
 export MANPAGER='less'
 export OPENER='xdg-open'
 export PAGER='less'
 export READER='zathura'
 export TERMINAL='xterm'
 export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
-export VISUAL='nvim'
+
+if [ -x "$(command -v nvi)" ]; then
+	export EDITOR='nvi'
+	export VISUAL='nvi'
+else
+	export EDITOR='vi'
+	export VISUAL='vi'
+fi
 
 # Default command options
 export LESS=' -FgiJMQRWX -x 8 '
