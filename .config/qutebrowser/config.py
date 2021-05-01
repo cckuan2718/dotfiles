@@ -4,6 +4,10 @@
 
 config.load_autoconfig(False)
 
+#
+# General
+#
+
 config.set('content.autoplay', False)
 config.set('downloads.location.directory', "~/downloads/")
 config.set('zoom.default', "125%")
@@ -28,8 +32,18 @@ config.set('url.searchengines', { \
 	} \
 )
 
+#
+# Key bindings
+#
 
+config.bind('_', 'zoom-out')
+config.bind(',m', 'spawn mpv {url}')
+config.bind(',M', 'hint links spawn mpv {hint-url}')
+
+#
 # Color theme
+#
+
 # base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
 # Base16 qutebrowser template by theova
 # Gruvbox dark, medium scheme by Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
