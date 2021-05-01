@@ -185,7 +185,13 @@ alias mv='mv -iv'
 alias p='ps -l'
 alias pwd='pwd -P'
 alias rm='rm -iv'
-alias svi='doas vi'
+
+if [ -x "$(command -v nvi)" ]; then
+	alias svi='doas nvi'
+	alias vi='nvi'
+else
+	alias svi='doas vi'
+fi
 
 # Ksh
 alias bye='exit'

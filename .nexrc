@@ -32,5 +32,6 @@ map gp :r!tmux show-buffer
 map gs {!}sort -u
 map gS {j!}sort -ur
 map gf {!}fmt -spw 72
+map gF {!}fmt -spw 80
 map gt mm:%s/[[:space:]]*$//
 
