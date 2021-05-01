@@ -26,9 +26,9 @@ set cedit=\
 map gg 1G
 
 map gd :r!date +\%Y\%m\%d
-map gp :r!xclip -o -selection clipboard
-map gX !'mtmux load-buffer -
-map gP :r!tmux show-buffer
+map gP :r!xclip -o -selection clipboard
+map gx !'mtmux load-buffer -
+map gp :r!tmux show-buffer
 map gs {!}sort -u
 map gS {j!}sort -ur
 map gf {!}fmt -spw 72
