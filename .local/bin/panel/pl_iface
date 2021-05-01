@@ -85,7 +85,15 @@ extract_ipaddr()
 
 extract_ssid()
 {
-	printf '%s' "$1" | cut -d ',' -f 6
+	ssid="$(printf '%s' "$1" | cut -d ',' -f 6)"
+	if [ "${#ssid}" -gt 12 ]; then
+		printf '%s' "${ssid}" \
+		    | cut -c '1-12'   \
+		    | tr -d '\n'
+		printf '...'
+	else 
+		printf '%s' "${ssid}"
+	fi
 }
 
 extract_sig_strength()
