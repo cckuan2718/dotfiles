@@ -6,7 +6,7 @@ config.load_autoconfig(False)
 
 config.set('content.autoplay', False)
 config.set('downloads.location.directory', "~/downloads/")
-config.set('zoom.default', "175%")
+config.set('zoom.default', "125%")
 config.set('fonts.default_size', "16pt")
 config.set('url.default_page', "https://www.google.com/")
 config.set('url.start_pages', "https://www.google.com/")
