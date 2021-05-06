@@ -7,17 +7,17 @@
 "
 
 set autoindent
-set noexpandtab
+set cedit=\
 set extended
-set noflash
 set ignorecase
+set noexpandtab
+set noflash
 set number
 set report=1
 set ruler
 set showmatch
 set showmode
 set tabstop=8
-set cedit=\
 
 "
 " Key bindings
@@ -25,13 +25,28 @@ set cedit=\
 
 map gg 1G
 
-map gd :r!date +\%Y\%m\%d
-map gP :r!xclip -o -selection clipboard
-map gx !'mtmux load-buffer -
-map gp :r!tmux show-buffer
-map gs {!}sort -u
+" Read and append <cmd> stdout to next line, first white space
+map rb :r!tmux show-buffer
+map rc :r!xclip -o -selection clipboard
+map rd :r!diff -u # %
+map rs :r!uname -rs
+map rt :r!date +\%Y-\%m-\%d\ \%H:\%S
+
+" Formatting
+map gF {!}fmt -spw 80
 map gS {j!}sort -ur
 map gf {!}fmt -spw 72
-map gF {!}fmt -spw 80
+map gh :!hunspell -d en_US %^M
+map gs {!}sort -u
 map gt mm:%s/[[:space:]]*$//
+map gx !'mtmux load-buffer c
+
+"
+" Abbrevations
+"
+
+ab #d #define
+ab #i #include
+ab name Chang, Chu-Kuan
+ab mail cckuan@changchukuan.name
 
