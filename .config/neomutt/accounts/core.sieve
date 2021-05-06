@@ -11,7 +11,7 @@ require "mailbox";
 require "variables";
 
 # Spam
-if header :contains "X-Spam" "YES" {
+if header :contains "X-Spam" ["YES", "yes"] {
 	fileinto :create "Spam";
 	stop;
 }
