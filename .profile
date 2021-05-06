@@ -26,7 +26,7 @@ umask 022
 #
 
 # Default programs
-export BROWSER='qutebrowser'
+export BROWSER='firefox'
 export MANPAGER='less'
 export OPENER='xdg-open'
 export PAGER='less'
