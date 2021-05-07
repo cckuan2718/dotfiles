@@ -44,10 +44,13 @@ fi
 
 # Default command options
 export LESS=' -FgiJMQRWX -x 8 '
-export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 export LYNX_LSS='/usr/local/share/doc/lynx/lynx_doc/samples/opaque.lss'
 export MORE='-is'
 export TOP='-s 5 -o cpu'
+
+if [ -x "$(command -v src-hilite-lesspipe.sh)" ]; then
+	export LESSOPEN="| src-hilite-lesspipe.sh %s"
+fi
 
 # XDG base directory
 export XDG_CACHE_HOME="${HOME}/.cache"
