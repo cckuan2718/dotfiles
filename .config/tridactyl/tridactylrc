@@ -1,0 +1,17 @@
+" 
+" tridactylrc
+" 
+
+set searchurls.aw  https://wiki.archlinux.org/index.php?search=%s
+set searchurls.ddg https://duckduckgo.com/?q=%s
+set searchurls.gh  https://github.com/search?q=%s
+set searchurls.gm  https://www.google.com/maps?q=%s
+set searchurls.gs  https://www.google.com/search?q=%s
+set searchurls.mba https://musicbrainz.org/search?query=%s&type=artist
+set searchurls.mbr https://musicbrainz.org/search?query=%s&type=release
+set searchurls.op  https://openports.se/search.php?so=%s
+set searchurls.so  https://stackoverflow.com/search?q=%s
+set searchurls.utd https://www.uptodate.com/contents/search?search=%s&searchType=PLAIN_TEXT&source=USER_INPUT&searchControl=TOP_PULLDOWN&autoComplete=false
+set searchurls.wk  https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s
+set searchurls.yt  https://www.youtube.com/results?search_query=%s
+
