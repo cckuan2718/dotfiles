@@ -11,10 +11,38 @@
 
 prompt()
 {
-	ans="$(printf 'no\nyes' | dmenu -p "$1")"
+	prompt_env='cli'
+	while getopts 'cx' opt; do
+		case "${opt}" in
+		'c')
+			prompt_env='cli'
+			;;
+		'x')
+			if [ -x "$(command -v dmenu)" ]; then
+				prompt_env='xorg'
+			else
+				printf 'prompt: dmenu not found\n' 1>&2
+				printf 'prompt: fall back to cli mode\n' 1>&2
+				prompt_env='cli'
+			fi
+			;;
+		esac
+	done
+	shift "$((OPTIND - 1))"
+
+	case "${prompt_env}" in 
+	cli)
+		printf '%s (y/N) ' "$1"
+		read -r ans
+		;;
+	xorg)
+
+		ans="$(printf 'No\nyes' | dmenu -p "$1")"
+		;;
+	esac
 
 	case "${ans}" in
-	'yes')
+	[yY]*)
 		return 0
 		;;
 	*)

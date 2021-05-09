@@ -40,11 +40,11 @@ case "${action}" in
 	apm -z
 	;;
 'hibernate')
-	prompt "${action} now?" || exit 0
+	prompt -x "${action} now?" || exit 0
 	apm -Z
 	;;
 'reboot')
-	prompt "${action} now?" || exit 0
+	prompt -x "${action} now?" || exit 0
 	xsetroot -cursor_name watch
 	sync
 	sync
@@ -52,7 +52,7 @@ case "${action}" in
 	doas shutdown -r now
 	;;
 'shutdown')
-	prompt "${action} now?" || exit 0
+	prompt -x "${action} now?" || exit 0
 	xsetroot -cursor_name watch
 	sync
 	sync
