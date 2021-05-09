@@ -37,7 +37,7 @@ unmountdisk() {
 		exit 1
 	fi
 
-	prompt "Umount ${chosen_disk} (${chosen_fstype}) on ${chosen_mountpoint}?" \
+	prompt -x "Umount ${chosen_disk} (${chosen_fstype}) on ${chosen_mountpoint}?" \
 	    || exit 1
 
 	doas -n umount "${chosen_disk}"

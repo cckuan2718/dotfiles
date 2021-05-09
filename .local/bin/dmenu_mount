@@ -102,7 +102,7 @@ mountdisk() {
 		exit 1
 	fi
 
-	prompt "Mount ${chosen_disk} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
+	prompt -x "Mount ${chosen_disk} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
 	    || exit 1
 
 	doas -n mount "${chosen_disk}" 2>/dev/null \
