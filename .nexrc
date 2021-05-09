@@ -36,7 +36,7 @@ map rt :r!date +\%Y-\%m-\%d\ \%H:\%S
 map gF {!}fmt -spw 80
 map gS {j!}sort -ur
 map gf {!}fmt -spw 72
-map gh :!hunspell -d en_US %^M
+map gh :!hunspell -d en_US %
 map gs {!}sort -u
 map gt mm:%s/[[:space:]]*$//
 map gx !'mtmux load-buffer c
