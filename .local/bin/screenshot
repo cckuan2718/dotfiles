@@ -68,6 +68,10 @@ copy_screen()
 	    'Screenshot copied to clipboard.'
 }
 
+if [ ! -d "${screenshots_dir}" ]; then
+	mkdir -p "${screenshots_dir}" 
+fi
+
 case "$1" in
 	# Interactive mode
 '-i')
