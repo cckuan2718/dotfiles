@@ -226,7 +226,6 @@ alias trem='transmission-remote'
 alias v="${EDITOR:-vi}"
 alias yt='youtube-dl --add-metadata --ignore-errors'
 alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
-alias z='zathura'
 
 # Bookmarks
 alias cddd="cd  "${HOME}/downloads"                        "
@@ -370,6 +369,11 @@ sw()
 {
 	wn "$*" -over
 	return 0
+}
+
+z()
+{
+	zathura "$@" &
 }
 
 ;;
