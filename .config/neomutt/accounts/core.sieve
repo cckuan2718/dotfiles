@@ -16,8 +16,13 @@ if header :contains "X-Spam" ["YES", "yes"] {
 	stop;
 }
 
+# Finance/Bank
+if address :domain "From" "tcb-bank.com.tw" {
+
+	fileinto :create "Finance";
+
 # Mailing lists
-if anyof (header :is "Precedence" ["list", "bulk"], exists "List-Id") {
+} elsif anyof (header :is "Precedence" ["list", "bulk"], exists "List-Id") {
 
 	fileinto :create "Mlist";
 
