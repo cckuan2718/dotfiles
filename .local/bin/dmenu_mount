@@ -24,13 +24,13 @@ readonly progname="$(basename "$0")"
 
 asktype()
 {
-	choice="$(printf 'UMS\nMTP' | dmenu -i -p "Mount a UMS or MTP device?")" || exit 2
+	choice="$(printf 'MTP\nUMS' | dmenu -i -p "Mount a MTP or UMS device?")" || exit 2
 	case "${choice}" in
-	'UMS')
-		mountums "${ums_info}"
-		;;
 	'MTP')
 		mountmtp "${mtp_info}"
+		;;
+	'UMS')
+		mountums "${ums_info}"
 		;;
 	esac
 }
@@ -41,9 +41,9 @@ check_mount()
 	m="$2" # mount point
 
 	if mount | grep -q "${d}.*${m}"; then
-		notify "${d} mounted to ${m}."
+		notify "${d} mounted to ${m}"
 	else
-		notify "Failed mounting ${d} to ${m}."
+		notify "Failed mounting ${d} to ${m}"
 	fi
 }
 
@@ -131,7 +131,7 @@ mountums() {
 
 	mount_point="$(get_mount_point)" || exit 3
 
-	prompt -x "Mount ${chosen_block} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
+	prompt -x "Mount ${chosen_block} (${chosen_fstype}, ${chosen_size}) to ${mount_point} ?" \
 	    || exit 0
 
 	doas -n mount "${chosen_block}" 2>/dev/null \
@@ -184,7 +184,7 @@ mountmtp()
 
 	mount_point="$(get_mount_point)" || exit 1
 
-	prompt -x "Mount ${chosen_num} (${chosen_label}) to ${mount_point}?" \
+	prompt -x "Mount ${chosen_num} (${chosen_label}) to ${mount_point} ?" \
 	    || exit 0
 
 	doas -n simple-mtpfs --device "${chosen_num}" "${mount_point}" -o uid=1000 -o gid=1000 -o allow_other
@@ -201,7 +201,7 @@ notify()
 
 readonly ums_info="$(lsblock)"
 readonly mtp_info="$(doas -n simple-mtpfs --list-devices 2> /dev/null)"
-info_bitmap='' # MTP, disk
+info_bitmap='' # mtp, ums
 
 if [ -n "${mtp_info}" ]; then
 	info_bitmap='1'
