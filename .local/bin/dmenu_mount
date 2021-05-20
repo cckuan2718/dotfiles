@@ -9,6 +9,7 @@
 # *   dmenu(1)
 # *   mount.exfat-fuse(1)
 # *   prompt.sh
+# *   simple-mtpfs(1)
 # Author:
 # *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
@@ -21,7 +22,32 @@
 
 readonly progname="$(basename "$0")"
 
-lsdisk()
+asktype()
+{
+	choice="$(printf 'UMS\nMTP' | dmenu -i -p "Mount a UMS or MTP device?")" || exit 2
+	case "${choice}" in
+	'UMS')
+		mountums "${ums_info}"
+		;;
+	'MTP')
+		mountmtp "${mtp_info}"
+		;;
+	esac
+}
+
+check_mount()
+{
+	d="$1" # device
+	m="$2" # mount point
+
+	if mount | grep -q "${d}.*${m}"; then
+		notify "${d} mounted to ${m}."
+	else
+		notify "Failed mounting ${d} to ${m}."
+	fi
+}
+
+lsblock()
 {
 	disks="$(
 		sysctl -n hw.disknames \
@@ -30,7 +56,7 @@ lsdisk()
 	)"
 
 	# 'or' collection of mounted partitions
-	already_mounted_disks_regex="$(
+	already_mounted_blocks_regex="$(
 		mount | cut -d ' ' -f 1 | paste -sd '|' -
 	)"
 
@@ -55,7 +81,7 @@ lsdisk()
 				    disk, $1, $2, $4, label, total_bytes);
 			}
 		' \
-		| grep -vE "${already_mounted_disks_regex}"
+		| grep -vE "${already_mounted_blocks_regex}"
 	done
 }
 
@@ -66,19 +92,27 @@ get_mount_point() {
 	)"
 
 	# shellcheck disable=SC2086
-	find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
-	    | dmenu -l 15 -p 'Type in mount point:'
+	mp="$(
+		find /mnt -type d -maxdepth 3 ${already_mounted} -print 2>/dev/null \
+		    | dmenu -l 15 -p 'Type in mount point:'
+	)"
+
+	if [ -d "${mp}" ]; then
+		printf '%s' "${mp}"
+		return 0
+	else
+		notify "${mp} does not exist."
+		return 1
+	fi
 }
 
-mountdisk() {
+mountums() {
 	chosen="$(
 		printf '%s' "$1" \
-		    | dmenu -l 15 -p 'Mount which drive?' \
+		    | dmenu -l 15 -p 'Mount which UMS device?' \
 		    | tr -s ' '
 	)"
-	[ -z "${chosen}" ] && exit 1
-
-	chosen_disk="$(   printf '%s' "${chosen}"   | cut -d ' ' -f 1)"
+	chosen_block="$(  printf '%s' "${chosen}"   | cut -d ' ' -f 1)"
 	chosen_size="$(   printf '%s' "${chosen}"   | cut -d ' ' -f 2)"
 	chosen_fstype="$( printf '%s' "${chosen}"   | cut -d ' ' -f 3)"
 
@@ -89,45 +123,40 @@ mountdisk() {
 		)"
 	fi
 
-	if [ -z "${chosen_disk}" ] \
+	if [ -z "${chosen_block}" ] \
 	    || [ -z "${chosen_size}" ] \
 	    || [ -z "${chosen_fstype}" ]; then
 		exit 1
 	fi
 
-	mount_point="$(get_mount_point)"
+	mount_point="$(get_mount_point)" || exit 3
 
-	if [ ! -d "${mount_point}" ]; then
-		notify "${mount_point} does not exist."
-		exit 1
-	fi
+	prompt -x "Mount ${chosen_block} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
+	    || exit 0
 
-	prompt -x "Mount ${chosen_disk} (${chosen_fstype}, ${chosen_size}) to ${mount_point}?" \
-	    || exit 1
-
-	doas -n mount "${chosen_disk}" 2>/dev/null \
-	    && notify "${chosen_disk} mounted." \
+	doas -n mount "${chosen_block}" 2>/dev/null \
+	    && notify "${chosen_block} mounted." \
 	    && exit 0
 
 	case "${chosen_fstype}" in
 	'4.2BSD')
-		doas -n mount_ffs "${chosen_disk}" "${mount_point}"
+		doas -n mount_ffs "${chosen_block}" "${mount_point}"
 		;;
 	'cd9660')
-		doas -n mount_cd9660 "${chosen_disk}" "${mount_point}"
+		doas -n mount_cd9660 "${chosen_block}" "${mount_point}"
 		;;
 	'exFAT')
 		doas -n mount.exfat-fuse -o "gid=$(id -g),uid=$(id -u)" \
-		    "${chosen_disk}" "${mount_point}"
-		chosen_disk='fusefs'
+		    "${chosen_block}" "${mount_point}"
+		chosen_block='fusefs'
 		;;
 	'MSDOS')
 		doas -n mount_msdos -g "$(id -g)" -u "$(id -u)" \
-		    "${chosen_disk}" "${mount_point}"
+		    "${chosen_block}" "${mount_point}"
 		;;
 	'NTFS')
 		doas -n mount_ntfs -g "$(id -g)" -u "$(id -u)" \
-		    "${chosen_disk}" "${mount_point}"
+		    "${chosen_block}" "${mount_point}"
 		;;
 	*)
 		notify 'Unknown filesystem.'
@@ -135,11 +164,32 @@ mountdisk() {
 		;;
 	esac
 
-	if mount | grep -q "${chosen_disk}.*${mount_point}"; then
-		notify "${chosen_disk} mounted to ${mount_point}."
-	else
-		notify "Failed mounting ${chosen_disk} to ${mount_point}."
+	sleep 1
+	check_mount "${chosen_block}" "${mount_point}"
+}
+
+mountmtp()
+{
+	chosen="$(
+		printf '%s' "$1" \
+		    | dmenu -l 15 -p 'Mount which MTP device?' \
+		    | tr -s ' '
+	)"
+	chosen_num="$(printf '%s' "${chosen}" | cut -d ':' -f 1)"
+	chosen_label="$(printf '%s' "${chosen}" | cut -d ' ' -f '2-')"
+
+	if [ -z "${chosen_num}" ] || [ -z "${chosen_label}" ]; then
+		exit 1
 	fi
+
+	mount_point="$(get_mount_point)" || exit 1
+
+	prompt -x "Mount ${chosen_num} (${chosen_label}) to ${mount_point}?" \
+	    || exit 0
+
+	doas -n simple-mtpfs --device "${chosen_num}" "${mount_point}" -o uid=1000 -o gid=1000 -o allow_other
+	sleep 1
+	check_mount 'fusefs' "${mount_point}"
 }
 
 notify()
@@ -149,13 +199,39 @@ notify()
 	    "$@"
 }
 
-readonly disk_info="$(lsdisk)"
+readonly ums_info="$(lsblock)"
+readonly mtp_info="$(doas -n simple-mtpfs --list-devices 2> /dev/null)"
+info_bitmap='' # MTP, disk
 
-if [ -z "${disk_info}" ]; then
-	notify 'No mountable disk detected.'
-	exit 0
+if [ -n "${mtp_info}" ]; then
+	info_bitmap='1'
 else
-	notify 'Mountable disks detected.'
-	mountdisk "${disk_info}"
+	info_bitmap='0'
 fi
+
+if [ -n "${ums_info}" ]; then
+	info_bitmap="${info_bitmap}1"
+else
+	info_bitmap="${info_bitmap}0"
+fi
+
+case "${info_bitmap}" in
+'00')
+	notify 'No UMS or MTP device detected.'
+	exit 0
+	;;
+'10')
+	mountmtp "${mtp_info}"
+	;;
+'01')
+	mountums "${ums_info}"
+	;;
+'11')
+	asktype
+	;;
+*)
+	notify "Invalid \${info_bitmap} ${info_bitmap}"
+	exit 1
+	;;
+esac
 
