@@ -361,7 +361,7 @@ portsgrep()
 sc()
 {
 	find "${HOME}/.local/bin/" "${HOME}/.local/lib/" -type f \
-	    -exec shellcheck {} +
+	    -exec shellcheck --exclude=SC2155 {} +
 }
 
 # search word in wordnet
