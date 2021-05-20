@@ -26,6 +26,10 @@ prompt()
 				prompt_env='cli'
 			fi
 			;;
+		*)
+			printf 'prompt: invalid flag\n' 1>&2
+			exit 1
+			;;
 		esac
 	done
 	shift "$((OPTIND - 1))"
