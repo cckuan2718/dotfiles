@@ -19,7 +19,7 @@ import:
     timid: no # default
     log: beetslog.txt
 
-plugins: fetchart lastgenre
+plugins: edit fetchart lastgenre
 
 ui:
     color: yes
