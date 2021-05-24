@@ -1,7 +1,8 @@
-" 
+"
 " tridactylrc
-" 
+"
 
+set theme dark
 set newtab https://www.google.com/
 
 set searchurls.aw  https://wiki.archlinux.org/index.php?search=%s
