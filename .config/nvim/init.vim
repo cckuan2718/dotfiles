@@ -185,8 +185,6 @@ set splitright
 " Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
 
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
@@ -198,9 +196,9 @@ nmap <leader>ba :badd<CR>
 " go to buffer
 nnoremap gb :ls<CR>:buffer<Space>
 " Move to the next buffer
-map <leader>l :bnext<CR>
+map <C-l> :bnext<CR>
 " Move to the previous buffer
-map <leader>h :bprevious<CR>
+map <C-h> :bprevious<CR>
 
 " Switch PWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<CR>:pwd<CR>

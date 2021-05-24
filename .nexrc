@@ -41,12 +41,3 @@ map gs {!}sort -u
 map gt mm:%s/[[:space:]]*$//
 map gx !'mtmux load-buffer c
 
-"
-" Abbrevations
-"
-
-ab #d #define
-ab #i #include
-ab name Chang, Chu-Kuan
-ab mail cckuan@changchukuan.name
-

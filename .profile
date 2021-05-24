@@ -34,7 +34,13 @@ export READER='zathura'
 export TERMINAL='xterm'
 export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
 
-if [ -x "$(command -v nvi)" ]; then
+if [ -x "$(command -v nvim)" ]; then
+	export EDITOR='nvim'
+	export VISUAL='nvim'
+elif [ -x "$(command -v vim)" ]; then
+	export EDITOR='vim'
+	export VISUAL='vim'
+elif [ -x "$(command -v nvi)" ]; then
 	export EDITOR='nvi'
 	export VISUAL='nvi'
 else
@@ -49,7 +55,7 @@ export MORE='-is'
 export TOP='-s 5 -o cpu'
 
 if [ -x "$(command -v src-hilite-lesspipe.sh)" ]; then
-	export LESSOPEN="| src-hilite-lesspipe.sh %s"
+	export LESSOPEN='| src-hilite-lesspipe.sh %s'
 fi
 
 # XDG base directory
