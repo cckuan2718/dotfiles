@@ -310,6 +310,11 @@ PS4='+ '
 # Functions
 #
 
+cl()
+{
+	cd "$@" && ls
+}
+
 # Fuzzy cmd history
 fh()
 {
