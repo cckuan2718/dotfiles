@@ -35,7 +35,7 @@ if address :domain "From" "tcb-bank.com.tw" {
 	fileinto :create "Sysadmin";
 
 # DMARC
-} elsif anyof (header :contains "subject" ["Report domain:", "DMARC"]) {
+} elsif anyof (header :contains "subject" ["Report Domain:", "Report domain:", "DMARC"]) {
 
 	fileinto :create "DMARC";
 
