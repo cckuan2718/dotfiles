@@ -127,9 +127,6 @@ set noshowmode
 " Number of screen lines to use for the command-line
 set cmdheight=1
 
-" neomutt/mutt compatible
-au BufRead /tmp/neomutt-*,/tmp/mutt-* setlocal textwidth=72 colorcolumn=72
-
 "
 " Colors and Fonts
 "
@@ -221,7 +218,7 @@ set laststatus=2
 "
 
 " Automatically deletes all trailing whitespace and newlines at end of file on save.
-autocmd BufWritePre * %s/\s\+$//e
+" autocmd BufWritePre * %s/\s\+$//e
 
 "
 " Filetype
@@ -253,9 +250,11 @@ autocmd BufWritePost *Xresources,*Xdefaults !xrdb "%:p"
 " Runs a script that cleans out tex build files whenever I close out of a .tex file.
 autocmd VimLeave *.tex !texclear "%:p"
 
+" neomutt/mutt compatible
+au BufRead /tmp/neomutt-*,/tmp/mutt-* setlocal textwidth=72 colorcolumn=72
 
 "
-" External command
+" Key Bindings
 "
 
 " Compile latex document
@@ -264,6 +263,21 @@ nnoremap <leader>c :w! \| !compiler "%:p"<CR>
 nnoremap <leader>p :!opout "%:p"<CR>
 " Check file in shellcheck
 nnoremap <leader>s :!clear && shellcheck "%:p"<CR>
+
+" Read and append <cmd> stdout to next line, first white space
+noremap <leader>b :r!tmux show-buffer
+noremap <leader>c :r!xclip -o -selection clipboard
+noremap <leader>d :r!diff -u # %
+noremap <leader>s :r!uname -rs
+noremap <leader>t :r!date +\%Y-\%m-\%d\ \%H:\%S
+
+" Formatting
+noremap <leader>F {!}fmt -spw 80
+noremap <leader>S {j!}sort -ur
+noremap <leader>f {!}fmt -spw 72
+noremap <leader>h :!hunspell -d en_US %
+noremap <leader>s {!}sort -u
+noremap <leader>t :%s/\s\+$//e
 
 "
 " Plugins
