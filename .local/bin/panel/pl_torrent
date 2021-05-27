@@ -48,6 +48,6 @@ torrent()
 if pgrep -q 'transmission-dae'; then
 	torrent
 else
-	printf 'torrent_alert; DOWN\n'
+	printf 'torrent; DOWN\n'
 fi
 
