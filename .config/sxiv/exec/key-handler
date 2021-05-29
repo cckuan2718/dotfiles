@@ -5,15 +5,15 @@
 while read file; do
         case "$1" in
 	'd')
-		prompt "Delete ${file}?" \
+		prompt -x "Delete ${file}?" \
 		    && rm "${file}" \
 		    && notify-send 'sxiv' "${file} deleted."
 		;;
+	'e')
+		mtpaint "${file}" &
+		;;
 	'f')
 		convert -flop "${file}" "${file}"
-		;;
-	'g')
-		gimp "${file}" &
 		;;
 	'i')
 		notify-send 'File information' "$(mediainfo "${file}")"
@@ -23,6 +23,14 @@ while read file; do
 		;;
 	'R')
 		convert -rotate -90 "${file}" "${file}"
+		;;
+	'p')
+		dir="${HOME}/pictures/$(
+			cd "${HOME}/pictures/" && \
+			find . -type d | dmenu -i -l 5 -p "Copy ${file} to?"
+		)"
+		cp "${file}" "${dir}" \
+		    && notify-send 'sxiv' "${file} copied to ${dir}." &
 		;;
 	'w')
 		setbg "${file}" &
