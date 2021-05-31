@@ -18,6 +18,9 @@ export HISTFILE="${HOME}/.cache/ksh/ksh_history"
 export HISTSIZE='5000'
 export HISTCONTROL='ignoredups:ignorespace'
 
+# cd search path
+export CDPATH=".:${HOME}:${HOME}/.config:/etc"
+
 # set default umask
 umask 022
 

@@ -279,6 +279,8 @@ noremap <leader>h :!hunspell -d en_US %
 noremap <leader>s {!}sort -u
 noremap <leader>t :%s/\s\+$//e
 
+map <F7> :setlocal spell! spelllang=en_us
+
 "
 " Plugins
 "
