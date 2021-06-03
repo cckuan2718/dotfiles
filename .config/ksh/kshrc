@@ -27,6 +27,7 @@ ksh_comp_file="${HOME}/.config/ksh/ksh_completion"
 #
 
 # Base utils
+alias cdio='pls cdio'
 alias cls='clear'
 alias cmpr='diff -uNp'
 alias cp='cp -iv'
@@ -36,14 +37,16 @@ alias ll='ls -aFhl'
 alias lld='ls -dFhl'
 alias mv='mv -iv'
 alias p='ps -l'
+alias pls='doas'
 alias pwd='pwd -P'
+alias rcctl='pls rcctl'
 alias rm='rm -iv'
 
 if [ -x "$(command -v nvi)" ]; then
-	alias svi='doas nvi'
+	alias pvi='pls nvi'
 	alias vi='nvi'
 else
-	alias svi='doas vi'
+	alias pvi='pls vi'
 fi
 
 # Ksh
@@ -67,16 +70,13 @@ alias cbk="/usr/local/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
 alias e="${EDITOR:-vi}"
 alias g='git'
-alias notes="nvim "${HOME}/documents/notes/index.md""
 alias pg="${PAGER:-less}"
 alias rsize='eval $(resize)'
 alias ta='tmux new-session -A -s'
 alias tad='ta default'
-alias tac='ta code'
 alias tb="${TERM_BROWSER:-lynx}"
 alias tman='tmux split-window -h -l 82 man'
 alias trem='transmission-remote'
-alias v="${EDITOR:-vi}"
 alias yt='youtube-dl --add-metadata --ignore-errors'
 alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 
@@ -162,11 +162,6 @@ PS4='+ '
 #
 # Functions
 #
-
-cl()
-{
-	cd "$@" && ls
-}
 
 # Fuzzy edit config files.
 fec()
