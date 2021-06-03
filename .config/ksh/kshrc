@@ -27,7 +27,6 @@ ksh_comp_file="${HOME}/.config/ksh/ksh_completion"
 #
 
 # Base utils
-alias cdio='pls cdio'
 alias cls='clear'
 alias cmpr='diff -uNp'
 alias cp='cp -iv'
@@ -37,16 +36,11 @@ alias ll='ls -aFhl'
 alias lld='ls -dFhl'
 alias mv='mv -iv'
 alias p='ps -l'
-alias pls='doas'
 alias pwd='pwd -P'
-alias rcctl='pls rcctl'
 alias rm='rm -iv'
 
 if [ -x "$(command -v nvi)" ]; then
-	alias pvi='pls nvi'
 	alias vi='nvi'
-else
-	alias pvi='pls vi'
 fi
 
 # Ksh
@@ -95,6 +89,13 @@ alias cdsc="cd  "${HOME}/.local/bin"                       "
 alias cdsrc="cd "${HOME}/.local/src"                       "
 alias cdtt="cd  "${HOME}/tmp"                              "
 alias cdvv="cd  "${HOME}/videos"                           "
+
+# doas
+alias pls='doas'
+alias arp-scan='pls arp-scan'
+alias cdio='pls cdio'
+alias pvi='pls vi'
+alias rcctl='pls rcctl'
 
 #
 # Prompt
