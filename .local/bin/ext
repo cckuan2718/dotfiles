@@ -1,17 +1,17 @@
 #!/bin/sh
 # Program:
-# 	* Extract file
+# *   Extract file
 # Dependency:
-#	* 7z(1)
-#	* bzip2(1)
-#	* compress(1)
-#	* gzip(1)
-#	* tar(1)
-#	* unrar(1)
-#	* unzip(1)
-#	* xz(1)
+# *   7z(1)
+# *   bzip2(1)
+# *   compress(1)
+# *   gzip(1)
+# *   tar(1)
+# *   unrar(1)
+# *   unzip(1)
+# *   xz(1)
 # Author:
-# 	* Chang, Chu-Kuan <cckuan@changchukuan.name>
+# *   Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 readonly progname="$(basename "$0")"
 
@@ -56,7 +56,7 @@ extract_archive()
 	*.xz)
 		xz -dv "${file}"
 		;;
-	*.7z)
+	*.7z|*.7z.*)
 		7z x "${file}"
 		;;
 	*.rar)
@@ -86,7 +86,7 @@ Options:
 Supported file type:
 	tar
 	tar.bz2  | tbz2 | tb2 | tz2
-	tar.Z    | taZ   | tZ
+	tar.Z    | taZ  | tZ
 	tar.gz   | tgz
 	tar.lzma | tlz
 	tar.xz   | txz
@@ -125,7 +125,7 @@ list_archive()
 	*.tar.xz|*.txz)
 		xz -dc "${file}" | tar -tf -
 		;;
-	*.7z)
+	*.7z|*.7z.*)
 		7z l "${file}"
 		;;
 	*.rar)
