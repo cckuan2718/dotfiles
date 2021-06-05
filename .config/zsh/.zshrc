@@ -14,17 +14,17 @@ HISTSIZE='5000'
 SAVEHIST='5000'
 setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE 
+setopt HIST_IGNORE_SPACE
 
 # Settings
-setopt AUTO_CD 
+setopt AUTO_CD
 setopt COMPLETE_ALIASES
 setopt EXTENDED_GLOB
 setopt INTERACTIVE_COMMENTS
 unsetopt BEEP
 
 # Directory stack
-setopt AUTO_PUSHD 
+setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_MINUS
 setopt PUSHD_SILENT
@@ -36,7 +36,7 @@ autoload -Uz compinit
 compinit
 zmodload zsh/complist
 zstyle ':completion:*' menu select
-_comp_options+=(globdots)
+_comp_options+=(globdots) # Include hidden files
 
 # vi mode
 bindkey -v
@@ -53,6 +53,9 @@ bindkey -v '^?' backward-delete-char
 autoload edit-command-line
 zle -N edit-command-line
 bindkey '^e' edit-command-line
+
+# Disable ctrl-s to freeze terminal.
+stty stop undef
 
 # Prompt
 autoload -U colors && colors
@@ -158,9 +161,11 @@ fes()
 # Fuzzy cmd history
 fh()
 {
-	print -s "$(fc -l 1       \
-	    | fzf --no-sort --tac \
-	    | cut -f '2-')"
+	print -z "$(
+		fc -l 1                   \
+		    | fzf --no-sort --tac \
+		    | sed -E 's/^[[:blank:]]*[0-9]+[[:blank:]]*//'
+	)"
 }
 
 # cd on quit in nnn
