@@ -23,9 +23,9 @@ usermodmap="${HOME}/.Xmodmap"
 [ -f "${userresources}" ] && xrdb -merge "${userresources}"
 [ -f "${usermodmap}"    ] && xmodmap "${usermodmap}"
 
-# Source ksh startup file
-ksh_profile="${HOME}/.profile"
-[ -r "${ksh_profile}" ] && . "${ksh_profile}"
+# Source sh startup file
+sh_profile="${HOME}/.profile"
+[ -r "${sh_profile}" ] && . "${sh_profile}"
 
 # set various devices
 setxkbmap -option caps:swapescape &   # swap Esc & Capslock

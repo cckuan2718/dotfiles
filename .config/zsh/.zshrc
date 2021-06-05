@@ -1,35 +1,53 @@
-#!/bin/sh
+#!/usr/bin/env ksh
 
 #
-# .kshrc for desktop
+# .zshrc
 #
 
-case "$-" in
 #
-# We are interactive
+# Zsh configuration
 #
-*i*)
-
-#
-# Ksh setting
-#
-
-set -o vi
-set -o vi-tabcomplete
 
 # History
-HISTFILE="${XDG_CONFIG_HOME:-${HOME}/.config}/ksh/ksh_history"
+HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/histfile"
 HISTSIZE='5000'
-HISTCONTROL='ignoredups:ignorespace'
+SAVEHIST='5000'
 
-#
-# Ksh completions
-#
+# Settings
+setopt AUTO_CD 
+setopt EXTENDED_GLOB
+setopt COMPLETE_ALIASES
+setopt INTERACTIVE_COMMENTS
 
-ksh_comp_file="${XDG_CONFIG_HOME:-${HOME}/.config}/ksh/ksh_completion"
-if [ -r "${ksh_comp_file}" ]; then
-	. "${ksh_comp_file}" 
-fi
+unsetopt BEEP
+
+# Command completion
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)
+
+# vi mode
+bindkey -v
+KEYTIMEOUT=1
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+# Edit line in ${EDITOR} with ctrl-e
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^e' edit-command-line
+
+# Prompt
+autoload -U colors && colors
+PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@%f%F{blue}%m%f %F{yellow}%~%f
+%(0?.%F{green}.%F{red}%? )%#%f '
 
 #
 # Aliases
@@ -41,25 +59,21 @@ alias cmpr='diff -uNp'
 alias cp='cp -iv'
 alias df='df -h'
 alias du='du -ch'
+alias e="${EDITOR:-vi}"
 alias ll='ls -aFhl'
 alias lld='ls -dFhl'
 alias mv='mv -iv'
 alias p='ps -l'
+alias pg="${PAGER:-less}"
+alias pls='doas'
 alias pwd='pwd -P'
 alias rm='rm -iv'
+alias ta='tmux new-session -A -s'
+alias tad='ta default'
 
 if [ -x "$(command -v nvi)" ]; then
 	alias vi='nvi'
 fi
-
-# Ksh
-alias bye='exit'
-alias h='fc -l | more'
-alias j='jobs'
-alias logout='exit'
-alias o='fg %-'
-alias quit='exit'
-alias r='fc -s'
 
 # OpenBSD Ports
 alias portsql='sqlite3 /usr/local/share/sqlports'
@@ -71,103 +85,31 @@ alias bc='bc -l'
 alias cb=' xclip -filter -selection clipboard'
 alias cbk="/usr/local/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
-alias e="${EDITOR:-vi}"
 alias g='git'
-alias pg="${PAGER:-less}"
 alias rsize='eval $(resize)'
-alias ta='tmux new-session -A -s'
-alias tad='ta default'
 alias tb="${TERM_BROWSER:-lynx}"
 alias tman='tmux split-window -h -l 82 man'
 alias trem='transmission-remote'
 alias yt='youtube-dl --add-metadata --ignore-errors'
 alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 
+#
 # Bookmarks
-alias cddd="cd  "${HOME}/downloads"                        "
-alias cdcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}"        "
-alias cdcfg="cd "${XDG_CONFIG_HOME:-${HOME}/.config}"      "
-alias cddc="cd  "${HOME}/documents"                        "
-alias cddt="cd  "${XDG_DATA_HOME:-${HOME}/.local/share}"   "
-alias cdhh="cd  "${HOME}"                                  "
-alias cdmm="cd  "${HOME}/music"                            "
-alias cdmn='cd  /mnt                                       '
-alias cdp='cd   /usr/ports                                 '
-alias cdpp="cd  "${HOME}/pictures"                         "
-alias cdsc="cd  "${HOME}/.local/bin"                       "
-alias cdsrc="cd "${HOME}/.local/src"                       "
-alias cdtt="cd  "${HOME}/tmp"                              "
-alias cdvv="cd  "${HOME}/videos"                           "
-
-# doas
-alias pls='doas'
-alias arp-scan='pls arp-scan'
-alias cdio='pls cdio'
-alias pvi='pls vi'
-alias rcctl='pls rcctl'
-
-#
-# Prompt
 #
 
-_ps1_user()
-{
-	case "${UID}" in
-	'0')
-		# Red root name
-		printf '\\[\033[31m\\]%s\\[\033[00m\\]' "${USER}"
-		;;
-	*)
-		# Yellow user name
-		printf '\\[\033[33m\\]%s\\[\033[00m\\]' "${USER}"
-		;;
-	esac
-}
-
-_ps1_pwd()
-{
-	case "${PWD}" in
-	"${HOME}"*)
-		printf '\\[\033[33m\\]~%s\\[\033[00m\\]' "${PWD#${HOME}}"
-		;;
-	*)
-		printf '\\[\033[33m\\]%s\\[\033[00m\\]' "${PWD}"
-		;;
-	esac
-}
-
-_ps1_exit_status()
-{
-	case "$1" in
-	'0')
-		# Green prompt
-		printf '\\[\033[32m\\]%s\\[\033[00m\\]' "${ps1s}"
-		;;
-	*)
-		# Red prompt
-		printf '\\[\033[31m\\](%s) %s\\[\033[00m\\]' "$1" "${ps1s}"
-		;;
-	esac
-}
-
-# we may have su'ed so reset these
-USER="$(id -un)"
-UID="$(id -u)"
-case "${UID}" in
-'0')
-	ps1s='# '
-	;;
-*)
-	ps1s='$ '
-esac
-hostname="${HOSTNAME:-$(uname -n)}"
-host="${hostname%%.*}"
-
-PS1="\$(_ps1_user)\[\033[32m\]@\[\033[34m\]\${host}\[\033[00m\] \$(_ps1_pwd)
-\$(_ps1_exit_status \$?)"
-PS2='> '
-PS3='#? '
-PS4='+ '
+hash -d -- bb="${HOME}/.local/bin"                     \
+           cac="${XDG_CACHE_HOME:-${HOME}/.cache}"     \
+           cc="${XDG_CONFIG_HOME:-${HOME}/.config}"    \
+           dc="${HOME}/documents"                      \
+           dd="${HOME}/downloads"                      \
+           dt="${XDG_DATA_HOME:-${HOME}/.local/share}" \
+           mm="${HOME}/music"                          \
+           mn='/mnt'                                   \
+           pp="${HOME}/pictures"                       \
+           pt='/usr/ports'                             \
+           src="${HOME}/.local/src"                    \
+           tt="${HOME}/tmp"                            \
+           vv="${HOME}/videos"                         \
 
 #
 # Functions
@@ -269,12 +211,9 @@ z()
 	zathura "$@" &
 }
 
-;;
-#
-# We are non-interactive
-#
-*)
-# Do nothing
-;;
-esac
+# Load syntax highlighting; should be last.
+zsh_syntax_file='/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+if [ -r "${zsh_syntax_file}" ]; then
+	. "${zsh_syntax_file}"
+fi
 
