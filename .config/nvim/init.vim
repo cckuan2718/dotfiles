@@ -49,7 +49,7 @@ set secure
 
 " Clipboard access
 if $USER != 'root'
-	set clipboard+=unnamed
+	set clipboard+=unnamedplus
 endif
 
 " Fast saving
