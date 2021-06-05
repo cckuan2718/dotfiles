@@ -12,20 +12,30 @@
 HISTFILE="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/histfile"
 HISTSIZE='5000'
 SAVEHIST='5000'
+setopt APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE 
 
 # Settings
 setopt AUTO_CD 
-setopt EXTENDED_GLOB
 setopt COMPLETE_ALIASES
+setopt EXTENDED_GLOB
 setopt INTERACTIVE_COMMENTS
-
 unsetopt BEEP
+
+# Directory stack
+setopt AUTO_PUSHD 
+setopt PUSHD_IGNORE_DUPS
+setopt PUSHD_MINUS
+setopt PUSHD_SILENT
+setopt PUSHD_TO_HOME
+DIRSTACKSIZE='20'
 
 # Command completion
 autoload -Uz compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
 compinit
+zmodload zsh/complist
+zstyle ':completion:*' menu select
 _comp_options+=(globdots)
 
 # vi mode
@@ -47,7 +57,7 @@ bindkey '^e' edit-command-line
 # Prompt
 autoload -U colors && colors
 PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@%f%F{blue}%m%f %F{yellow}%~%f
-%(0?.%F{green}.%F{red}%? )%#%f '
+%(0?.%F{green}.%F{red} %? )%#%f '
 
 #
 # Aliases
