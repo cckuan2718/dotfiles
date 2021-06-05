@@ -48,7 +48,9 @@ set exrc
 set secure
 
 " Clipboard access
-set clipboard+=unnamed
+if $USER != 'root'
+	set clipboard+=unnamed
+endif
 
 " Fast saving
 nmap <leader>w :wa<CR>
