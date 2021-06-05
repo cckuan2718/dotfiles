@@ -167,6 +167,11 @@ fh()
 		    | sed -E 's/^[[:blank:]]*[0-9]+[[:blank:]]*//'
 	)"
 }
+myip()
+{ 
+	printf 'External IPv4: %s\n' "$(curl --silent -4 http://ifconfig.co/)"
+	printf 'External IPv6: %s\n' "$(curl --silent -6 http://ifconfig.co/)"
+}
 
 # cd on quit in nnn
 n()
