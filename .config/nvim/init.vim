@@ -47,14 +47,6 @@ set nocompatible
 set exrc
 set secure
 
-" Clipboard access
-if $USER != 'root'
-	set clipboard+=unnamedplus
-endif
-
-" Fast saving
-nmap <leader>w :wa<CR>
-
 "
 " User interface
 "
@@ -67,11 +59,6 @@ set wildmenu
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-	set wildignore+=.git\*,.hg\*,.svn\*
-else
-	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-endif
 
 "Always show current position
 set ruler
@@ -111,9 +98,8 @@ set tm=500
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-" Show relative line number
+" Show line number
 set number
-set relativenumber
 
 " Show command in bottom bar
 set showcmd
@@ -230,12 +216,7 @@ set laststatus=2
 autocmd BufRead,BufNewFile *kshrc,*cvsrc set filetype=sh
 autocmd BufRead,BufNewFile *exrc         set filetype=vim
 autocmd BufRead,BufNewFile *.tex         set filetype=tex
-
-" view .h file as c header file, not c++
-augroup project
-	autocmd!
-	autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-augroup END
+autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 
 " view .tex file in latex syntax, not plain tex
 let g:tex_flavor = "latex"
@@ -264,11 +245,9 @@ nnoremap <leader>c :w! \| !compiler "%:p"<CR>
 " Open corresponding .pdf/.html or preview
 nnoremap <leader>p :!opout "%:p"<CR>
 " Check file in shellcheck
-nnoremap <leader>s :!clear && shellcheck "%:p"<CR>
+nnoremap <leader>sc :!clear && shellcheck "%:p"<CR>
 
 " Read and append <cmd> stdout to next line, first white space
-noremap <leader>b :r!tmux show-buffer
-noremap <leader>c :r!xclip -o -selection clipboard
 noremap <leader>d :r!diff -u # %
 noremap <leader>s :r!uname -rs
 noremap <leader>t :r!date +\%Y-\%m-\%d\ \%H:\%S
@@ -290,4 +269,20 @@ map <F7> :setlocal spell! spelllang=en_us
 let g:lightline = {
       \ 'colorscheme': 'seoul256',
       \ }
+
+"
+" System specific
+"
+
+if has('win32')
+	set wildignore+=.git\*,.hg\*,.svn\*
+	set guifont=Iosevka:h16
+	au GUIEnter * simalt ~x    " maximize the initial Vim window
+	set clipboard+=unnamedplus " Clipboard access
+else
+	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+	if exists('$DISPLAY') && $USER != 'root'
+		set clipboard+=unnamedplus " Clipboard access
+	endif
+endif
 
