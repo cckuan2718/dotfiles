@@ -5,6 +5,8 @@
 set theme dark
 set newtab https://www.google.com/
 
+blacklistadd my.vultr.com
+
 set searchurls.aw  https://wiki.archlinux.org/index.php?search=%s
 set searchurls.ddg https://duckduckgo.com/?q=%s
 set searchurls.gh  https://github.com/search?q=%s
