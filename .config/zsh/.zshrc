@@ -96,7 +96,7 @@ alias portsrc='cd $(make show=WRKSRC)'
 # Miscellaneous
 alias bc='bc -l'
 alias cb=' xclip -filter -selection clipboard'
-alias cbk="/usr/local/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
+alias cbk="git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
 alias g='git'
 alias rsize='eval $(resize)'
