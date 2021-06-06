@@ -17,10 +17,10 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 
 # Settings
-setopt AUTO_CD
-setopt COMPLETE_ALIASES
-setopt EXTENDED_GLOB
-setopt INTERACTIVE_COMMENTS
+setopt   AUTO_CD
+setopt   COMPLETE_ALIASES
+setopt   EXTENDED_GLOB
+setopt   INTERACTIVE_COMMENTS
 unsetopt BEEP
 
 # Directory stack
