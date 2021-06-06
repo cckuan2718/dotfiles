@@ -232,8 +232,10 @@ z()
 }
 
 # Load syntax highlighting; should be last.
-zsh_syntax_file='/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
-if [ -r "${zsh_syntax_file}" ]; then
-	. "${zsh_syntax_file}"
-fi
+for f in '/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh' \
+         '/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'; do
+	if [ -r "$f" ]; then
+		. "$f"
+	fi
+done
 
