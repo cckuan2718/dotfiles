@@ -4,11 +4,11 @@ tls	on
 tls_trust_file /etc/ssl/cert.pem
 logfile	~/.config/msmtp/msmtp.log
 
-account core
+account cckname
 host mta0.changchukuan.name
 port 465
 from cckuan@changchukuan.name
 user cckuan
-passwordeval "pass core"
+passwordeval "pass cckname"
 tls_starttls off
 

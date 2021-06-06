@@ -1,29 +1,29 @@
 #
-# Mbsyncrc file for account 'core'
+# Mbsyncrc file for account 'cckname'
 #
 
 # Remote
-IMAPStore core-remote
+IMAPStore cckname-remote
 Host mta0.changchukuan.name
 Port 993
 User cckuan
-PassCmd "pass core"
+PassCmd "pass cckname"
 AuthMechs LOGIN
 SSLType IMAPS
 CertificateFile /etc/ssl/cert.pem
 
 # Local
-MaildirStore core-local
+MaildirStore cckname-local
 Subfolders Verbatim
-Path ~/.local/share/mail/core/
-Inbox ~/.local/share/mail/core/Inbox
+Path ~/.local/share/mail/cckname/
+Inbox ~/.local/share/mail/cckname/Inbox
 Flatten .
 
 # Channel
-Channel core
+Channel cckname
 Expunge Both
-Far :core-remote:
-Near :core-local:
+Far :cckname-remote:
+Near :cckname-local:
 Patterns * !\"[Gmail]/All Mail\"
 Create Both
 SyncState *

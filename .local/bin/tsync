@@ -87,8 +87,8 @@ case "$1" in
 '-s')
 	target='sieve'
 
-	src="${XDG_CONFIG_HOME:-${HOME}/.config}/neomutt/accounts/core.sieve"
-	dest='cckuan@core.changchukuan.name:~/.dovecot.sieve'
+	src="${XDG_CONFIG_HOME:-${HOME}/.config}/neomutt/accounts/cckname.sieve"
+	dest='cckuan@yttrium.changchukuan.name:~/.dovecot.sieve'
 
 	check_src
 	msg
@@ -99,7 +99,7 @@ case "$1" in
 '-w')
 	target='website'
 	src="${HOME}/documents/htdocs/www.changchukuan.name/build/"
-	dest='cckuan@core.changchukuan.name:/var/www/htdocs/www.changchukuan.name'
+	dest='cckuan@yttrium.changchukuan.name:/var/www/htdocs/www.changchukuan.name'
 
 	check_src
 	msg

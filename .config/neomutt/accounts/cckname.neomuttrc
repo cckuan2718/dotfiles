@@ -1,6 +1,6 @@
 # vim: filetype=neomuttrc
 #
-# neomuttrc file for account 'core'
+# neomuttrc file for account 'cckname'
 #
 
 # Identity
@@ -9,17 +9,17 @@ set from = "cckuan@changchukuan.name"
 alias me Chang, Chu-Kuan <cckuan@changchukuan.name>
 
 # SMTP
-set sendmail = "msmtp -a core"
+set sendmail = "msmtp -a cckname"
 
 # IMAP
-set folder = "~/.local/share/mail/core"
+set folder = "~/.local/share/mail/cckname"
 
 # Cache header and body
-set header_cache = ~/.cache/neomutt/core/headers
-set message_cachedir = ~/.cache/neomutt/core/bodies
+set header_cache = ~/.cache/neomutt/cckname/headers
+set message_cachedir = ~/.cache/neomutt/cckname/bodies
 
 # Signature
-set signature = ~/.config/neomutt/accounts/core.signature
+set signature = ~/.config/neomutt/accounts/cckname.signature
 set crypt_autosign = yes
 set crypt_opportunistic_encrypt = yes
 set pgp_self_encrypt = yes
@@ -48,7 +48,7 @@ bind index,pager M noop
 bind index,pager C noop
 bind index gg first-entry
 
-macro index o "<shell-escape>mbsync -V core<enter>" "run mbsync to sync core"
+macro index o "<shell-escape>mbsync -V cckname<enter>" "run mbsync to sync cckname"
 
 macro index,pager gi "<change-folder>=Inbox<enter>" "go to Inbox"
 macro index,pager Mi ";<save-message>=Inbox<enter>" "move mail to Inbox"

@@ -203,6 +203,6 @@ color body red default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-
 #
 
 # Default account
-source ~/.config/neomutt/accounts/core.neomuttrc
+source ~/.config/neomutt/accounts/cckname.neomuttrc
 
-macro index,pager i0 '<sync-mailbox><enter-command>source ~/.config/neomutt/accounts/core.neomuttrc<enter><change-folder>!<enter>;<check-stats>' "switch to cckuan@changchukuan.name"
+macro index,pager i0 '<sync-mailbox><enter-command>source ~/.config/neomutt/accounts/cckname.neomuttrc<enter><change-folder>!<enter>;<check-stats>' "switch to cckuan@changchukuan.name"
