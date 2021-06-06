@@ -57,9 +57,22 @@ bindkey '^e' edit-command-line
 # Disable ctrl-s to freeze terminal.
 stty stop undef
 
+#
 # Prompt
+#
+
+_ps1_hostname()
+{
+        if [ -z "${SSH_CONNECTION}" ]; then
+                printf '%%F{blue}%%m%%f'
+        else
+                printf '%%F{red}%%m%%f'
+        fi
+}
+
 autoload -U colors && colors
-PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@%f%F{blue}%m%f %F{yellow}%~%f
+setopt PROMPT_SUBST
+PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
 %(0?.%F{green}.%F{red} %? )%#%f '
 
 #
