@@ -22,12 +22,15 @@ SAVEHIST='5000'
 setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
 
 # Settings
 setopt   AUTO_CD
 setopt   COMPLETE_ALIASES
+setopt   CORRECT
 setopt   EXTENDED_GLOB
 setopt   INTERACTIVE_COMMENTS
+setopt   PRINT_EXIT_VALUE
 unsetopt BEEP
 
 # Directory stack
