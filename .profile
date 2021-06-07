@@ -68,7 +68,39 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/shell"
 
 # Configurations
 export MPD_HOST="${XDG_CONFIG_HOME:-${HOME}/.config}/mpd/socket"
+export NEXINIT='
+" Settings
+set autoindent
+set cedit=\
+set extended
+set ignorecase
+set noexpandtab
+set noflash
+set number
+set report=1
+set ruler
+set showmatch
+set showmode
+set tabstop=8
+
+" Key bindings
+map gg 1G
+
+" Read and append <cmd> stdout to next line, first white space
+map rb :r!tmux show-buffer
+map rc :r!xclip -o -selection clipboard
+map rd :r!diff -u # %
+map rs :r!uname -rs
+map rt :r!date +\%Y-\%m-\%d\ \%H:\%S
+
+" Formatting
+map gF {!}fmt -spw 80
+map gS {j!}sort -ur
+map gf {!}fmt -spw 72
+map gh :!hunspell -d en_US %
+map gs {!}sort -u
+map gt mm:%s/[[:space:]]*$//
+map gx !tmux load-buffer c'
 export NNN_COLORS='3245'
 export NNN_OPTS='AdeHoRU'
 export PANEL_FIFO="/tmp/panel_$(id -u)"
-
