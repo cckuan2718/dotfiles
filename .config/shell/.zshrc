@@ -131,12 +131,35 @@ hash -d -- bb="${HOME}/.local/bin"                     \
 # Aliases and functions
 #
 
+# POSIX shell
 commonrc_file="${shell_config_dir}/commonrc"
 if [ -r "${commonrc_file}" ]; then
 	. "${commonrc_file}"
 else
 	printf 'zshrc: %s not found\n' "${commonrc_file}" 1>&2
 fi
+
+# zsh specific
+alias -g CL='| wc -l'
+alias -g DN='/dev/null'
+alias -g EG='2>&1 | grep -E'
+alias -g EH='2>&1 | head'
+alias -g EL='2>&1 | less'
+alias -g ELS='2>&1 | less -S'
+alias -g EN="2> /dev/null"
+alias -g ET='2>&1 | tail'
+alias -g F='| fmt -spw 72'
+alias -g FL='| fmt -spw 80'
+alias -g G='| grep -E'
+alias -g H='| head'
+alias -g L="| less"
+alias -g NS='| sort -n'
+alias -g RNS='| sort -rn'
+alias -g S='| sort'
+alias -g SIL='> /dev/null 2>&1'
+alias -g US='| sort -u'
+alias -g X0='| xargs -0'
+alias -g X='| xargs'
 
 #
 # Finish up

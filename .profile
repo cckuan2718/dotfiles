@@ -102,10 +102,10 @@ map rt :r!date +\%Y-\%m-\%d\ \%H:\%S
 
 " Formatting
 map gF {!}fmt -spw 80
-map gS {j!}sort -ur
+map gS {j!}sort -r
 map gf {!}fmt -spw 72
 map gh :!hunspell -d en_US %
-map gs {!}sort -u
+map gs {!}sort
 map gt mm:%s/[[:space:]]*$//
 map gx !tmux load-buffer c'
 export NNN_COLORS='3245'

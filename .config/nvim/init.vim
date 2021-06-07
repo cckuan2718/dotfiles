@@ -254,10 +254,10 @@ noremap <leader>t :r!date +\%Y-\%m-\%d\ \%H:\%S
 
 " Formatting
 noremap <leader>F {!}fmt -spw 80
-noremap <leader>S {j!}sort -ur
+noremap <leader>S {j!}sort -r
 noremap <leader>f {!}fmt -spw 72
 noremap <leader>h :!hunspell -d en_US %
-noremap <leader>s {!}sort -u
+noremap <leader>s {!}sort
 noremap <leader>t :%s/\s\+$//e
 
 map <F7> :setlocal spell! spelllang=en_us
