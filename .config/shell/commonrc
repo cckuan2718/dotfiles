@@ -1,65 +1,37 @@
 #!/bin/sh
 
 #
-# .kshrc for desktop
+# aliases and functions for POSIX shell
 #
-
-case "$-" in
-#
-# We are interactive
-#
-*i*)
-
-#
-# Ksh setting
-#
-
-set -o vi
-set -o vi-tabcomplete
-
-# History
-HISTFILE="${XDG_CONFIG_HOME:-${HOME}/.config}/ksh/ksh_history"
-HISTSIZE='5000'
-HISTCONTROL='ignoredups:ignorespace'
-
-#
-# Ksh completions
-#
-
-ksh_comp_file="${XDG_CONFIG_HOME:-${HOME}/.config}/ksh/ksh_completion"
-if [ -r "${ksh_comp_file}" ]; then
-	. "${ksh_comp_file}" 
-fi
 
 #
 # Aliases
 #
 
 # Base utils
+alias bye='exit'
 alias cls='clear'
 alias cmpr='diff -uNp'
 alias cp='cp -iv'
 alias df='df -h'
 alias du='du -ch'
+alias e="${EDITOR:-vi}"
 alias ll='ls -aFhl'
 alias lld='ls -dFhl'
+alias logout='exit'
 alias mv='mv -iv'
 alias p='ps -l'
+alias pg="${PAGER:-less}"
+alias pls='doas'
 alias pwd='pwd -P'
+alias quit='exit'
 alias rm='rm -iv'
+alias ta='tmux new-session -A -s'
+alias tad='ta default'
 
 if [ -x "$(command -v nvi)" ]; then
 	alias vi='nvi'
 fi
-
-# Ksh
-alias bye='exit'
-alias h='fc -l | more'
-alias j='jobs'
-alias logout='exit'
-alias o='fg %-'
-alias quit='exit'
-alias r='fc -s'
 
 # OpenBSD Ports
 alias portsql='sqlite3 /usr/local/share/sqlports'
@@ -71,12 +43,8 @@ alias bc='bc -l'
 alias cb=' xclip -filter -selection clipboard'
 alias cbk="git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
-alias e="${EDITOR:-vi}"
 alias g='git'
-alias pg="${PAGER:-less}"
 alias rsize='eval $(resize)'
-alias ta='tmux new-session -A -s'
-alias tad='ta default'
 alias tb="${TERM_BROWSER:-lynx}"
 alias tman='tmux split-window -h -l 82 man'
 alias trem='transmission-remote'
@@ -84,90 +52,27 @@ alias yt='youtube-dl --add-metadata --ignore-errors'
 alias yta='youtube-dl --extract-audio --audio-format mp3 --embed-thumbnail'
 
 # Bookmarks
-alias cddd="cd  "${HOME}/downloads"                        "
+alias cdbb="cd  "${HOME}/.local/bin"                       "
 alias cdcac="cd "${XDG_CACHE_HOME:-${HOME}/.cache}"        "
-alias cdcfg="cd "${XDG_CONFIG_HOME:-${HOME}/.config}"      "
+alias cdcc="cd "${XDG_CONFIG_HOME:-${HOME}/.config}"      "
 alias cddc="cd  "${HOME}/documents"                        "
+alias cddd="cd  "${HOME}/downloads"                        "
 alias cddt="cd  "${XDG_DATA_HOME:-${HOME}/.local/share}"   "
-alias cdhh="cd  "${HOME}"                                  "
 alias cdmm="cd  "${HOME}/music"                            "
 alias cdmn='cd  /mnt                                       '
-alias cdp='cd   /usr/ports                                 '
 alias cdpp="cd  "${HOME}/pictures"                         "
-alias cdsc="cd  "${HOME}/.local/bin"                       "
+alias cdpt='cd   /usr/ports                                 '
 alias cdsrc="cd "${HOME}/.local/src"                       "
 alias cdtt="cd  "${HOME}/tmp"                              "
 alias cdvv="cd  "${HOME}/videos"                           "
 
-# doas
-alias pls='doas'
-alias arp-scan='pls arp-scan'
-alias cdio='pls cdio'
-alias pvi='pls vi'
-alias rcctl='pls rcctl'
-
-#
-# Prompt
-#
-
-_ps1_user()
-{
-	case "${UID}" in
-	'0')
-		# Red root name
-		printf '\\[\033[31m\\]%s\\[\033[00m\\]' "${USER}"
-		;;
-	*)
-		# Yellow user name
-		printf '\\[\033[33m\\]%s\\[\033[00m\\]' "${USER}"
-		;;
-	esac
-}
-
-_ps1_pwd()
-{
-	case "${PWD}" in
-	"${HOME}"*)
-		printf '\\[\033[33m\\]~%s\\[\033[00m\\]' "${PWD#${HOME}}"
-		;;
-	*)
-		printf '\\[\033[33m\\]%s\\[\033[00m\\]' "${PWD}"
-		;;
-	esac
-}
-
-_ps1_exit_status()
-{
-	case "$1" in
-	'0')
-		# Green prompt
-		printf '\\[\033[32m\\]%s\\[\033[00m\\]' "${ps1s}"
-		;;
-	*)
-		# Red prompt
-		printf '\\[\033[31m\\](%s) %s\\[\033[00m\\]' "$1" "${ps1s}"
-		;;
-	esac
-}
-
-# we may have su'ed so reset these
-USER="$(id -un)"
-UID="$(id -u)"
-case "${UID}" in
-'0')
-	ps1s='# '
-	;;
-*)
-	ps1s='$ '
-esac
-hostname="${HOSTNAME:-$(uname -n)}"
-host="${hostname%%.*}"
-
-PS1="\$(_ps1_user)\[\033[32m\]@\[\033[34m\]\${host}\[\033[00m\] \$(_ps1_pwd)
-\$(_ps1_exit_status \$?)"
-PS2='> '
-PS3='#? '
-PS4='+ '
+# doas or sudo
+for command in 'doas' 'sudo'; do
+	if [ -x "$(command -v "$p")" ]; then
+		alias pls="$p"
+		break
+	fi
+done
 
 #
 # Functions
@@ -206,9 +111,27 @@ fes()
 # Fuzzy cmd history
 fh()
 {
-	print -s "$(fc -l 1       \
-	    | fzf --no-sort --tac \
-	    | cut -f '2-')"
+	if   [ -n "${KSH_VERSION}" ]; then
+		print -s "$(
+			fc -l 1                   \
+			    | fzf --no-sort --tac \
+			    | cut -f '2-'
+		)"
+	elif [ -n "${ZSH_NAME}" ]   ; then
+		print -z "$(
+			fc -l 1                                                \
+			| fzf --no-sort --tac                                  \
+			| sed -E 's/[[:blank:]]*[[:digit:]]*\*?[[:blank:]]*//' \
+			| sed 's/\\/\\\\/g'
+		)"
+	else
+		printf 'fh: fh is only available in ksh/zsh\n' 1>&2
+	fi
+}
+myip()
+{ 
+	printf 'External IPv4: %s\n' "$(curl --silent -4 http://ifconfig.co/)"
+	printf 'External IPv6: %s\n' "$(curl --silent -6 http://ifconfig.co/)"
 }
 
 # cd on quit in nnn
@@ -268,13 +191,4 @@ z()
 {
 	zathura "$@" &
 }
-
-;;
-#
-# We are non-interactive
-#
-*)
-# Do nothing
-;;
-esac
 

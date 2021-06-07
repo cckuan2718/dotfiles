@@ -1,8 +1,8 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 
 #
-# ~/.zprofile 
-# Runs on zsh login. Environmental variables are set here.
+# ~/.profile 
+# Runs on ksh/zsh login. Environmental variables are set here.
 #
 
 #
@@ -28,7 +28,7 @@ export READER='zathura'
 export TERMINAL='xterm'
 export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
 
-for e in 'nvim' 'vim' 'nvi' 'vi'; do
+for e in 'nvim' 'vim' 'nvi' 'vi' 'nano'; do
 	if [ -x "$(command -v "$e")" ]; then
 		export EDITOR="$e"
 		export VISUAL="$e"
@@ -61,11 +61,10 @@ export XDG_DATA_HOME="${HOME}/.local/share"
 # ${HOME} Clean-up
 export LESSHISTFILE='/dev/null'
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/password-store"
-export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
 
-# In order to have an interactive (as opposed to login) ksh shell process a 
-# startup file, ENV may be set and exported
-export ENV="${XDG_CONFIG_HOME:-${HOME}/.config}/ksh/kshrc"
+# Location of ksh/zsh startup file
+export ENV="${XDG_CONFIG_HOME:-${HOME}/.config}/shell/kshrc"
+export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/shell"
 
 # Configurations
 export MPD_HOST="${XDG_CONFIG_HOME:-${HOME}/.config}/mpd/socket"

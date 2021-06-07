@@ -47,7 +47,7 @@ fcitx -r -d -s 3 > /dev/null &
 setbg &
 picom > /dev/null &
 { [ ! -s "${HOME}/.config/mpd/mpd.pid" ] && mpd; } &
-pass core > /dev/null 2>&1 &
+pass cckname > /dev/null 2>&1 &
 xidle &
 
 # start window manager
