@@ -62,9 +62,16 @@ export XDG_DATA_HOME="${HOME}/.local/share"
 export LESSHISTFILE='/dev/null'
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/password-store"
 
-# Location of ksh/zsh startup file
-export ENV="${XDG_CONFIG_HOME:-${HOME}/.config}/shell/kshrc"
-export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/shell"
+# Location of ksh/zsh startup file and cache file
+export SHELL_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/shell"
+export SHELL_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/shell"
+export ENV="${SHELL_CONFIG_DIR}/kshrc"
+export ZDOTDIR="${SHELL_CONFIG_DIR}"
+
+# create ${SHELL_CACHE_DIR} for command history to work  
+if [ ! -d "${SHELL_CACHE_DIR}" ]; then
+	mkdir -p "${SHELL_CACHE_DIR}"
+fi
 
 # Configurations
 export MPD_HOST="${XDG_CONFIG_HOME:-${HOME}/.config}/mpd/socket"

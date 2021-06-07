@@ -5,16 +5,18 @@
 #
 
 #
+# Directories variable, used only in this file
+#
+
+shell_config_dir="${SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/shell}"
+shell_cache_dir="${SHELL_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/shell}"
+
+#
 # Zsh configuration
 #
 
 # History
-histfile_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/shell"
-if [ ! -d "${histfile_dir}" ]; then
-	mkdir -p "${histfile_dir}"
-fi
-
-HISTFILE="${histfile_dir}/zsh_history"
+HISTFILE="${shell_cache_dir}/zsh_history"
 HISTSIZE='5000'
 SAVEHIST='5000'
 setopt APPEND_HISTORY
@@ -36,12 +38,39 @@ setopt PUSHD_SILENT
 setopt PUSHD_TO_HOME
 DIRSTACKSIZE='20'
 
+#
 # Command completion
+#
+
 autoload -Uz compinit
-compinit
+compinit -d "${shell_cache_dir}/zcompdump_${ZSH_VERSION}"
+
+# expand regular aliases only in command position
+zstyle ':completion:*' completer _expand_alias _complete _ignored
+zstyle ':completion:*' regular true
+
+# Menu selection will only be started if there are at least 10 matches
 zmodload zsh/complist
-zstyle ':completion:*' menu select
-_comp_options+=(globdots) # Include hidden files
+zstyle ':completion:*' menu select=10
+
+# use cache to proxy the list of results
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${shell_cache_dir}/zcompcache"
+
+# Prevent CVS files/directories from being completed
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*'         ignored-patterns '(*/)#CVS'
+
+# Completing process IDs with menu selection
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*'   force-list always
+
+# Include hidden files
+_comp_options+=(globdots)
+
+#
+# Key bindings
+#
 
 # vi mode
 bindkey -v
@@ -81,17 +110,6 @@ PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
 %(0?.%F{green}.%F{red} %? )%#%f '
 
 #
-# Aliases and functions
-#
-
-commonrc_file="${XDG_CONFIG_HOME:-${HOME}/.config}/shell/commonrc"
-if [ -r "${commonrc_file}" ]; then
-	. "${commonrc_file}" 
-else
-	printf 'zshrc: %s not found\n' "${commonrc_file}" 1>&2
-fi
-
-#
 # Bookmarks
 #
 
@@ -108,6 +126,17 @@ hash -d -- bb="${HOME}/.local/bin"                     \
            src="${HOME}/.local/src"                    \
            tt="${HOME}/tmp"                            \
            vv="${HOME}/videos"                         \
+
+#
+# Aliases and functions
+#
+
+commonrc_file="${shell_config_dir}/commonrc"
+if [ -r "${commonrc_file}" ]; then
+	. "${commonrc_file}"
+else
+	printf 'zshrc: %s not found\n' "${commonrc_file}" 1>&2
+fi
 
 #
 # Finish up

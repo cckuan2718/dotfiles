@@ -11,6 +11,13 @@ case "$-" in
 *i*)
 
 #
+# Directories variable, used only in this file
+#
+
+shell_config_dir="${SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/shell}"
+shell_cache_dir="${SHELL_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/shell}"
+
+#
 # Ksh setting
 #
 
@@ -18,12 +25,7 @@ set -o vi
 set -o vi-tabcomplete
 
 # History
-histfile_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/shell"
-if [ ! -d "${histfile_dir}" ]; then
-	mkdir -p "${histfile_dir}"
-fi
-
-HISTFILE="${histfile_dir}/ksh_history"
+HISTFILE="${shell_cache_dir}/ksh_history"
 HISTSIZE='5000'
 HISTCONTROL='ignoredups:ignorespace'
 
@@ -105,8 +107,8 @@ PS4='+ '
 # Ksh completions / Common aliases and functions
 #
 
-ksh_comp_file="${XDG_CONFIG_HOME:-${HOME}/.config}/shell/ksh_completion"
-commonrc_file="${XDG_CONFIG_HOME:-${HOME}/.config}/shell/commonrc"
+ksh_comp_file="${shell_config_dir}/ksh_completion"
+commonrc_file="${shell_config_dir}/commonrc"
 for f in "${ksh_comp_file}" "${commonrc_file}"; do
 	if [ -r "$f" ]; then
 		. "$f" 
