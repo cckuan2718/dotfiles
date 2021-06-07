@@ -140,6 +140,7 @@ else
 fi
 
 # zsh specific
+alias -g CB='| xclip -filter -selection clipboard'
 alias -g CL='| wc -l'
 alias -g DN='/dev/null'
 alias -g EG='2>&1 | grep -E'
