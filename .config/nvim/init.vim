@@ -213,10 +213,10 @@ set laststatus=2
 "
 
 " Ensure files are read as what I want:
-autocmd BufRead,BufNewFile *kshrc,*cvsrc set filetype=sh
+autocmd BufRead,BufNewFile *zshrc,*kshrc,*cvsrc set filetype=sh
 autocmd BufRead,BufNewFile *exrc         set filetype=vim
 autocmd BufRead,BufNewFile *.tex         set filetype=tex
-autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+autocmd BufRead,BufNewFile *.h,*.c       set filetype=c
 
 " view .tex file in latex syntax, not plain tex
 let g:tex_flavor = "latex"
