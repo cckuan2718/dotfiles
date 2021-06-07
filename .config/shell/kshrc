@@ -45,6 +45,17 @@ _ps1_user()
 	esac
 }
 
+_ps1_hostname()
+{
+        if [ -z "${SSH_CONNECTION}" ]; then
+		# Blue hostname
+		printf '\\[\033[34m\\]%s\\[\033[00m\\]' "${host}"
+        else
+		# Red hostname
+		printf '\\[\033[31m\\]%s\\[\033[00m\\]' "${host}"
+        fi
+}
+
 _ps1_pwd()
 {
 	case "${PWD}" in
@@ -84,7 +95,7 @@ esac
 hostname="${HOSTNAME:-$(uname -n)}"
 host="${hostname%%.*}"
 
-PS1="\$(_ps1_user)\[\033[32m\]@\[\033[34m\]\${host}\[\033[00m\] \$(_ps1_pwd)
+PS1="\$(_ps1_user)\[\033[32m\]@\$(_ps1_hostname) \$(_ps1_pwd)
 \$(_ps1_exit_status \$?)"
 PS2='> '
 PS3='#? '
