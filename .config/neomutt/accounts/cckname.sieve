@@ -30,7 +30,8 @@ if address :domain "From" "tcb-bank.com.tw" {
 } elsif anyof (exists "X-Cron-Env",
 	       header :contains "subject" ["daily insecurity output",
 					   "daily output"],
-	       address :is "from" "support@vultr.com") {
+	       address :is "from" "support@vultr.com",
+	       address :is "to"   "announce@openbsd.org") {
 
 	fileinto :create "Sysadmin";
 
