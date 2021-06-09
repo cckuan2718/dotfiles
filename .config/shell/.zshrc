@@ -5,11 +5,22 @@
 #
 
 #
-# Directories variable, used only in this file
+# Variables and functions used only in this file
 #
 
 shell_config_dir="${SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/shell}"
 shell_cache_dir="${SHELL_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/shell}"
+
+source_in()
+{
+	for file; do
+		if [ -r "${file}" ]; then
+			. "${file}"
+			return 0
+		fi
+	done
+	printf 'error sourcing %s\n' "$*" 1>&2
+}
 
 #
 # Zsh configuration
@@ -135,12 +146,7 @@ hash -d -- bb="${HOME}/.local/bin"                     \
 #
 
 # POSIX shell
-commonrc_file="${shell_config_dir}/commonrc"
-if [ -r "${commonrc_file}" ]; then
-	. "${commonrc_file}"
-else
-	printf 'zshrc: %s not found\n' "${commonrc_file}" 1>&2
-fi
+source_in "${shell_config_dir}/commonrc"
 
 # zsh specific
 alias -g CB='| xclip -filter -selection clipboard'
@@ -169,12 +175,8 @@ alias -g X='| xargs'
 # Finish up
 #
 
-# Load syntax highlighting; should be last.
-for f in '/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh' \
-         '/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'; do
-	if [ -r "$f" ]; then
-		. "$f"
-		break
-	fi
-done
+# Load syntax highlighting, should be last.
+source_in                                                                  \
+    '/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh' \
+    '/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 

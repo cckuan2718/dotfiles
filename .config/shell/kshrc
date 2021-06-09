@@ -11,11 +11,22 @@ case "$-" in
 *i*)
 
 #
-# Directories variable, used only in this file
+# Variables and functions used only in this file
 #
 
 shell_config_dir="${SHELL_CONFIG_DIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/shell}"
 shell_cache_dir="${SHELL_CACHE_DIR:-${XDG_CACHE_HOME:-${HOME}/.cache}/shell}"
+
+source_in()
+{
+	for file; do
+		if [ -r "${file}" ]; then
+			. "${file}"
+			return 0
+		fi
+	done
+	printf 'error sourcing %s\n' "$*" 1>&2
+}
 
 #
 # Ksh setting
@@ -107,15 +118,8 @@ PS4='+ '
 # Ksh completions / Common aliases and functions
 #
 
-ksh_comp_file="${shell_config_dir}/ksh_completion"
-commonrc_file="${shell_config_dir}/commonrc"
-for f in "${ksh_comp_file}" "${commonrc_file}"; do
-	if [ -r "$f" ]; then
-		. "$f" 
-	else
-		printf 'kshrc: %s not found\n' "$f" 1>&2
-	fi
-done
+source_in "${shell_config_dir}/ksh_completion"
+source_in "${shell_config_dir}/commonrc"
 
 ;;
 #
