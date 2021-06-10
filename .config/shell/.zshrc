@@ -23,13 +23,13 @@ source_in()
 }
 
 #
-# Zsh configuration
+# Options
 #
 
 # History
-HISTFILE="${shell_cache_dir}/zsh_history"
-HISTSIZE='5000'
-SAVEHIST='5000'
+export HISTFILE="${shell_cache_dir}/zsh_history"
+export HISTSIZE='5000'
+export SAVEHIST='5000'
 setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
@@ -41,7 +41,6 @@ setopt   COMPLETE_ALIASES
 setopt   CORRECT
 setopt   EXTENDED_GLOB
 setopt   INTERACTIVE_COMMENTS
-setopt   PRINT_EXIT_VALUE
 unsetopt BEEP
 
 # Directory stack
@@ -50,22 +49,25 @@ setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_MINUS
 setopt PUSHD_SILENT
 setopt PUSHD_TO_HOME
-DIRSTACKSIZE='20'
+export DIRSTACKSIZE='20'
 
 #
 # Command completion
 #
 
-autoload -Uz compinit
-compinit -d "${shell_cache_dir}/zcompdump_${ZSH_VERSION}"
+autoload -Uz compinit \
+    && compinit -d "${shell_cache_dir}/zcompdump_${ZSH_VERSION}"
+
 
 # expand regular aliases only in command position
-zstyle ':completion:*' completer _expand_alias _complete _ignored
+zstyle ':completion:*' completer _extensions _expand_alias _complete \
+    _ignored _approximate
 zstyle ':completion:*' regular true
+zstyle ':completion:*:*:approximate:*' max-errors 1 numeric
 
 # Menu selection will only be started if there are at least 10 matches
 zmodload zsh/complist
-zstyle ':completion:*' menu select=10
+zstyle ':completion:*' menu select=long
 
 # use cache to proxy the list of results
 zstyle ':completion:*' use-cache on
@@ -73,14 +75,21 @@ zstyle ':completion:*' cache-path "${shell_cache_dir}/zcompcache"
 
 # Prevent CVS files/directories from being completed
 zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
-zstyle ':completion:*:cd:*'         ignored-patterns '(*/)#CVS'
-
-# Completing process IDs with menu selection
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*'   force-list always
+zstyle ':completion:*:*:cd:*'       ignored-patterns '(*/)#CVS'
 
 # Include hidden files
 _comp_options+=(globdots)
+
+# Formats
+zstyle ':completion:*:corrections'  format '%F{red}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:descriptions' format '%F{cyan}-- %d --%f'
+zstyle ':completion:*:messages'     format '%F{purple}-- %d --%f'
+zstyle ':completion:*:warnings'     format '%F{red}-- no matches found --%f'
+
+# Group different type of matches under their descriptions
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:*:-command-:*:*' group-order alias builtins \
+    functions commands
 
 #
 # Key bindings
@@ -88,7 +97,7 @@ _comp_options+=(globdots)
 
 # vi mode
 bindkey -v
-KEYTIMEOUT=1
+export KEYTIMEOUT=1
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -98,7 +107,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 
 # Edit line in ${EDITOR} with ctrl-e
-autoload edit-command-line
+autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^e' edit-command-line
 
@@ -170,6 +179,17 @@ alias -g SIL='> /dev/null 2>&1'
 alias -g US='| sort -u'
 alias -g X0='| xargs -0'
 alias -g X='| xargs'
+
+alias d='dirs -v'
+alias 1='cd -1'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
 
 #
 # Finish up

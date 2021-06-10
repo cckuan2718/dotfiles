@@ -36,9 +36,9 @@ set -o vi
 set -o vi-tabcomplete
 
 # History
-HISTFILE="${shell_cache_dir}/ksh_history"
-HISTSIZE='5000'
-HISTCONTROL='ignoredups:ignorespace'
+export HISTFILE="${shell_cache_dir}/ksh_history"
+export HISTSIZE='5000'
+export HISTCONTROL='ignoredups:ignorespace'
 
 #
 # Prompt
