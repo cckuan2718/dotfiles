@@ -128,6 +128,7 @@ fh()
 		printf 'fh: fh is only available in ksh/zsh\n' 1>&2
 	fi
 }
+ 
 myip()
 { 
 	printf 'External IPv4: %s\n' "$(curl --silent -4 http://ifconfig.co/)"

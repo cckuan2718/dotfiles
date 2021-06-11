@@ -30,10 +30,14 @@ source_in()
 export HISTFILE="${shell_cache_dir}/zsh_history"
 export HISTSIZE='5000'
 export SAVEHIST='5000'
-setopt APPEND_HISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_VERIFY
+setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
+setopt HIST_FIND_NO_DUPS      # Do not display a previously found event.
+setopt HIST_IGNORE_ALL_DUPS   # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_IGNORE_DUPS       # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_SPACE      # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY            # Do not execute immediately upon history expansion.
+setopt SHARE_HISTORY          # Share history between all sessions.
 
 # Settings
 setopt   AUTO_CD
@@ -60,9 +64,7 @@ autoload -Uz compinit \
 
 
 # expand regular aliases only in command position
-zstyle ':completion:*' completer _extensions _expand_alias _complete \
-    _ignored _approximate
-zstyle ':completion:*' regular true
+zstyle ':completion:*' completer _extensions _complete _ignored _approximate
 zstyle ':completion:*:*:approximate:*' max-errors 1 numeric
 
 # Menu selection will only be started if there are at least 10 matches
@@ -118,6 +120,22 @@ stty stop undef
 # Prompt
 #
 
+autoload -U colors && colors
+setopt PROMPT_SUBST
+
+autoload -Uz vcs_info
+zstyle ':vcs_info:*'     check-for-changes true
+zstyle ':vcs_info:*'     unstagedstr       '%F{red}%B*%f%b'
+zstyle ':vcs_info:*'     stagedstr         '%F{green}%B*%f%b'
+zstyle ':vcs_info:*'     formats           '%F{cyan}%r/%S%f %F{green}%b%f%u%c'
+zstyle ':vcs_info:*'     actionformats     '%F{cyan}%r/%S%f %F{red}%a | %m%f%u%c'
+zstyle ':vcs_info:git:*' patch-format      '%7>>%p%<< (%n applied)'
+
+precmd() 
+{
+	vcs_info 
+}
+
 _ps1_hostname()
 {
         if [ -z "${SSH_CONNECTION}" ]; then
@@ -127,10 +145,9 @@ _ps1_hostname()
         fi
 }
 
-autoload -U colors && colors
-setopt PROMPT_SUBST
 PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
 %(0?.%F{green}.%F{red} %? )%#%f '
+RPS1='${vcs_info_msg_0_}'
 
 #
 # Bookmarks
