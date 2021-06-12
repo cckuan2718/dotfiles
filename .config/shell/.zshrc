@@ -119,34 +119,50 @@ stty stop undef
 # Prompt
 #
 
-autoload -U colors && colors
-setopt PROMPT_SUBST
+# if pure theme ( https://github.com/sindresorhus/pure ) is installed
+theme_dir="${shell_config_dir}/pure"
+if [ -d "${theme_dir}" ]; then
+	fpath=("${theme_dir}" "$fpath[@]")
+	autoload -Uz promptinit && promptinit
+	prompt pure
 
-autoload -Uz vcs_info
-zstyle ':vcs_info:*'     check-for-changes true
-zstyle ':vcs_info:*'     unstagedstr       '%F{red}%B*%f%b'
-zstyle ':vcs_info:*'     stagedstr         '%F{green}%B*%f%b'
-zstyle ':vcs_info:*'     formats           '%F{cyan}%r/%S%f %F{green}%b%f%u%c'
-zstyle ':vcs_info:*'     actionformats     '%F{cyan}%r/%S%f %F{red}%a | %m%f%u%c'
-zstyle ':vcs_info:git:*' patch-format      '%7>>%p%<< (%n applied)'
+	# Settings
+	zstyle ':prompt:pure:prompt:success' color green
+	zstyle ':prompt:pure:path'           color yellow
 
-precmd() 
-{
-	vcs_info 
-}
+# fallback to default prompt
+else
+	printf 'pure theme not detected. fallback to default theme\n' 1>&2
 
-_ps1_hostname()
-{
-        if [ -z "${SSH_CONNECTION}" ]; then
-                printf '%%F{blue}%%m%%f'
-        else
-                printf '%%F{red}%%m%%f'
-        fi
-}
+	autoload -Uz colors && colors
+	setopt PROMPT_SUBST
 
-PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
-%(0?.%F{green}.%F{red} %? )%#%f '
-RPS1='${vcs_info_msg_0_}'
+	autoload -Uz vcs_info
+	zstyle ':vcs_info:*'     check-for-changes true
+	zstyle ':vcs_info:*'     unstagedstr   '%F{red}%B*%f%b'
+	zstyle ':vcs_info:*'     stagedstr     '%F{green}%B*%f%b'
+	zstyle ':vcs_info:*'     formats       '%F{cyan}%r/%S%f %F{green}%b%f%u%c'
+	zstyle ':vcs_info:*'     actionformats '%F{cyan}%r/%S%f %F{red}%a | %m%f%u%c'
+	zstyle ':vcs_info:git:*' patch-format  '%7>>%p%<< (%n applied)'
+
+	precmd()
+	{
+		vcs_info
+	}
+
+	_ps1_hostname()
+	{
+	        if [ -z "${SSH_CONNECTION}" ]; then
+	                printf '%%F{blue}%%m%%f'
+	        else
+	                printf '%%F{red}%%m%%f'
+	        fi
+	}
+
+	PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
+	%(0?.%F{green}.%F{red} %? )%#%f '
+	RPS1='${vcs_info_msg_0_}'
+fi
 
 #
 # Bookmarks
