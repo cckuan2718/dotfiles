@@ -11,8 +11,7 @@
 readonly progname="$(basename "$0")"
 
 readonly unread_cnt="$(
-	find "${HOME}"/.local/share/mail/*/[Ii][Nn][Bb][Oo][Xx]/new/* \
-	    -type f 2>/dev/null \
+	find "${HOME}/.local/share/mail/" -path '*/new/*' -type f 2>/dev/null \
 	    | wc -l 2>/dev/null
 )"
 
@@ -24,6 +23,10 @@ fi
 
 if pgrep -q mbsync; then
 	printf 'mailbox; \n'
+elif [ "${PANEL_SUPRESS}" -ne '0'   ] \
+     && [ "${unread_cnt}" -eq '0' ] \
+     && [ -z "${local_mail}"      ]; then
+	printf 'mailbox;\n'
 else
 	printf 'mailbox; %d %s\n' "${unread_cnt}" "${local_mail}"
 fi

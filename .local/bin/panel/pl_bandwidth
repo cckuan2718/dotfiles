@@ -35,5 +35,11 @@ readonly tx_rate_byte="${rx_tx_rate_byte#*;}"
 readonly rx_rate_kb="$((rx_rate_byte / interval / 1000))"
 readonly tx_rate_kb="$((tx_rate_byte / interval / 1000))"
 
-printf 'bandwidth; %dKB  %dKB\n' "${rx_rate_kb}" "${tx_rate_kb}"
+if [ "${PANEL_SUPRESS}" -ne '0'    ] \
+    && [ "${rx_rate_kb}" -lt '100' ] \
+    && [ "${tx_rate_kb}" -lt '50' ]; then
+	printf 'bandwidth;\n'
+else
+	printf 'bandwidth; %dKB  %dKB\n' "${rx_rate_kb}" "${tx_rate_kb}"
+fi
 
