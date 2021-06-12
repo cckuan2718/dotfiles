@@ -62,7 +62,6 @@ export DIRSTACKSIZE='20'
 autoload -Uz compinit \
     && compinit -d "${shell_cache_dir}/zcompdump_${ZSH_VERSION}"
 
-
 # expand regular aliases only in command position
 zstyle ':completion:*' completer _extensions _complete _ignored _approximate
 zstyle ':completion:*:*:approximate:*' max-errors 1 numeric
@@ -154,6 +153,7 @@ RPS1='${vcs_info_msg_0_}'
 #
 
 hash -d -- bb="${HOME}/.local/bin"                     \
+	   ec='/etc'                                   \
            cac="${XDG_CACHE_HOME:-${HOME}/.cache}"     \
            cc="${XDG_CONFIG_HOME:-${HOME}/.config}"    \
            dc="${HOME}/documents"                      \
@@ -171,42 +171,7 @@ hash -d -- bb="${HOME}/.local/bin"                     \
 # Aliases and functions
 #
 
-# POSIX shell
 source_in "${shell_config_dir}/commonrc"
-
-# zsh specific
-alias -g CB='| xclip -filter -selection clipboard'
-alias -g CL='| wc -l'
-alias -g DN='/dev/null'
-alias -g EG='2>&1 | grep -E'
-alias -g EH='2>&1 | head'
-alias -g EL='2>&1 | less'
-alias -g ELS='2>&1 | less -S'
-alias -g EN="2> /dev/null"
-alias -g ET='2>&1 | tail'
-alias -g F='| fmt -spw 72'
-alias -g FL='| fmt -spw 80'
-alias -g G='| grep -E'
-alias -g H='| head'
-alias -g L="| less"
-alias -g NS='| sort -n'
-alias -g RNS='| sort -rn'
-alias -g S='| sort'
-alias -g SIL='> /dev/null 2>&1'
-alias -g US='| sort -u'
-alias -g X0='| xargs -0'
-alias -g X='| xargs'
-
-alias d='dirs -v'
-alias 1='cd -1'
-alias 2='cd -2'
-alias 3='cd -3'
-alias 4='cd -4'
-alias 5='cd -5'
-alias 6='cd -6'
-alias 7='cd -7'
-alias 8='cd -8'
-alias 9='cd -9'
 
 #
 # Finish up
