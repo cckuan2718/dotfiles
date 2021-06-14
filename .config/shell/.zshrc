@@ -119,14 +119,16 @@ stty stop undef
 # Prompt
 #
 
-# if pure theme ( https://github.com/sindresorhus/pure ) is installed
 theme_dir="${shell_config_dir}/pure"
 if [ -d "${theme_dir}" ]; then
 	fpath=("${theme_dir}" "$fpath[@]")
-	autoload -Uz promptinit && promptinit
-	if prompt -l | grep -q pure 2> /dev/null; then
-		prompt pure
-	fi
+fi
+
+autoload -Uz promptinit && promptinit
+
+# if pure theme ( https://github.com/sindresorhus/pure ) is installed
+if prompt -l | grep -q pure 2> /dev/null; then
+	prompt pure
 
 	# Settings
 	zstyle ':prompt:pure:prompt:success' color green
@@ -148,8 +150,9 @@ else
 	        fi
 	}
 
-	PS1='%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
-	%(0?.%F{green}.%F{red} %? )%#%f '
+	PS1='
+%(!.%F{red}.%F{yellow})%n%f%F{green}@$(_ps1_hostname) %F{yellow}%~%f
+%(0?.%F{green}.%F{red} %? )%#%f '
 fi
 
 #
