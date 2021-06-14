@@ -20,13 +20,13 @@ if [ "${capacity}" -le '25' ] && [ "${ac_status}" != '1' ]; then
 fi
 
 # Determine icon from capacity
-if [ "${capacity}" -ge 99 ]; then
+if   [ "${capacity}" -ge '99' ]; then
 	icon=''
-elif [ "${capacity}" -ge 75 ]; then
+elif [ "${capacity}" -ge '75' ]; then
 	icon=''
-elif [ "${capacity}" -ge 50 ]; then
+elif [ "${capacity}" -ge '50' ]; then
 	icon=''
-elif [ "${capacity}" -ge 25 ]; then
+elif [ "${capacity}" -ge '25' ]; then
 	icon=''
 else
 	icon=''
@@ -41,7 +41,7 @@ case "${ac_status}" in
 	ac_status='CHR'
 	;;
 *)
-	ac_status='???'
+	ac_status='?'
 	;;
 esac
 
