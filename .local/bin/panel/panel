@@ -27,25 +27,25 @@ done > "${PANEL_FIFO}" &
 
 while true; do
 	pl_backlight
-	sleep 1
+	sleep 3
 	pl_bandwidth
-	sleep 1
+	sleep 3
 	pl_battery
-	sleep 1
+	sleep 3
 	pl_diskio
-	sleep 1
+	sleep 3
 	pl_iface trunk0
-	sleep 1
+	sleep 3
 	pl_mailbox
-	sleep 1
+	sleep 3
 	pl_news
-	sleep 1
+	sleep 3
 	pl_sensors
-	sleep 1
+	sleep 3
 	pl_torrent
-	sleep 1
+	sleep 3
 	pl_vmstatus
-	sleep 1
+	sleep 3
 	pl_volume
 	sleep 10
 done > "${PANEL_FIFO}" &
