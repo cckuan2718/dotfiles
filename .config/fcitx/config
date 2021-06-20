@@ -1,10 +1,9 @@
 [Hotkey]
 # Trigger Input Method
-#TriggerKey=CTRL_SPACE
+TriggerKey=CTRL_SHIFT_SPACE CTRL_SHIFT_SPACE
 # Use extra trigger key only after using it to inactivate
 # Available Value:
 # True False
-#UseExtraTriggerKeyOnlyWhenUseItToInactivate=True
 UseExtraTriggerKeyOnlyWhenUseItToInactivate=False
 # Extra key for trigger input method
 # Available Value:
@@ -28,7 +27,6 @@ UseExtraTriggerKeyOnlyWhenUseItToInactivate=False
 # Super+Right Ctrl
 # Disabled
 # Custom
-#SwitchKey=L_SHIFT
 SwitchKey=SHIFT Both
 # Custom switch key
 #CustomSwitchKey=
@@ -54,7 +52,6 @@ SwitchKey=SHIFT Both
 # Reload configuration
 #ReloadConfig=CTRL_5
 # Interval of Two Key Input
-#TimeInterval=250
 TimeInterval=50
 # Switching Virtual Keyboard
 #VKSwitchKey=CTRL_ALT_B
@@ -108,7 +105,6 @@ TimeInterval=50
 # True False
 #SendTextWhenSwitchEng=True
 # Candidate Word Number
-#CandidateWordNumber=5
 CandidateWordNumber=7
 # Give the tips of Phrase
 # Available Value:
