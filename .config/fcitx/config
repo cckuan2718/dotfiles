@@ -1,6 +1,6 @@
 [Hotkey]
 # Trigger Input Method
-TriggerKey=CTRL_SHIFT_SPACE CTRL_SHIFT_SPACE
+TriggerKey=
 # Use extra trigger key only after using it to inactivate
 # Available Value:
 # True False
@@ -50,11 +50,11 @@ SwitchKey=SHIFT Both
 # ALT_SUPER
 #IMSwitchHotkey=CTRL_SHIFT
 # Reload configuration
-#ReloadConfig=CTRL_5
+ReloadConfig=
 # Interval of Two Key Input
-TimeInterval=50
+TimeInterval=45
 # Switching Virtual Keyboard
-#VKSwitchKey=CTRL_ALT_B
+VKSwitchKey=
 # Switching Remind Mode
 #RemindSwitchKey=
 # Switching Full Width Character Mode
@@ -68,9 +68,9 @@ TimeInterval=50
 # Choose Second and Third Candidate Word
 #SecondThirdCandWordKey=
 # Saving All Config and Input History
-#SaveAllKey=CTRL_ALT_S
+SaveAllKey=
 # Switch Embedded Preedit
-#SwitchPreedit=CTRL_ALT_P
+SwitchPreedit=
 # Previous Candidate Word
 #PrevWord=SHIFT_TAB
 # Next Candidate Word

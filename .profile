@@ -28,11 +28,12 @@ export READER='zathura'
 export TERMINAL='xterm'
 export TERM_BROWSER='lynx -vikeys -accept_all_cookies -scrollbar -assume_charset=utf-8 -display_charset=utf-8'
 
-for e in 'emacsclient' 'nvim' 'vim' 'nvi' 'vi' 'nano'; do
+for e in 'emacs' 'nvim' 'vim' 'nvi' 'vi' 'nano'; do
 	if [ -x "$(command -v "$e")" ]; then
-		if [ "$e" = 'emacsclient' ]; then
-			export EDITOR="$e --alternate-editor=''"
-			export VISUAL="$e --alternate-editor=''"
+		if [ "$e" = 'emacs' ]; then
+			export ALTERNATE_EDITOR=''
+			export EDITOR='emacsclient -nw'
+			export VISUAL='emacsclient'
 		else
 			export EDITOR="$e"
 			export VISUAL="$e"

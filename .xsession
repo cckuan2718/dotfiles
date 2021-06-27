@@ -29,13 +29,12 @@ usermodmap="${XDG_CONFIG_HOME:-${HOME}/.config}/x11/Xmodmap"
 
 # set various devices
 setxkbmap -option '' # Flush keybindings
-setxkbmap dvorak
 case "${EDITOR:-vi}" in 
 *vi*)
-	setxkbmap -option caps:swapescape
+    setxkbmap -layout us -variant dvorak -option caps:swapescape
 	;;
 *emacs*)
-	setxkbmap -option ctrl:swapcaps
+    setxkbmap -layout us -variant dvorak -option ctrl:swapcaps
 	;;
 esac
 xset r rate 300 50                  & # increase key speed via a rate change
@@ -56,7 +55,6 @@ fcitx -r -d -s 3                       > /dev/null &
 setbg                                              &
 picom                                  > /dev/null &
 [ ! -s "${HOME}/.config/mpd/mpd.pid" ] && mpd      &
-emacs --bg-daemon                                  &
 pass cckname                           > /dev/null &
 xidle                                              &
 
