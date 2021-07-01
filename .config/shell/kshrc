@@ -32,7 +32,6 @@ source_in()
 # Ksh setting
 #
 
-set -o vi
 set -o vi-tabcomplete
 
 # History
