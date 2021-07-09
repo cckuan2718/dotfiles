@@ -50,16 +50,19 @@ xinput --set-prop '/dev/wsmouse' 'WS Pointer Wheel Emulation Axes' 6 7 4 5  &
 xinput --set-prop '/dev/wsmouse' 'Device Accel Constant Deceleration' '0.7' &
 
 # launch program
-dunst                                  > /dev/null &
 fcitx -r -d -s 3                       > /dev/null &
 setbg                                              &
 picom                                  > /dev/null &
 [ ! -s "${HOME}/.config/mpd/mpd.pid" ] && mpd      &
 pass cckname                           > /dev/null &
 xidle                                              &
+emacs --daemon                                     &
 
 # start window manager
-if [ -x "$(command -v dwm)" ]; then
+if [ -x "$(command -v awesome)" ]; then
+	awesome
+elif [ -x "$(command -v dwm)" ]; then
+	dunst > /dev/null &
 	pkill -u "$(id -u)" -qf '^/bin/sh.*panel$'; panel &
 	dwm
 else
