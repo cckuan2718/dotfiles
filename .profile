@@ -33,7 +33,7 @@ for e in 'emacs' 'nvim' 'vim' 'nvi' 'vi' 'nano'; do
 		if [ "$e" = 'emacs' ]; then
 			export ALTERNATE_EDITOR=''
 			export EDITOR='emacsclient'
-			export VISUAL='emacsclient --create-frame'
+			export VISUAL='emacsclient'
 		else
 			export EDITOR="$e"
 			export VISUAL="$e"
