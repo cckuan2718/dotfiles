@@ -15,7 +15,7 @@
 
 readonly progname="$(basename "$0")"
 
-if [ "$1" = '-i' ]; then
+if [ "$#" -eq '0' ] || [ "$1" = '-i' ]; then
 	# shellcheck source=/dev/null
 	. prompt.sh
 

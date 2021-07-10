@@ -14,7 +14,7 @@
 #
 
 # % to incresse or decrease backlight
-readonly step='10'
+readonly step="${2:-10}"
 
 #
 # Proper
@@ -34,6 +34,4 @@ case "$1" in
 	# Do nothing
 	;;
 esac
-
-update_panel -b
 
