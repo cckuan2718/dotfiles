@@ -29,7 +29,7 @@ usermodmap="${XDG_CONFIG_HOME:-${HOME}/.config}/x11/Xmodmap"
 
 # set various devices
 setxkbmap -option '' # Flush keybindings
-case "${EDITOR:-vi}" in 
+case "${EDITOR:-vi}" in
 *vi*)
     setxkbmap -layout us -variant dvorak -option caps:swapescape
 	;;
@@ -51,7 +51,6 @@ xinput --set-prop '/dev/wsmouse' 'Device Accel Constant Deceleration' '0.7' &
 
 # launch program
 fcitx -r -d -s 3                       > /dev/null &
-setbg                                              &
 picom                                  > /dev/null &
 [ ! -s "${HOME}/.config/mpd/mpd.pid" ] && mpd      &
 pass cckname                           > /dev/null &
@@ -62,6 +61,7 @@ emacs --daemon                                     &
 if [ -x "$(command -v awesome)" ]; then
 	awesome
 elif [ -x "$(command -v dwm)" ]; then
+	setbg &
 	dunst > /dev/null &
 	pkill -u "$(id -u)" -qf '^/bin/sh.*panel$'; panel &
 	dwm
@@ -70,4 +70,3 @@ else
 fi
 
 exit_xsession
-
