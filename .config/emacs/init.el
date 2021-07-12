@@ -105,6 +105,7 @@
 
 ;;; Highlight indentation
 (global-whitespace-mode)
+(diminish 'global-whitespace-mode)
 (setq whitespace-style '(face tabs tab-mark trailing))
 (setq whitespace-display-mappings '((space-mark 32 [183] [46])
                                     (tab-mark 9 [124 9] [92 9])))
@@ -135,14 +136,17 @@
 
 ;;; CamelCase as distinct words
 (global-subword-mode)
+(diminish 'subword-mode)
 
 ;;; Command operate on whole line if no region found
 (use-package whole-line-or-region
+  :diminish whole-line-or-region-local-mode
   :config
   (whole-line-or-region-global-mode))
 
 ;;; which-key
 (use-package which-key
+  :diminish which-key-mode
   :init
   (setq which-key-idle-delay 0.3)
   :config
@@ -174,6 +178,7 @@
          ("C-r" . swiper)))
 
 (use-package counsel
+  :diminish counsel-mode
   :after ivy
   :config
   (counsel-mode 1))
@@ -258,3 +263,22 @@
       delete-by-moving-to-trash t)
 
 (global-set-key (kbd "C-x j") 'dired-jump)
+
+;;; projectile
+(use-package projectile
+  :diminish projectile-mode
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/.local/src/")
+    (setq projectile-project-search-path '("~/.local/src/")))
+  (setq projectile-switch-project-action #'projectile-dired
+        projectile-completion-system 'ivy)
+  :config (projectile-mode 1))
+
+;;; magit
+(use-package magit)
+
+;;; cc mode
+(setq-default c-basic-offset 8)
+(setq c-default-style "k&r")
