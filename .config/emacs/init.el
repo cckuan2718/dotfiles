@@ -14,6 +14,15 @@
 (setq use-package-verbose t
       use-package-always-ensure t)
 
+(use-package auto-package-update
+  :init
+  (setq auto-package-update-interval 7
+        auto-package-update-prompt-before-update t
+        auto-package-update-hide-results nil
+        auto-package-update-delete-old-versions t)
+  :config
+  (auto-package-update-maybe))
+
 ;;;; File cleanup
 
 ;;; Backup files
@@ -66,7 +75,10 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; Frame
+;; Font
+(set-frame-font "Iosevka-16" t t)
+(set-fontset-font t 'han "Noto Sans CJK TC")
+
 (defun my/frame-setup (frame)
   (set-frame-font "Iosevka-16" t t)
   (set-fontset-font t 'han "Noto Sans CJK TC"))
