@@ -1,6 +1,7 @@
 local awful = require("awful")
 require("awful.autofocus")
 local beautiful = require("beautiful")
+local gears = require("gears")
 
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
