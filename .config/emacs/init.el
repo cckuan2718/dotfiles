@@ -85,12 +85,12 @@
   (setq doom-modeline-icon t
         doom-modeline-major-mode-icon t
         doom-modeline-major-mode-color-icon t
-	doom-modeline-buffer-state-icon t
-	doom-modeline-buffer-modification-icon t
+        doom-modeline-buffer-state-icon t
+        doom-modeline-buffer-modification-icon t
         doom-modeline-buffer-file-name-style 'truncate-upto-project
-	doom-modeline-minor-modes t
-	doom-modeline-indent-info t
-	doom-modeline-buffer-encoding t)
+        doom-modeline-minor-modes t
+        doom-modeline-indent-info t
+        doom-modeline-buffer-encoding t)
   :config
   (doom-modeline-mode 1))
 
@@ -107,7 +107,7 @@
 (global-whitespace-mode)
 (setq whitespace-style '(face tabs tab-mark trailing))
 (setq whitespace-display-mappings '((space-mark 32 [183] [46])
-				    (tab-mark 9 [124 9] [92 9])))
+                                    (tab-mark 9 [124 9] [92 9])))
 
 ;;;; Editing configuration
 
@@ -157,7 +157,7 @@
   (setq ivy-use-virtual-buffers t
         ivy-count-format "(%d/%d) "
         ivy-height 6
-	ivy-on-del-error-function nil)
+        ivy-on-del-error-function nil)
   :bind (("C-c C-r" . ivy-resume)
          ("C-x B" . ivy-switch-buffer-other-window))
   :config
@@ -237,8 +237,8 @@
 
 ;;; disable line numbers in specific mode
 (dolist (mode '(term-mode-hook
-		shell-mode-hook
-		eshell-mode-hook))
+                shell-mode-hook
+                eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;;; lua mode
@@ -246,3 +246,15 @@
   :hook (lua-mode . my/disable-tabs)
   :init
   (setq lua-indent-level 3))
+
+;;; lisp mode
+(add-hook 'emacs-lisp-mode-hook #'my/disable-tabs)
+
+;;; dired
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(setq dired-listing-switches "-aFhl"
+      delete-by-moving-to-trash t)
+
+(global-set-key (kbd "C-x j") 'dired-jump)
