@@ -47,5 +47,5 @@ if [ "${#volume}" != '5' ]; then
 	sndioctl -n output.level="${volume}"
 fi
 
-#update_panel -v
+update_panel -v
 

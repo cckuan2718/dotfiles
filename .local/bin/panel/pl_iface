@@ -91,7 +91,7 @@ extract_ssid()
 		    | cut -c '1-12'   \
 		    | tr -d '\n'
 		printf '...'
-	else 
+	else
 		printf '%s' "${ssid}"
 	fi
 }
@@ -130,14 +130,14 @@ case "${iface_status}" in
 	if [ -z "${ipaddr}" ]; then
 		ipaddr="$(extract_ipaddr "${iface_status}")"
 	fi
-	printf 'iface; %s\n' "${ipaddr}"
+	printf 'iface; %s\n' "${ipaddr}"
 	;;
 *,unwired,up,*)
 	printf 'iface; %s %s\n' "$(extract_ssid "${iface_status}")" \
 	    "$(extract_sig_strength "${iface_status}")"
 	;;
 *,down,*)
-	printf 'iface; DOWN\n'
+	printf 'iface;\n'
 	;;
 esac
 

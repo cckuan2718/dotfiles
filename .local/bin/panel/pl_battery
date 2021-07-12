@@ -11,40 +11,31 @@
 readonly progname="$(basename "$0")"
 
 readonly capacity="$(apm -l)"
-ac_status="$(apm -a)"
-
-# If it is discharging and capacity is lower than 25%, we will add a
-# '' as a warning.
-if [ "${capacity}" -le '25' ] && [ "${ac_status}" != '1' ]; then
-	warn=' '
-fi
-
-# Determine icon from capacity
-if   [ "${capacity}" -ge '99' ]; then
-	icon=''
-elif [ "${capacity}" -ge '75' ]; then
-	icon=''
-elif [ "${capacity}" -ge '50' ]; then
-	icon=''
-elif [ "${capacity}" -ge '25' ]; then
-	icon=''
-else
-	icon=''
-fi
+readonly ac_status="$(apm -a)"
 
 # Modify ${ac_status} from integer to text
 case "${ac_status}" in
 '0')
-	ac_status='DIS'
+	if   [ "${capacity}" -ge '99' ]; then
+		icon=''
+	elif [ "${capacity}" -ge '75' ]; then
+		icon=''
+	elif [ "${capacity}" -ge '50' ]; then
+		icon=''
+	elif [ "${capacity}" -ge '25' ]; then
+		icon=''
+	else
+		warn=' '
+		icon=''
+	fi
 	;;
 '1')
-	ac_status='CHR'
+	icon=''
 	;;
 *)
-	ac_status='?'
+	icon=''
 	;;
 esac
 
-printf 'battery;%s %s %s%02d%%\n' "${icon}" "${ac_status}" "${warn}" \
-    "${capacity}"
+printf 'battery;%s %s%02d%%\n' "${icon}" "${warn}" "${capacity}"
 
