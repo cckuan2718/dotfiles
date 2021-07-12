@@ -61,7 +61,7 @@ emacs --daemon                                     &
 if [ -x "$(command -v dwm)" ]; then
 	setbg &
 	dunst > /dev/null &
-#	pkill -u "$(id -u)" -qf '^/bin/sh.*panel$'; panel &
+	pkill -u "$(id -u)" -qf '^/bin/sh.*panel$'; panel &
 	dwm
 elif [ -x "$(command -v awesome)" ]; then
 	awesome
