@@ -45,6 +45,9 @@ while read -r line; do
 	iface*)
 		iface="${line#*;}"
 		;;
+	mailbox*nil*)
+			mailbox=''
+		;;
 	mailbox*)
 		mailbox="${line#*;}"
 		;;
@@ -54,6 +57,9 @@ while read -r line; do
 	music*)
 		music="${line#*;}"
 		;;
+	news*nil*)
+		news=''
+		;;
 	news*)
 		news="${line#*;}"
 		;;
@@ -62,6 +68,9 @@ while read -r line; do
 		;;
 	sensors_fan*)
 		sensors_fan="${line#*;}"
+		;;
+	torrent*DOWN*)
+		torrent=''
 		;;
 	torrent*)
 		torrent="${line#*;}${sep}"

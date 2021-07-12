@@ -12,11 +12,6 @@
 # shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 
-if ! ping -q -c 1 -w 5 example.org > /dev/null 2>&1; then
-	printf 'news; ?\n'
-	exit 1
-fi
-
 status="$(newsboat -x print-unread | cut -d ' ' -f 1)"
 case "${status}" in
 Error*)
@@ -24,8 +19,8 @@ Error*)
 	;;
 [0-9]*)
 	unread_cnt="$(printf '%s' "${status}" | cut -d ' ' -f 1)"
-	if [ "${PANEL_SUPRESS}" -ne '0' ] && [ "${unread_cnt}" -eq '0' ]; then
-		printf 'news;\n'
+	if [ "${unread_cnt}" -eq '0' ]; then
+		printf 'news; nil\n'
 	else
 		printf 'news; %s\n' "${unread_cnt}"
 	fi

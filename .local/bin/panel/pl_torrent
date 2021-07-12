@@ -47,8 +47,6 @@ torrent()
 
 if pgrep -q 'transmission-dae'; then
 	torrent
-elif [ "${PANEL_SUPRESS}" -ne '0' ]; then
-	printf 'torrent;\n'
 else
 	printf 'torrent; DOWN\n'
 fi

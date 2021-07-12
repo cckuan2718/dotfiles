@@ -13,7 +13,6 @@
 # shellcheck disable=SC2034
 readonly progname="$(basename "$0")"
 export PANEL_FIFO="${PANEL_FIFO:-/tmp/panel_$(id -u)}"
-export PANEL_SUPRESS="${PANEL_SUPRESS:-1}" # supress some module output
 
 [ -e "${PANEL_FIFO}" ] && rm "${PANEL_FIFO}"
 mkfifo "${PANEL_FIFO}"

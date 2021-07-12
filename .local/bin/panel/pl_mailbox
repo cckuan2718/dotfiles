@@ -23,10 +23,8 @@ fi
 
 if pgrep -q mbsync; then
 	printf 'mailbox; \n'
-elif [ "${PANEL_SUPRESS}" -ne '0'   ] \
-     && [ "${unread_cnt}" -eq '0' ] \
-     && [ -z "${local_mail}"      ]; then
-	printf 'mailbox;\n'
+elif [ "${unread_cnt}" -eq '0' ] && [ -z "${local_mail}" ]; then
+	printf 'mailbox; nil\n'
 else
 	printf 'mailbox; %d %s\n' "${unread_cnt}" "${local_mail}"
 fi
