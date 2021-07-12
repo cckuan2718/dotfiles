@@ -168,6 +168,7 @@ hash -d -- bb="${HOME}/.local/bin"                     \
 source_in "${shell_config_dir}/commonrc"
 
 compdef cbk='git'
+compdef g='git'
 
 alias -g CB='| xclip -filter -selection clipboard'
 alias -g CL='| wc -l'
