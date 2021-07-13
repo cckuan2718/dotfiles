@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# ~/.profile 
+# ~/.profile
 # Runs on ksh/zsh login. Environmental variables are set here.
 #
 
@@ -20,7 +20,7 @@ umask 022
 #
 
 # Default programs
-export BROWSER='firefox'
+export BROWSER='luakit'
 export MANPAGER='less'
 export OPENER='xdg-open'
 export PAGER='less'
@@ -74,7 +74,7 @@ export SHELL_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/shell"
 export ENV="${SHELL_CONFIG_DIR}/kshrc"
 export ZDOTDIR="${SHELL_CONFIG_DIR}"
 
-# create ${SHELL_CACHE_DIR} for command history to work  
+# create ${SHELL_CACHE_DIR} for command history to work
 if [ ! -d "${SHELL_CACHE_DIR}" ]; then
 	mkdir -p "${SHELL_CACHE_DIR}"
 fi
