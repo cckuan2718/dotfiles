@@ -61,10 +61,24 @@ end
 modes.add_binds("all", {
    { "<C-g>", "Return to `normal` mode.", function (w)
         if not w:is_mode("passthrough") then
-           w:set_prompt(); w:set_mode()
+           w:set_prompt()
+           w:set_mode()
         end
         return not w:is_mode("passthrough")
    end },
+   { "<Mod1-w>", "Copy selected text.", function ()
+       luakit.selection.clipboard = luakit.selection.primary
+   end},
+   {"<C-y>", "Insert contents of clipboard at cursor position.", function (w)
+       local str = luakit.selection.clipboard
+       if not str then return end
+       local i = w.ibar.input
+       local text = i.text
+       local pos = i.position
+       local left, right = string.sub(text, 1, pos), string.sub(text, pos+1)
+       i.text = left .. str .. right
+       i.position = pos + #str
+   end},
 })
 
 -- normal mode
@@ -178,26 +192,13 @@ modes.add_binds("normal", {
        luakit.selection.clipboard = uri
        w:notify("Yanked uri (to clipboard): " .. uri)
    end },
-   { "<Mod1-w>", "Copy selected text.", function ()
-       luakit.selection.clipboard = luakit.selection.primary
-   end},
-   {"<C-y>", "Insert contents of clipboard at cursor position.", function (w)
-       local str = luakit.selection.clipboard
-       if not str then return end
-       local i = w.ibar.input
-       local text = i.text
-       local pos = i.position
-       local left, right = string.sub(text, 1, pos), string.sub(text, pos+1)
-       i.text = left .. str .. right
-       i.position = pos + #str
-   end},
 
     -- Commands
    { "G", "Open one or more URLs.", function (w) w:enter_cmd(":open ") end },
    { "<Mod1-Return>", "Open one or more URLs in a new tab.", function (w) w:enter_cmd(":tabopen ") end },
 
-   { "L", "Go back in the browser history `[count=1]` items.", function (w, m) w:back(m.count) end },
-   { "R", "Go forward in the browser history `[count=1]` times.", function (w, m) w:forward(m.count) end },
+   { "l", "Go back in the browser history `[count=1]` items.", function (w, m) w:back(m.count) end },
+   { "r", "Go forward in the browser history `[count=1]` times.", function (w, m) w:forward(m.count) end },
 
    { "<Mod1-p>", "Go back in the browser history.", function (w, m) w:back(m.count) end },
    { "<Mod1-n>", "Go forward in the browser history.", function (w, m) w:forward(m.count) end },
