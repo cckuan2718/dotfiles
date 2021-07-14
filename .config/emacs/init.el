@@ -76,13 +76,11 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Font
-(set-frame-font "Iosevka-16" t t)
-(set-fontset-font t 'han "Noto Sans CJK TC")
-
 (defun my/frame-setup (frame)
   (set-frame-font "Iosevka-16" t t)
   (set-fontset-font t 'han "Noto Sans CJK TC"))
 (add-to-list 'after-make-frame-functions #'my/frame-setup)
+(my/frame-setup 0)
 
 ;;; Mode line
 (column-number-mode 1)
