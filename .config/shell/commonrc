@@ -40,6 +40,7 @@ alias portsrc='cd $(make show=WRKSRC)'
 
 # Miscellaneous
 alias bc='bc -l'
+alias b='buku --suggest'
 alias cb=' xclip -filter -selection clipboard'
 alias cbk="git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
 alias cweb='wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
