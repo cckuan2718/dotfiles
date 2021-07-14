@@ -13,6 +13,7 @@ local window = require("window")
 local webview = require("webview")
 local select = require("select")
 local follow = require("follow")
+local bookmarks = require("bookmarks")
 local bookmarks_chrome = require("bookmarks_chrome")
 
 --
@@ -133,15 +134,24 @@ local actions = { scroll = {
    },
 }}
 
-modes.remove_binds("normal", {"j", "k", "h", "l", "^", "$", "i", "w", "y", "Y", "M", "u", "%",
+modes.remove_binds("normal", {"j", "k", "h", "l", "0", "^", "$", "i", "w", "y", "Y", "M", "u", "%",
                               "gg", "zi", "zo", "zz", "pp", "pt", "pw", "pp", "PP", "PT", "PW",
                               "gT", "gt", "g0", "g$", "gH", "gh", "gy", "ZZ", "ZQ",
                               "<Control-f>", "<Control-b>",
                               "<Control-e>", "<Control-y>", "<Control-d>", "<Control-u>",
                               "<Control-o>", "<Control-i>", "<Control-a>", "<Control-x>",
                               "<Control-w>", "<Control-c>", "<Control-z>", "<Control-R>",
-                              "<Shift-h>", "<Shift-l>", "<Shift-w>", "<Shift-j>", "<Shift-k>",
-                              "<Shift-d>"})
+                              "<Shift-h>", "<Shift-l>", "<Shift-w>", "<Shift-j>", "<Shift-k>", "<Shift-d>",
+                              "<space>", "<Shift-space>",
+                              "+", "<Minus>", "=",
+                              "o", "t", "<Shift-o>", "<Shift-t>", "<Control-t>",
+                              "d", "r", "ga", "gA", "gd", "gD",
+                              "/", "?"})
+
+modes.remap_binds("normal", {
+                     {"b", "B", false},
+                     {"B", "gB", false},
+})
 
 modes.add_binds("normal", {
    -- Scrolling
@@ -188,7 +198,7 @@ modes.add_binds("normal", {
    { "<Mod1-b>", "Go to previous tab.", function (w) w:prev_tab() end },
    { "<Mod1-f>", "Go to next tab.", function (w) w:next_tab() end },
 
-   { "k", "Close current tab (or `[count]` tabs).",
+   { "<C-k>", "Close current tab (or `[count]` tabs).",
         function (w, m) for _=1,m.count do w:close_tab() end end, {count=1} },
 
    { "g", "Reload current tab.", function (w) w:reload() end },
@@ -202,14 +212,6 @@ modes.add_binds("normal", {
    { "<C-r>", "Reverse search for string on current page.",
      function (w) w:start_search("?") end },
 
-   -- bookmarks
-   { "b", "Add a bookmark for the current URL.",
-     function(w)
-        new_bookmark_values = { uri = w.view.uri, title = w.view.title }
-        w:new_tab(bookmarks_chrome.chrome_page)
-   end },
-   { "B", "Open the bookmarks manager in a new tab.",
-     function(w) w:new_tab(bookmarks_chrome.chrome_page) end }
 })
 
 modes.add_binds("insert", {
