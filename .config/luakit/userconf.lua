@@ -13,8 +13,6 @@ local window = require("window")
 local webview = require("webview")
 local select = require("select")
 local follow = require("follow")
-local bookmarks = require("bookmarks")
-local bookmarks_chrome = require("bookmarks_chrome")
 
 --
 -- General Configurations
@@ -140,7 +138,7 @@ modes.remove_binds("normal", {"j", "k", "h", "l", "0", "^", "$", "i", "w", "y", 
                               "<Control-f>", "<Control-b>",
                               "<Control-e>", "<Control-y>", "<Control-d>", "<Control-u>",
                               "<Control-o>", "<Control-i>", "<Control-a>", "<Control-x>",
-                              "<Control-w>", "<Control-c>", "<Control-z>", "<Control-R>",
+                              "<Control-w>", "<Control-c>", "<Control-R>",
                               "<Shift-h>", "<Shift-l>", "<Shift-w>", "<Shift-j>", "<Shift-k>", "<Shift-d>",
                               "<space>", "<Shift-space>",
                               "+", "<Minus>", "=",
