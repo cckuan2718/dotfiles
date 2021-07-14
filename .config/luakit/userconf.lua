@@ -174,7 +174,7 @@ modes.add_binds("normal", {
    { "<C-Minus>", actions.zoom.zoom_out },
    { "<C-0>", actions.zoom.zoom_set },
 
-   -- Yanking
+   -- Yanking/pasting
    {"w", "Yank current URI to clipboard.", function (w)
        local uri = string.gsub(w.view.uri or "", " ", "%%20")
        luakit.selection.clipboard = uri
@@ -182,6 +182,16 @@ modes.add_binds("normal", {
    end },
    { "<Mod1-w>", "Copy selected text.", function ()
        luakit.selection.clipboard = luakit.selection.primary
+   end},
+   {"<C-y>", "Insert contents of clipboard at cursor position.", function (w)
+       local str = luakit.selection.clipboard
+       if not str then return end
+       local i = w.ibar.input
+       local text = i.text
+       local pos = i.position
+       local left, right = string.sub(text, 1, pos), string.sub(text, pos+1)
+       i.text = left .. str .. right
+       i.position = pos + #str
    end},
 
     -- Commands
