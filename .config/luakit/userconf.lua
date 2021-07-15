@@ -182,7 +182,7 @@ modes.add_binds("normal", {
    { "<Mod1-g>", actions.go.percent },
 
     -- Zoom
-   { "<C-Equal>", actions.zoom.zoom_in },
+   { "<C-=>", actions.zoom.zoom_in },
    { "<C-Minus>", actions.zoom.zoom_out },
    { "<C-0>", actions.zoom.zoom_set },
 
