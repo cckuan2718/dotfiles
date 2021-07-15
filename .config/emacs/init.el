@@ -76,12 +76,17 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; Font
-(defun my/frame-setup (frame)
+;; Font face
+(defun my/frame-setup (&optional frame)
+  (message "Setting faces!")
+  (setq doom-modeline-icon t)
   (set-frame-font "Iosevka-16" t t)
   (set-fontset-font t 'han "Noto Sans CJK TC"))
-(add-to-list 'after-make-frame-functions #'my/frame-setup)
-(my/frame-setup 0)
+
+(if (daemonp)
+    (add-to-list 'after-make-frame-functions
+              (lambda (frame) (with-selected-frame frame (my/frame-setup))))
+    (my/frame-setup))
 
 ;;; Mode line
 (column-number-mode 1)
@@ -93,8 +98,7 @@
 (use-package doom-modeline
   :after doom-themes
   :init
-  (setq doom-modeline-icon t
-        doom-modeline-major-mode-icon t
+  (setq doom-modeline-major-mode-icon t
         doom-modeline-major-mode-color-icon t
         doom-modeline-buffer-state-icon t
         doom-modeline-buffer-modification-icon t
