@@ -62,6 +62,7 @@
 (tool-bar-mode 0)
 (tooltip-mode 0)
 (menu-bar-mode 0)
+(blink-cursor-mode 0)
 (mouse-avoidance-mode 'banish)
 
 (show-paren-mode 1)
@@ -302,10 +303,10 @@
 (use-package mu4e
   :defer 10
   :ensure nil
-  ;; :bind (:map mu4e-headers-mode-map
-  ;;        ("C-=" . mu4e-headers-split-view-grow)
-  ;;        :map mu4e-view-mode-map
-  ;;        ("C-=" . mu4e-headers-split-view-grow))
+  :bind (:map mu4e-headers-mode-map
+         ("C-=" . mu4e-headers-split-view-grow)
+         :map mu4e-view-mode-map
+         ("C-=" . mu4e-headers-split-view-grow))
   :config
   ;; maildir
   (setq mu4e-update-interval nil
