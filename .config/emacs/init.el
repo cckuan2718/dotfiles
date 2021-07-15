@@ -66,7 +66,7 @@
 (mouse-avoidance-mode 'banish)
 
 (show-paren-mode 1)
-(global-display-line-numbers-mode 1)
+(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 (setq-default fill-column 80)
 (global-display-fill-column-indicator-mode 1)
