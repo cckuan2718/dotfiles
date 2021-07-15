@@ -209,7 +209,6 @@
 (global-set-key (kbd "M-o") 'other-window) ; M-o to switch window
 
 ;;;; Authentication
-(use-package password-store)
 (require 'auth-source-pass)
 (auth-source-pass-enable)
 
