@@ -13,6 +13,7 @@ local window = require("window")
 local webview = require("webview")
 local select = require("select")
 local follow = require("follow")
+local keysym = require("keysym")
 
 --
 -- General Configurations
@@ -66,39 +67,34 @@ modes.add_binds("all", {
         end
         return not w:is_mode("passthrough")
    end },
-   { "<Mod1-w>", "Copy selected text.", function ()
-       luakit.selection.clipboard = luakit.selection.primary
-   end},
-   {"<C-y>", "Insert contents of clipboard at cursor position.", function (w)
-       local str = luakit.selection.clipboard
-       if not str then return end
-       local i = w.ibar.input
-       local text = i.text
-       local pos = i.position
-       local left, right = string.sub(text, 1, pos), string.sub(text, pos+1)
-       i.text = left .. str .. right
-       i.position = pos + #str
-   end},
+   {"<C-m>", "Return", function(w)
+       keysym.send(w, "<Return>")
+   end },
+   {"<C-b>", "Left", function(w)
+       keysym.send(w, "<Left>")
+   end },
+   {"<C-f>", "Right", function(w)
+       keysym.send(w, "<Right>")
+   end },
+   {"<C-p>", "Up", function(w)
+       keysym.send(w, "<Up>")
+   end },
+   {"<C-n>", "Down", function(w)
+       keysym.send(w, "<Down>")
+   end },
+   {"<C-w>", "Cut", function(w)
+       keysym.send(w, "<Control-x>")
+   end },
+   {"<Mod1-w>", "Copy", function(w)
+       keysym.send(w, "<Control-c>")
+   end },
+   {"<C-y>", "Paste", function(w)
+       keysym.send(w, "<Control-v>")
+   end },
 })
 
 -- normal mode
 local actions = { scroll = {
-   up = {
-      desc = "Scroll the current page up.",
-      func = function (w, m) w:scroll{ yrel = -settings.get_setting("window.scroll_step")*(m.count or 1) } end,
-   },
-   down = {
-      desc = "Scroll the current page down.",
-      func = function (w, m) w:scroll{ yrel =  settings.get_setting("window.scroll_step")*(m.count or 1) } end,
-   },
-   left = {
-      desc = "Scroll the current page left.",
-      func = function (w, m) w:scroll{ xrel = -settings.get_setting("window.scroll_step")*(m.count or 1) } end,
-   },
-   right = {
-      desc = "Scroll the current page right.",
-      func = function (w, m) w:scroll{ xrel =  settings.get_setting("window.scroll_step")*(m.count or 1) } end,
-   },
    left_most = {
       desc = "Scroll to the absolute left of the document.",
       func = function (w) w:scroll{ x =  0 } end,
@@ -146,7 +142,7 @@ local actions = { scroll = {
    },
 }}
 
-modes.remove_binds("normal", {"j", "k", "h", "l", "0", "^", "$", "i", "w", "y", "Y", "M", "u", "%",
+modes.remove_binds("normal", {"j", "k", "h", "l", "0", "^", "$", "i", "w", "y", "Y", "M", "%",
                               "gg", "zi", "zo", "zz", "pp", "pt", "pw", "pp", "PP", "PT", "PW",
                               "gT", "gt", "g0", "g$", "gH", "gh", "gy", "ZZ", "ZQ",
                               "<Control-f>", "<Control-b>",
@@ -157,20 +153,22 @@ modes.remove_binds("normal", {"j", "k", "h", "l", "0", "^", "$", "i", "w", "y", 
                               "<space>", "<Shift-space>",
                               "+", "<Minus>", "=",
                               "o", "t", "<Shift-o>", "<Shift-t>", "<Control-t>",
-                              "d", "r", "ga", "gA", "gd", "gD",
+                              "d", "r", "R", "ga", "gA", "gd", "gD",
                               "/", "?"})
 
+-- hard to inplement bindings are simply replaced
 modes.remap_binds("normal", {
-                     {"b", "B", false},
-                     {"B", "gB", false},
+   {"b", "B", false},     -- add bookmark
+   {"B", "gB", false},    -- bookmark menu
+   {"<C-/>", "u", false}, -- undo closed tab
 })
 
 modes.add_binds("normal", {
+   {"<C-g>", "Stop loading and close the prompt.", function(w)
+       w.view:stop()
+       w:set_prompt()
+   end },
    -- Scrolling
-   { "<C-n>", actions.scroll.down },
-   { "<C-p>", actions.scroll.up },
-   { "<C-b>", actions.scroll.left },
-   { "<C-f>", actions.scroll.right },
    { "<C-a>", actions.scroll.left_most },
    { "<C-e>", actions.scroll.right_most },
    { "<C-v>", actions.scroll.page_down },
@@ -192,6 +190,9 @@ modes.add_binds("normal", {
        luakit.selection.clipboard = uri
        w:notify("Yanked uri (to clipboard): " .. uri)
    end },
+   { "<Mod1-w>", "Copy selected text.", function ()
+      luakit.selection.clipboard = luakit.selection.primary
+   end},
 
     -- Commands
    { "G", "Open one or more URLs.", function (w) w:enter_cmd(":open ") end },
@@ -199,9 +200,6 @@ modes.add_binds("normal", {
 
    { "l", "Go back in the browser history `[count=1]` items.", function (w, m) w:back(m.count) end },
    { "r", "Go forward in the browser history `[count=1]` times.", function (w, m) w:forward(m.count) end },
-
-   { "<Mod1-p>", "Go back in the browser history.", function (w, m) w:back(m.count) end },
-   { "<Mod1-n>", "Go forward in the browser history.", function (w, m) w:forward(m.count) end },
 
     -- Tab
    { "<Mod1-b>", "Go to previous tab.", function (w) w:prev_tab() end },
@@ -212,14 +210,14 @@ modes.add_binds("normal", {
 
    { "g", "Reload current tab.", function (w) w:reload() end },
 
-    -- Window
-   { "<C-c>", "Quit and save the session.", function (w) w:save_session() w:close_win() end },
-
    -- search
    { "<C-s>", "Search for string on current page.",
      function (w) w:start_search("/") end },
    { "<C-r>", "Reverse search for string on current page.",
      function (w) w:start_search("?") end },
+
+   -- Window
+   { "<C-C>", "Quit and save the session.", function (w) w:save_session() w:close_win() end },
 
 })
 
