@@ -4,10 +4,10 @@
 
 # Remote
 IMAPStore cckname-remote
-Host mta0.changchukuan.name
+Host mail.changchukuan.name
 Port 993
 User cckuan
-PassCmd "pass cckname"
+PassCmd "pass cckuan@mail.changchukuan.name:465"
 AuthMechs LOGIN
 SSLType IMAPS
 CertificateFile /etc/ssl/cert.pem
@@ -17,7 +17,6 @@ MaildirStore cckname-local
 Subfolders Verbatim
 Path ~/.local/share/mail/cckname/
 Inbox ~/.local/share/mail/cckname/Inbox
-Flatten .
 
 # Channel
 Channel cckname

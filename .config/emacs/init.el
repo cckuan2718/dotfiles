@@ -207,6 +207,11 @@
 (winner-mode 1)
 (global-set-key (kbd "M-o") 'other-window) ; M-o to switch window
 
+;;;; Authentication
+(use-package password-store)
+(require 'auth-source-pass)
+(auth-source-pass-enable)
+
 ;;;; Modes
 
 (defun my/disable-tabs ()
@@ -289,6 +294,87 @@
 ;;; magit
 (use-package magit)
 
-;;; cc mode
+;;; CC mode
 (setq-default c-basic-offset 8)
 (setq c-default-style "k&r")
+
+;;; mu4e
+(use-package mu4e
+  :defer 10
+  :ensure nil
+  ;; :bind (:map mu4e-headers-mode-map
+  ;;        ("C-=" . mu4e-headers-split-view-grow)
+  ;;        :map mu4e-view-mode-map
+  ;;        ("C-=" . mu4e-headers-split-view-grow))
+  :config
+  ;; maildir
+  (setq mu4e-update-interval nil
+        ;; mu4e-update-interval (* 10 60)
+        mu4e-get-mail-command "mbsync --all"
+        ;; mu4e-get-mail-command "true"
+        mu4e-maildir "~/.local/share/mail")
+
+  ;; Make sure that moving a message (like to Trash) causes the
+  ;; message to get a new file name.  This helps to avoid the
+  ;; dreaded "UID is N beyond highest assigned" error.
+  ;; See `man mbsync'
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; context
+  (setq mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "cckname"
+             :enter-func (lambda () (mu4e-message "Entering cckname context"))
+             :leave-func (lambda () (mu4e-message "Leaving cckname context"))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match-p "^/cckname" (mu4e-message-field msg :maildir))))
+             :vars '((user-mail-address  . "cckuan@changchukuan.name"  )
+                     (user-full-name     . "Chang, Chu-Kuan" )
+                     (mu4e-sent-folder   . "/cckname/Sent")
+                     (mu4e-trash-folder  . "/cckname/Trash")
+                     (mu4e-drafts-folder . "/cckname/Drafts")
+                     (mu4e-refile-folder . "/cckname/Archive")
+                     (mu4e-compose-signature . (concat
+                                                "Chang, Chu-Kuan 張居寬\n"
+                                                "0x3BFF0775354DC84B"
+                                                ))
+                     (smtpmail-smtp-server  . "mail.changchukuan.name")
+                     (smtpmail-smtp-service . 465)
+                     (smtpmail-stream-type  . ssl)
+                     (smtpmail-smtp-user    . "cckuan")))))
+  (setq mu4e-maildir-shortcuts
+        '(("/cckname/Archive/2021" . ?a)
+          ("/cckname/Drafts"       . ?d)
+          ("/cckname/DMARC"        . ?D)
+          ("/cckname/Finance"      . ?f)
+          ("/cckname/Inbox"        . ?i)
+          ("/cckname/Mlist"        . ?m)
+          ("/cckname/Sent"         . ?s)
+          ("/cckname/Sent"         . ?s)
+          ("/cckname/Spam"         . ?S)
+          ("/cckname/Trash"        . ?t)
+          ("/cckname/Sysadmin"     . ?y)))
+  (setq mu4e-context-policy 'pick-first
+        mu4e-compose-context-policy 'always-ask)
+
+  ;; viewer
+  (setq mu4e-view-show-images t
+        mu4e-view-show-addresses t)
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
+  (setq mu4e-attachment-dir "~/downloads")
+
+  ;; composer
+  (setq mu4e-sent-messages-behavior 'sent
+        message-kill-buffer-on-exit t
+        mail-user-agent 'mu4e-user-agent
+        message-send-mail-function 'smtpmail-send-it
+        mml-secure-openpgp-signers '("3BFF0775354DC84B"))
+
+  ;; user interface
+  (setq mu4e-completing-read-function #'ivy-completing-read
+        mu4e-headers-date-format "%Y-%m-%d"
+        mu4e-headers-time-format "%H:%M")
+  (mu4e t))
+
